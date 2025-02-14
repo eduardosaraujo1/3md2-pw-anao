@@ -1,2 +1,5 @@
 <?php
-// make router here
+
+require '../bootstrap/app.php';
+
+dd('Hello, world!');
