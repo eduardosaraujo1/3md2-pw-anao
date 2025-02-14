@@ -1,8 +1,9 @@
 {
-    "name": "eduardosaraujo/pw-crud",
+    "name": "eduardosaraujo/pw-anao",
     "autoload": {
         "psr-4": {
-            "Eduardosaraujo\\PwCrud\\": "app/"
+            "App\\": "app/",
+            "Core\\": "core/"
         }
     },
     "require": {

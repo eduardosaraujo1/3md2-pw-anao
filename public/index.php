@@ -1,5 +1,7 @@
 <?php
 
-require '../bootstrap/app.php';
+// Require composer autoload dependencies
+require '../vendor/autoload.php';
 
-dd('Hello, world!');
+// Bootstrap application
+require_once '../bootstrap/app.php';

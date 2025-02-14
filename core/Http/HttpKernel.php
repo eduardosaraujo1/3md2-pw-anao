@@ -2,6 +2,6 @@
 
 namespace Core\Http;
 
-class Request {
+class HttpKernel {
     public function __construct() {}
 }
