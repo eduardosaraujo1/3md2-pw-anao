@@ -6,12 +6,17 @@ services:
       - '80:80'
     volumes:
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app
   #php
   app:
     build:
       dockerfile: ./docker/php/Dockerfile
     volumes:
       - .:/var/www/html
+    command: sh -c 'composer install --prefer-dist --no-dev --no-scripts --no-progress --no-interaction && php-fpm'
+    depends_on:
+      - db
   #mysql
   db:
     image: mysql:8.0
