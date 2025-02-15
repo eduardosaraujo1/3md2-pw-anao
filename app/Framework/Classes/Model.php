@@ -2,4 +2,7 @@
 
 namespace App\Framework\Classes;
 
-abstract class Model { }
+abstract class Model
+{
+
+}
