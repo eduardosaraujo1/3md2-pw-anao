@@ -13,4 +13,4 @@
 
 // TODO: Docker and Tailwind (later)
 
-echo 'Hello, world! Modified';
+echo 'Hello, world!';

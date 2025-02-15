@@ -14,6 +14,12 @@ services:
     volumes:
       - .:/var/www/html
     command: sh -c 'composer install --prefer-dist --no-scripts --no-progress --no-interaction && php-fpm' # Installing packages and keeping php-fpm running
+    environment:
+      DB_HOST: db
+      DB_PORT: ${DB_PORT:-3306}
+      DB_DATABASE: ${DB_DATABASE:-db_anoes}
+      DB_USER: ${DB_USER:-user}
+      DB_PASSWORD: ${DB_PASSWORD:-root}
     depends_on:
       - db
   #mysql
@@ -25,10 +31,10 @@ services:
       - "${DB_PORT:-3306}:3306"
     restart: "unless-stopped"
     environment:
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD:-root}'
-      MYSQL_USER: '${DB_USER:-user}'
-      MYSQL_PASSWORD: '${DB_PASSWORD:-root}'
-      MYSQL_DATABASE: '${DB_DATABASE:-db_anoes}'
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_DATABASE:-db_anoes}
+      MYSQL_USER: ${DB_USER:-user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-root}
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
   #redis
 
