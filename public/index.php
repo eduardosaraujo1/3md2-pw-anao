@@ -1,7 +1,9 @@
 <?php declare(strict_types=1);
 
 // Require composer autoload dependencies
-// require '../vendor/autoload.php';
+require '../vendor/autoload.php';
+
+// create login session
 
 // create request object
 
@@ -11,6 +13,4 @@
 
 // for propper standards, view Gary CLarke's PHP Framework Pro
 
-// TODO: Docker and Tailwind (later)
-
-echo 'Hello, world!';
+// TODO: Tailwind (later)

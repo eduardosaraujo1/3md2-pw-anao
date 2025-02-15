@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Http;
+namespace App\Framework\Http;
 
 class Request {
     public function __construct() {}
