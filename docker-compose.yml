@@ -1,11 +1,10 @@
 services:
   # nginx
   web:
-    image: nginx:latest
+    build:
+      dockerfile: ./docker/nginx/Dockerfile
     ports:
       - '80:80'
-    volumes:
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - app
   #php
@@ -14,7 +13,7 @@ services:
       dockerfile: ./docker/php/Dockerfile
     volumes:
       - .:/var/www/html
-    command: sh -c 'composer install --prefer-dist --no-dev --no-scripts --no-progress --no-interaction && php-fpm'
+    command: sh -c 'composer install --prefer-dist --no-dev --no-scripts --no-progress --no-interaction && php-fpm' # Installing packages and keeping php-fpm running
     depends_on:
       - db
   #mysql
