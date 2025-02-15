@@ -13,4 +13,20 @@ services:
     volumes:
       - .:/app
   #mysql
+  db:
+    image: mysql:8.0
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    restart: "unless-stopped"
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD:-root}'
+      MYSQL_USER: '${DB_USER:-user}'
+      MYSQL_PASSWORD: '${DB_PASSWORD:-root}'
+      MYSQL_DATABASE: '${DB_DATABASE:-db_anoes}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
   #redis
+
+volumes:
+  mysqldata:
