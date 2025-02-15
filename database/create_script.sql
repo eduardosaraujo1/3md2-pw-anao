@@ -1,6 +1,6 @@
-DROP SCHEMA IF EXISTS anoes;
-CREATE SCHEMA anoes;
-use anoes;
+DROP SCHEMA IF EXISTS db_anoes;
+CREATE SCHEMA db_anoes;
+use db_anoes;
 
 CREATE TABLE
     anao (
