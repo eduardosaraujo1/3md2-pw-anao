@@ -9,8 +9,14 @@ class Engine
     private static Engine $_instance;
     private function __construct()
     {
-        $this->platesEngine = new \League\Plates\Engine(__DIR__ . '/templates', 'phtml');
-        $this->platesEngine->addFolder('view', realpath(__DIR__ . '/../../../resources/views'));
+        // declare params
+        $extension = "phtml";
+        $defaultPath = realpath(__DIR__ . '/templates');
+        $viewPath = realpath(__DIR__ . '/../../../resources/views');
+
+        // create plate engine with folder
+        $this->platesEngine = new \League\Plates\Engine($defaultPath, $extension);
+        $this->platesEngine->addFolder('view', $viewPath, true);
     }
 
     private static function singleton(): Engine
