@@ -9,7 +9,7 @@ class Engine
     private static Engine $_instance;
     private function __construct()
     {
-        $this->platesEngine = new \League\Plates\Engine(__DIR__ . '/templates');
+        $this->platesEngine = new \League\Plates\Engine(__DIR__ . '/templates', 'phtml');
         $this->platesEngine->addFolder('view', realpath(__DIR__ . '/../../../resources/views'));
     }
 

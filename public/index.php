@@ -21,5 +21,3 @@ $response = $kernel->handle($request);
 
 // display the response to the user
 $response->send();
-
-// TODO: Tailwind (later)
