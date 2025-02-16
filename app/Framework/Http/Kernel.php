@@ -60,10 +60,7 @@ class Kernel
         }
 
         // call the function with the decided parameters
-        $result = (string) call_user_func_array($handler, $parameters);
-
-        // create response object from the result
-        return new Response($result);
+        return (string) call_user_func_array($handler, $parameters);
     }
 
     private function makeDispatcher()
@@ -111,13 +108,29 @@ class Kernel
         $handler = $routeInfo[1] ?? null;
         $routeParams = $routeInfo[2] ?? [];
 
-        // respond to each of the route status
+        // create response using handler
         if ($status === Dispatcher::FOUND && isset($handler)) {
-            return $this->callHandler($handler, $routeParams, $request);
-        } else if ($status === Dispatcher::METHOD_NOT_ALLOWED) {
-            return $this->getErrorPage(message: "Este recurso não suporta o método '$method'.", status: 405);
-        } else {
-            return $this->getErrorPage(message: "Recurso não encontrado.", status: 404);
+            $content = $this->callHandler($handler, $routeParams, $request);
+
+            return new Response(
+                content: $content
+            );
         }
+
+        // handle route errors
+        if ($status === Dispatcher::METHOD_NOT_ALLOWED) {
+            $errorMessage = "Este recurso não suporta o método '$method'";
+            $responseStatus = 405;
+        } else {
+            $errorMessage = "404: Recurso '$path' não foi encontrado";
+            $responseStatus = 404;
+        }
+
+        $content = view('error', ['error' => $errorMessage]);
+
+        return new Response(
+            content: $content,
+            status: $responseStatus
+        );
     }
 }
