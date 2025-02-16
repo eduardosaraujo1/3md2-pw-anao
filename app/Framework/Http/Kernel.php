@@ -82,6 +82,12 @@ class Kernel
         return new Response($result);
     }
 
+    private function getErrorPage(string $message, int $status)
+    {
+        // TODO: implement error page
+        return new Response(content: $message, status: $status);
+    }
+
     public function handle(Request $request)
     {
         // make route dispatcher (basically a callback resolver)
@@ -91,11 +97,20 @@ class Kernel
         $method = $request->getMethod();
         $path = $request->getPathInfo();
 
-        // get route status, callback and extra return variables
-        [$status, $handler, $routeParams] = $dispatcher->dispatch($method, $path);
+        // get route info
+        $routeInfo = $dispatcher->dispatch($method, $path);
+
+        // parse route info into separate variables
+        $status = $routeInfo[0] ?? Dispatcher::NOT_FOUND;
+        $handler = $routeInfo[1] ?? null;
+        $routeParams = $routeInfo[2] ?? [];
 
         if ($status === Dispatcher::FOUND && isset($handler)) {
             return $this->callHandler($handler, $routeParams, $request);
+        } else if ($status === Dispatcher::METHOD_NOT_ALLOWED) {
+            return $this->getErrorPage(message: "Este recurso não suporta o método '$method'.", status: 405);
+        } else {
+            return $this->getErrorPage(message: "Recurso não encontrado.", status: 404);
         }
     }
 }
