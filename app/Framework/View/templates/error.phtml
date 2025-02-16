@@ -1,0 +1,13 @@
+<?php $this->layout('view::layout/app') ?>
+
+<div class="min-h-screen p-4 bg-neutral-900">
+    <div class="flex flex-col gap-4 items-center max-w-7xl mx-auto">
+        <h1 class="text-white font-bold text-4xl mt-12 text-center ">Ocorreu um erro ao acessar esta página</h1>
+        <div class="flex-1 w-full">
+            <h3 class="text-white text-2xl my-2">Descrição do erro:</h3>
+            <div class="text-white text-2xl bg-neutral-950 w-full py-2 px-4">
+                <pre class="whitespace-normal text-justify"><?= $this->e($error) ?></pre>
+            </div>
+        </div>
+    </div>
+</div>

@@ -29,8 +29,20 @@ class Engine
 
     public static function render(string $name, array $data = [])
     {
+        // support dot syntax for folder pathing
         $name = str_replace('.', '/', $name);
-        return Engine::get()->render("view::$name", $data);
+
+        // Render the engine
+        try {
+            $result = Engine::get()->render("view::$name", $data);
+        } catch (\League\Plates\Exception\TemplateNotFound $e) {
+            $message = $e->getMessage();
+            $result = Engine::get()->render("view::error", [
+                "error" => "Página não encontrada. Detalhes: $message"
+            ]);
+        }
+
+        return $result;
     }
 
     public static function get()

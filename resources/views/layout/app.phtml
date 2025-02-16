@@ -8,15 +8,13 @@
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">
         @theme {
-                
+            --color-background-dark: var(--color-neutral-900);
         }
     </style>
 </head>
 
 <body>
-    <div class="block max-w-7xl mx-auto min-h-screen">
-        <?= $this->section('content') ?>
-    </div>
+    <?= $this->section('content') ?>
 </body>
 
 </html>
