@@ -12,14 +12,13 @@ require '../vendor/autoload.php';
 // create request object
 $request = Request::createFromGlobals();
 
-// create http kernel using get response
+// create http kernel
+$kernel = new Kernel();
+
+// use kernel to get response from request
+$response = $kernel->handle($request);
 
 // display the response to the user
-$content = 'Hello, world!';
-
-$response = new Response(content: $content); // TODO: replace with Kernel
 $response->send();
-
-// for propper standards, view Gary CLarke's PHP Framework Pro
 
 // TODO: Tailwind (later)
