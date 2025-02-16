@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Framework\Http;
+namespace App\Framework\Router;
 
 use App\Framework\Classes\Route;
 
@@ -32,7 +32,7 @@ class Router
         return static::getInstance()->routeList;
     }
 
-    private function addRoute(string $method, string $path, mixed $handler)
+    private function addRoute(string $method, string $path, mixed $handler): Route
     {
 
         // create the route
@@ -44,33 +44,35 @@ class Router
 
         // add the new route to route list
         array_push($this->routeList, $routeObject);
+
+        return $routeObject;
     }
 
-    public static function get(string $route, mixed $handler): void
+    public static function get(string $route, mixed $handler): Route
     {
-        static::getInstance()
+        return static::getInstance()
             ->addRoute('GET', $route, $handler);
     }
 
-    public static function post(string $route, mixed $handler): void
+    public static function post(string $route, mixed $handler): Route
     {
-        static::getInstance()
+        return static::getInstance()
             ->addRoute('POST', $route, $handler);
     }
 
-    public static function put(string $route, mixed $handler): void
+    public static function put(string $route, mixed $handler): Route
     {
-        static::getInstance()
+        return static::getInstance()
             ->addRoute('PUT', $route, $handler);
     }
-    public static function delete(string $route, mixed $handler): void
+    public static function delete(string $route, mixed $handler): Route
     {
-        static::getInstance()
+        return static::getInstance()
             ->addRoute('DELETE', $route, $handler);
     }
-    public static function patch(string $route, mixed $handler): void
+    public static function patch(string $route, mixed $handler): Route
     {
-        static::getInstance()
+        return static::getInstance()
             ->addRoute('PATCH', $route, $handler);
     }
 }

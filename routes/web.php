@@ -1,6 +1,6 @@
 <?php
 
-use App\Framework\Http\Router;
+use App\Framework\Router\Router;
 use App\Http\Controllers\AnaoController;
 use App\Http\Controllers\AuthenticationController;
 

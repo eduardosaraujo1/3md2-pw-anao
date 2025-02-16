@@ -2,6 +2,7 @@
 
 namespace App\Framework\Http;
 
+use App\Framework\Router\Router;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
