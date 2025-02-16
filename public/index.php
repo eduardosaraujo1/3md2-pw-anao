@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-// Front-Controller Pattern implementaiton inspired by
 
 use App\Framework\Http\Kernel;
 use App\Framework\Http\Request;
