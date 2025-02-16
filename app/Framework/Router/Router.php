@@ -14,7 +14,7 @@ class Router
     private function __construct()
     {
     }
-    private static function getInstance(): Router
+    private static function singleton(): Router
     {
         if (!isset(self::$_instance)) {
             self::$_instance = new Router();
@@ -29,7 +29,7 @@ class Router
      */
     public static function getRoutes(): array
     {
-        return static::getInstance()->routeList;
+        return static::singleton()->routeList;
     }
 
     private function addRoute(string $method, string $path, mixed $handler): Route
@@ -50,29 +50,29 @@ class Router
 
     public static function get(string $route, mixed $handler): Route
     {
-        return static::getInstance()
+        return static::singleton()
             ->addRoute('GET', $route, $handler);
     }
 
     public static function post(string $route, mixed $handler): Route
     {
-        return static::getInstance()
+        return static::singleton()
             ->addRoute('POST', $route, $handler);
     }
 
     public static function put(string $route, mixed $handler): Route
     {
-        return static::getInstance()
+        return static::singleton()
             ->addRoute('PUT', $route, $handler);
     }
     public static function delete(string $route, mixed $handler): Route
     {
-        return static::getInstance()
+        return static::singleton()
             ->addRoute('DELETE', $route, $handler);
     }
     public static function patch(string $route, mixed $handler): Route
     {
-        return static::getInstance()
+        return static::singleton()
             ->addRoute('PATCH', $route, $handler);
     }
 }
