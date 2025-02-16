@@ -1,3 +1,6 @@
 <?php
 
-// TODO: return FastRoute's router with the controlers defined here
+use App\Framework\Http\Router;
+use App\Http\Controllers\AnaoController;
+
+Router::get('/', [AnaoController::class, 'index']);

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
+// Front-Controller Pattern implementaiton inspired by
 
 use App\Framework\Http\Kernel;
 use App\Framework\Http\Request;
-use App\Framework\Http\Response;
 
 // Require composer autoload dependencies
 require '../vendor/autoload.php';

@@ -4,13 +4,24 @@ namespace App\Framework\Http;
 
 readonly class Request
 {
+
     public function __construct(
-        private array $getParams,
-        private array $postParams,
-        private array $cookies,
-        private array $files,
-        private array $server,
+        public array $getParams,
+        public array $postParams,
+        public array $cookies,
+        public array $files,
+        public array $server,
     ) {
+    }
+
+    public function getPathInfo(): string
+    {
+        return strtok($this->server['REQUEST_URI'], '?');
+    }
+
+    public function getMethod(): string
+    {
+        return strtoupper($this->server['REQUEST_METHOD']);
     }
 
     public static function createFromGlobals(): static
