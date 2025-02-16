@@ -40,18 +40,45 @@ class Router
         return static::getInstance()->routeList;
     }
 
-    public static function get(string $route, mixed $handler): void
+    private function addRoute(string $method, string $path, mixed $handler)
     {
-        $router = static::getInstance();
 
         // create the route
         $routeObject = new Route(
-            httpMethod: 'GET',
-            path: $route,
+            httpMethod: $method,
+            path: $path,
             handler: $handler,
         );
 
         // add the new route to route list
-        array_push($router->routeList, $routeObject);
+        array_push($this->routeList, $routeObject);
+    }
+
+    public static function get(string $route, mixed $handler): void
+    {
+        $router = static::getInstance();
+        $router->addRoute('GET', $route, $handler);
+    }
+
+    public static function post(string $route, mixed $handler): void
+    {
+        $router = static::getInstance();
+        $router->addRoute('POST', $route, $handler);
+    }
+
+    public static function put(string $route, mixed $handler): void
+    {
+        $router = static::getInstance();
+        $router->addRoute('PUT', $route, $handler);
+    }
+    public static function delete(string $route, mixed $handler): void
+    {
+        $router = static::getInstance();
+        $router->addRoute('DELETE', $route, $handler);
+    }
+    public static function patch(string $route, mixed $handler): void
+    {
+        $router = static::getInstance();
+        $router->addRoute('PATCH', $route, $handler);
     }
 }
