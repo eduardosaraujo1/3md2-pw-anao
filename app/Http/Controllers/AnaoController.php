@@ -12,6 +12,6 @@ class AnaoController
 
     public static function index(Request $request)
     {
-        return '<h1>Hello from the AnaoController! I am still not a template :(</h1>';
+        return view('anao.list');
     }
 }

@@ -69,7 +69,7 @@ class Kernel
     private function makeDispatcher()
     {
         // Load the routes specified in routes/web.php
-        require_once dirname(__DIR__) . '../../../routes/web.php';
+        require_once __DIR__ . '/../../../routes/web.php';
 
         // Now that the routes are loaded, create the FastRoute dispatcher
         return simpleDispatcher(function (RouteCollector $r) {
