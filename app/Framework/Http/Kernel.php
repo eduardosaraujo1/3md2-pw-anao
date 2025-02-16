@@ -12,23 +12,6 @@ class Kernel
     {
     }
 
-    private function makeDispatcher()
-    {
-        return simpleDispatcher(function (RouteCollector $r) {
-            // get route list
-            $routes = Router::getRoutes();
-
-            // add each route to the dispatcher
-            foreach ($routes as $route) {
-                $r->addRoute(
-                    httpMethod: $route->httpMethod,
-                    route: $route->path,
-                    handler: $route->handler
-                );
-            }
-        });
-    }
-
     private function callHandler(mixed $handler, array $params, Request $request)
     {
         // Reflection API: used to read the arguments a function has specified and using that to decide which params should be passed
@@ -82,13 +65,35 @@ class Kernel
         return new Response($result);
     }
 
+    private function makeDispatcher()
+    {
+        // Load the routes specified in routes/web.php
+        require_once dirname(__DIR__) . '../../../routes/web.php';
+
+        // Now that the routes are loaded, create the FastRoute dispatcher
+        return simpleDispatcher(function (RouteCollector $r) {
+            // get route list
+            $routes = Router::getRoutes();
+
+            // add each route to the dispatcher
+            foreach ($routes as $route) {
+                $r->addRoute(
+                    httpMethod: $route->httpMethod,
+                    route: $route->path,
+                    handler: $route->handler
+                );
+            }
+        });
+    }
+
     private function getErrorPage(string $message, int $status)
     {
-        // TODO: implement error page
+        // TODO: this does not belong to the Kernel. Create a Views/ErrorPage.php class that loads the default 
+        // (or put the 404 error page in the response sender idk does not seem like a good idea)
         return new Response(content: $message, status: $status);
     }
 
-    public function handle(Request $request)
+    public function handle(Request $request): Response
     {
         // make route dispatcher (basically a callback resolver)
         $dispatcher = $this->makeDispatcher();
@@ -97,14 +102,15 @@ class Kernel
         $method = $request->getMethod();
         $path = $request->getPathInfo();
 
-        // get route info
-        $routeInfo = $dispatcher->dispatch($method, $path);
+        // get route info, containing if the route was found, the callback for that route and the parameters passed into it
+        $routeInfo = $dispatcher->dispatch(httpMethod: $method, uri: $path);
 
         // parse route info into separate variables
         $status = $routeInfo[0] ?? Dispatcher::NOT_FOUND;
         $handler = $routeInfo[1] ?? null;
         $routeParams = $routeInfo[2] ?? [];
 
+        // respond to each of the route status
         if ($status === Dispatcher::FOUND && isset($handler)) {
             return $this->callHandler($handler, $routeParams, $request);
         } else if ($status === Dispatcher::METHOD_NOT_ALLOWED) {
