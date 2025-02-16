@@ -7,7 +7,8 @@ use App\Framework\Http\Request;
 // Require composer autoload dependencies
 require '../vendor/autoload.php';
 
-// create login session
+// Require function helpers for application
+require '../app/Framework/Helpers/helpers.php';
 
 // create request object
 $request = Request::createFromGlobals();
