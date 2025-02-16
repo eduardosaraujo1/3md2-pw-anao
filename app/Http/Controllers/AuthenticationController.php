@@ -12,6 +12,6 @@ class AuthenticationController
 
     public static function index(Request $request)
     {
-        return '<h1>Hello from the login page. I am not a template yet sadly :(</h1>';
+        return view('auth.login');
     }
 }

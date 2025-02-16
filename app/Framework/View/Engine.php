@@ -10,14 +10,25 @@ class Engine
     private function __construct()
     {
         $this->platesEngine = new \League\Plates\Engine(__DIR__ . '/templates');
-        $this->platesEngine->addFolder('view', __DIR__ . '/../../../views');
+        $this->platesEngine->addFolder('view', realpath(__DIR__ . '/../../../resources/views'));
     }
 
-    public static function singleton(): Engine
+    private static function singleton(): Engine
     {
         if (!isset(self::$_instance)) {
             self::$_instance = new Engine();
         }
         return self::$_instance;
+    }
+
+    public static function render(string $name, array $data = [])
+    {
+        $name = str_replace('.', '/', $name);
+        return Engine::get()->render("view::$name", $data);
+    }
+
+    public static function get()
+    {
+        return static::singleton()->platesEngine;
     }
 }

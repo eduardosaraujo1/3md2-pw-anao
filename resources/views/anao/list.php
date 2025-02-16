@@ -1,1 +1,1 @@
-<?php
+<?php $this->layout('view::layout/app'); ?>
