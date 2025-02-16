@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Framework\Http\Request;
 
-class AnaoController
+class AuthenticationController
 {
     public function __construct()
     {
@@ -12,6 +12,6 @@ class AnaoController
 
     public static function index(Request $request)
     {
-        return '<h1>Hello from the AnaoController! I am still not a template :(</h1>';
+        return '<h1>Hello from the login page. I am not a template yet sadly :(</h1>';
     }
 }

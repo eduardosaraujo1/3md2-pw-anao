@@ -13,6 +13,7 @@ class Response
 
     public function send(): void
     {
+        http_response_code($this->status);
         echo $this->content;
     }
 }
