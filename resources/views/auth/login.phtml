@@ -1,3 +1,6 @@
 <?php $this->layout('view::layout/app', ['title' => "Login"]); ?>
 
-<h1 class="text-3xl font-bold text-center my-4">Login Page, now in template :D</h1>
+<div class="min-h-screen py-4 mx-auto max-w-7xl">
+    <h1 class="text-3xl font-bold text-center">Login Page</h1>
+    <?php $this->insert('view::components/primary-button', ['href' => '/anao', 'content' => 'Login']) ?>
+</div>
