@@ -4,7 +4,7 @@
   "description": "Self made framework",
   "type": "module",
   "scripts": {
-    "dev": "npx @tailwindcss/cli -i ./resources/css/app.css -o ./public/hot.css --watch",
+    "dev": "npx @tailwindcss/cli -i ./resources/css/app.css -o ./public/build/style.css --minify --watch",
     "build": "npx @tailwindcss/cli -i ./resources/css/app.css -o ./public/build/style.css --minify"
   },
   "repository": {
