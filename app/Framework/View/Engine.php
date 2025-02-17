@@ -7,10 +7,9 @@ class Engine
     private \League\Plates\Engine $platesEngine;
 
     private static Engine $_instance;
-    private function __construct()
+    private function __construct($extension)
     {
         // declare params
-        $extension = "phtml";
         $defaultPath = realpath(__DIR__ . '/templates');
         $viewPath = realpath(__DIR__ . '/../../../resources/views');
 
@@ -22,7 +21,7 @@ class Engine
     private static function singleton(): Engine
     {
         if (!isset(self::$_instance)) {
-            self::$_instance = new Engine();
+            self::$_instance = new Engine("phtml");
         }
         return self::$_instance;
     }
