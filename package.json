@@ -1,10 +1,11 @@
 {
   "name": "3md2-pw-anao",
   "version": "1.0.0",
-  "description": "-   Eduardo Soares e Araújo -   Maria Eduarda Fagundes Pires",
+  "description": "Self made framework",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx @tailwindcss/cli -i ./resources/css/app.css -o ./public/hot.css --minify --watch",
+    "build": "npx @tailwindcss/cli -i ./resources/css/app.css -o ./public/build/style.css --minify"
   },
   "repository": {
     "type": "git",
