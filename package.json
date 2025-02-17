@@ -1,0 +1,24 @@
+{
+  "name": "3md2-pw-anao",
+  "version": "1.0.0",
+  "description": "-   Eduardo Soares e Araújo -   Maria Eduarda Fagundes Pires",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eduardosaraujo1/3md2-pw-anao.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eduardosaraujo1/3md2-pw-anao/issues"
+  },
+  "homepage": "https://github.com/eduardosaraujo1/3md2-pw-anao#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.6",
+    "tailwindcss": "^4.0.6"
+  }
+}
