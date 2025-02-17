@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Framework\Router;
+namespace App\Framework\Http;
 
-use App\Framework\Classes\Route;
+use App\Framework\Core\Classes\Route;
 
 class Router
 {
@@ -18,6 +18,9 @@ class Router
     {
         if (!isset(self::$_instance)) {
             self::$_instance = new Router();
+
+            // Load the routes specified in routes/web.php
+            require_once realpath(__DIR__ . '/../../../routes/web.php');
         }
         return self::$_instance;
     }
@@ -34,7 +37,6 @@ class Router
 
     private function addRoute(string $method, string $path, mixed $handler): Route
     {
-
         // create the route
         $routeObject = new Route(
             httpMethod: $method,

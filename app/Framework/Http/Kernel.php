@@ -2,15 +2,58 @@
 
 namespace App\Framework\Http;
 
-use App\Framework\Router\Router;
+use App\Framework\Core\Factory\DispatcherFactory;
+use App\Framework\Http\Router;
 use FastRoute\Dispatcher;
-use FastRoute\RouteCollector;
-use function FastRoute\simpleDispatcher;
 
 class Kernel
 {
     public function __construct()
     {
+    }
+
+    public function handle(Request $request): Response
+    {
+        // make route dispatcher (basically a callback resolver)
+        $routeList = Router::getRoutes();
+        $dispatcher = DispatcherFactory::make($routeList);
+
+        // get request route and method
+        $method = $request->getMethod();
+        $path = $request->getPathInfo();
+
+        // get route info, containing if the route was found, the callback for that route and the parameters passed into it
+        $routeInfo = $dispatcher->dispatch(httpMethod: $method, uri: $path);
+
+        // parse route info into separate variables
+        $status = $routeInfo[0] ?? Dispatcher::NOT_FOUND;
+        $handler = $routeInfo[1] ?? null;
+        $routeParams = $routeInfo[2] ?? [];
+
+        // create response using handler
+        if ($status === Dispatcher::FOUND && isset($handler)) {
+            $content = $this->callHandler($handler, $routeParams, $request);
+
+            return new Response(
+                content: $content
+            );
+        }
+
+        // handle route errors
+        if ($status === Dispatcher::METHOD_NOT_ALLOWED) {
+            $errorMessage = "Este recurso não suporta o método '$method'";
+            $responseStatus = 405;
+        } else {
+            $errorMessage = "404: Recurso '$path' não foi encontrado";
+            $responseStatus = 404;
+        }
+
+        $content = view('error', ['error' => $errorMessage]);
+
+        return new Response(
+            content: $content,
+            status: $responseStatus
+        );
     }
 
     private function callHandler(mixed $handler, array $params, Request $request)
@@ -61,76 +104,5 @@ class Kernel
 
         // call the function with the decided parameters
         return (string) call_user_func_array($handler, $parameters);
-    }
-
-    private function makeDispatcher()
-    {
-        // Load the routes specified in routes/web.php
-        require_once __DIR__ . '/../../../routes/web.php';
-
-        // Now that the routes are loaded, create the FastRoute dispatcher
-        return simpleDispatcher(function (RouteCollector $r) {
-            // get route list
-            $routes = Router::getRoutes();
-
-            // add each route to the dispatcher
-            foreach ($routes as $route) {
-                $r->addRoute(
-                    httpMethod: $route->httpMethod,
-                    route: $route->path,
-                    handler: $route->handler
-                );
-            }
-        });
-    }
-
-    private function getErrorPage(string $message, int $status)
-    {
-        // TODO: this does not belong to the Kernel. Create a Views/ErrorPage.php class that loads the default 
-        // (or put the 404 error page in the response sender idk does not seem like a good idea)
-        return new Response(content: $message, status: $status);
-    }
-
-    public function handle(Request $request): Response
-    {
-        // make route dispatcher (basically a callback resolver)
-        $dispatcher = $this->makeDispatcher();
-
-        // get request route and method
-        $method = $request->getMethod();
-        $path = $request->getPathInfo();
-
-        // get route info, containing if the route was found, the callback for that route and the parameters passed into it
-        $routeInfo = $dispatcher->dispatch(httpMethod: $method, uri: $path);
-
-        // parse route info into separate variables
-        $status = $routeInfo[0] ?? Dispatcher::NOT_FOUND;
-        $handler = $routeInfo[1] ?? null;
-        $routeParams = $routeInfo[2] ?? [];
-
-        // create response using handler
-        if ($status === Dispatcher::FOUND && isset($handler)) {
-            $content = $this->callHandler($handler, $routeParams, $request);
-
-            return new Response(
-                content: $content
-            );
-        }
-
-        // handle route errors
-        if ($status === Dispatcher::METHOD_NOT_ALLOWED) {
-            $errorMessage = "Este recurso não suporta o método '$method'";
-            $responseStatus = 405;
-        } else {
-            $errorMessage = "404: Recurso '$path' não foi encontrado";
-            $responseStatus = 404;
-        }
-
-        $content = view('error', ['error' => $errorMessage]);
-
-        return new Response(
-            content: $content,
-            status: $responseStatus
-        );
     }
 }

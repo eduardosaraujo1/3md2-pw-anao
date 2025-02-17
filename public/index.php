@@ -7,7 +7,7 @@ use App\Framework\Http\Request;
 require '../vendor/autoload.php';
 
 // Require function helpers for application
-require '../app/Framework/Helpers/helpers.php';
+require '../app/Framework/Core/Helpers/helpers.php';
 
 // create request object
 $request = Request::createFromGlobals();
