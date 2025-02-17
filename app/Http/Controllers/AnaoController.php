@@ -12,6 +12,6 @@ class AnaoController
 
     public static function index(Request $request)
     {
-        return view('anao.list');
+        return view('anao.view');
     }
 }

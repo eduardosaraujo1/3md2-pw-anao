@@ -10,4 +10,4 @@ Router::get('/', function () {
 
 Router::get('/login', [AuthenticationController::class, 'index']);
 
-Router::get('/anoes', [AnaoController::class, 'index']);
+Router::get('/anao', [AnaoController::class, 'index']);
