@@ -1,0 +1,25 @@
+{
+  "name": "3md2-pw-anao",
+  "version": "1.0.0",
+  "description": "Self made framework",
+  "type": "module",
+  "scripts": {
+    "dev": "npx @tailwindcss/cli -i ./resources/css/app.css -o ./public/hot.css --minify --watch",
+    "build": "npx @tailwindcss/cli -i ./resources/css/app.css -o ./public/build/style.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eduardosaraujo1/3md2-pw-anao.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eduardosaraujo1/3md2-pw-anao/issues"
+  },
+  "homepage": "https://github.com/eduardosaraujo1/3md2-pw-anao#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.6",
+    "tailwindcss": "^4.0.6"
+  }
+}

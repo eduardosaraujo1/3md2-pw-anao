@@ -20,3 +20,20 @@ if (!function_exists('view')) {
         return $str;
     }
 }
+
+if (!function_exists('getCssFile')) {
+    function getCssFile()
+    {
+        // get CSS files urls
+        $hot = "hot.css";
+        $build = "build/style.css";
+
+        if (file_exists($hot)) {
+            return $hot;
+        } elseif (file_exists($build)) {
+            return $build;
+        }
+
+        return null; // no CSS available
+    }
+}

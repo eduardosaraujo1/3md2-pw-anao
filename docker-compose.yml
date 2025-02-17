@@ -24,6 +24,7 @@ services:
       DB_USER: ${DB_USER:-user}
       DB_PASSWORD: ${DB_PASSWORD:-root}
     depends_on:
+      - node
       - db
   #mysql
   db:
@@ -39,6 +40,15 @@ services:
       MYSQL_USER: ${DB_USER:-user}
       MYSQL_PASSWORD: ${DB_PASSWORD:-root}
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
+  #node
+  node:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    restart: unless-stopped
+    command: sh -c 'npm run dev'
+    stdin_open: true # This allows the npm dev command to actually work
 
 volumes:
   mysqldata:
