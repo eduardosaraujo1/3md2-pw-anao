@@ -10,7 +10,7 @@ class Engine
     private function __construct($extension)
     {
         // declare params
-        $defaultPath = realpath(__DIR__ . '/templates');
+        $defaultPath = realpath(__DIR__ . '/defaults');
         $viewPath = realpath(__DIR__ . '/../../../resources/views');
 
         // create plate engine with folder

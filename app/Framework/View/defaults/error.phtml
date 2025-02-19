@@ -1,0 +1,10 @@
+<?php $this->layout('view::layout/app', ['title' => $code]) ?>
+
+<div class="min-h-screen p-4 bg-neutral-900">
+    <div class="flex flex-col gap-4 items-center max-w-7xl mx-auto">
+        <h1 class="text-white font-bold text-7xl mt-12 text-center "><?= $code ?></h1>
+        <div class="text-white text-xl py-2 px-4 text-justify">
+            <?= $this->e($message) ?>
+        </div>
+    </div>
+</div>

@@ -2,7 +2,10 @@
 
 namespace App\Framework\Routing;
 
-use App\Framework\Core\Classes\Route;
+use App\Framework\DTOs\DispatchResult;
+use FastRoute\Dispatcher;
+use FastRoute\RouteCollector;
+use function FastRoute\simpleDispatcher;
 
 class Router
 {
@@ -14,67 +17,82 @@ class Router
     private function __construct()
     {
     }
-    private static function singleton(): Router
+    public static function singleton(): Router
     {
         if (!isset(self::$_instance)) {
             self::$_instance = new Router();
-
-            // Load the routes specified in routes/web.php
-            require_once realpath(__DIR__ . '/../../../routes/web.php');
         }
         return self::$_instance;
     }
     // end singleton pattern
 
-    /**
-     * Gets the routes registered to the router
-     * @return Route[]
-     */
-    public static function getRoutes(): array
+    private function addRoute(string $method, string $path, callable $handler): Route
     {
-        return static::singleton()->routeList;
-    }
-
-    private function addRoute(string $method, string $path, mixed $handler): Route
-    {
-        // create the route
         $routeObject = new Route(
             httpMethod: $method,
             path: $path,
             handler: $handler,
         );
 
-        // add the new route to route list
-        array_push($this->routeList, $routeObject);
+        $this->routeList[] = $routeObject;
 
         return $routeObject;
     }
 
-    public static function get(string $route, mixed $handler): Route
+    private function makeDispatcher(): Dispatcher
     {
-        return static::singleton()
-            ->addRoute('GET', $route, $handler);
+        return simpleDispatcher(function (RouteCollector $r) {
+            foreach ($this->routeList as $route) {
+                $r->addRoute(
+                    httpMethod: $route->httpMethod,
+                    route: $route->path,
+                    handler: $route->handler
+                );
+            }
+        });
     }
 
-    public static function post(string $route, mixed $handler): Route
+    public function dispatch(string $method, string $uri): DispatchResult
     {
-        return static::singleton()
-            ->addRoute('POST', $route, $handler);
+        // Load the routes specified in routes/web.php
+        require_once realpath(__DIR__ . '/../../../routes/web.php');
+
+        $dispatcher = simpleDispatcher(function (RouteCollector $r) {
+            foreach ($this->routeList as $route) {
+                $r->addRoute(
+                    httpMethod: $route->httpMethod,
+                    route: $route->path,
+                    handler: $route->handler
+                );
+            }
+        });
+
+        $rawResult = $dispatcher->dispatch($method, $uri);
+        $result = DispatchResult::createFromFastRoute($rawResult);
+
+        return $result;
     }
 
-    public static function put(string $route, mixed $handler): Route
+    public function get(string $route, callable $handler): Route
     {
-        return static::singleton()
-            ->addRoute('PUT', $route, $handler);
+        return $this->addRoute('GET', $route, $handler);
     }
-    public static function delete(string $route, mixed $handler): Route
+
+    public function post(string $route, callable $handler): Route
     {
-        return static::singleton()
-            ->addRoute('DELETE', $route, $handler);
+        return $this->addRoute('POST', $route, $handler);
     }
-    public static function patch(string $route, mixed $handler): Route
+
+    public function put(string $route, callable $handler): Route
     {
-        return static::singleton()
-            ->addRoute('PATCH', $route, $handler);
+        return $this->addRoute('PUT', $route, $handler);
+    }
+    public function delete(string $route, callable $handler): Route
+    {
+        return $this->addRoute('DELETE', $route, $handler);
+    }
+    public function patch(string $route, callable $handler): Route
+    {
+        return $this->addRoute('PATCH', $route, $handler);
     }
 }

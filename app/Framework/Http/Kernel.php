@@ -3,7 +3,7 @@
 namespace App\Framework\Http;
 
 use App\Framework\Core\Factory\DispatcherFactory;
-use App\Framework\Http\Router;
+use App\Framework\Facades\Route;
 use FastRoute\Dispatcher;
 
 class Kernel
@@ -14,25 +14,17 @@ class Kernel
 
     public function handle(Request $request): Response
     {
-        // make route dispatcher (basically a callback resolver)
-        $routeList = Router::getRoutes();
-        $dispatcher = DispatcherFactory::make($routeList);
-
         // get request route and method
         $method = $request->getMethod();
-        $path = $request->getPathInfo();
+        $uri = $request->getPathInfo();
 
         // get route info, containing if the route was found, the callback for that route and the parameters passed into it
-        $routeInfo = $dispatcher->dispatch(httpMethod: $method, uri: $path);
-
-        // parse route info into separate variables
-        $status = $routeInfo[0] ?? Dispatcher::NOT_FOUND;
-        $handler = $routeInfo[1] ?? null;
-        $routeParams = $routeInfo[2] ?? [];
+        $routeInfo = Route::dispatch(method: $method, uri: $uri);
 
         // create response using handler
-        if ($status === Dispatcher::FOUND && isset($handler)) {
-            $content = $this->callHandler($handler, $routeParams, $request);
+        if ($routeInfo->status === Dispatcher::FOUND && is_callable($routeInfo->handler)) {
+            // TODO: implement Invoker class
+            $content = $this->callHandler($routeInfo->handler, $routeInfo->params, $request);
 
             return new Response(
                 content: $content
@@ -40,19 +32,19 @@ class Kernel
         }
 
         // handle route errors
-        if ($status === Dispatcher::METHOD_NOT_ALLOWED) {
-            $errorMessage = "Este recurso não suporta o método '$method'";
-            $responseStatus = 405;
+        if ($routeInfo->status === Dispatcher::METHOD_NOT_ALLOWED) {
+            $code = 405;
+            $errorMessage = "Este recurso suporta apenas os métodos '" . implode(', ', $routeInfo->allowedMethods) . "'";
         } else {
-            $errorMessage = "404: Recurso '$path' não foi encontrado";
-            $responseStatus = 404;
+            $code = 404;
+            $errorMessage = "Recurso '$uri' não foi encontrado";
         }
 
-        $content = view('error', ['error' => $errorMessage]);
+        $content = view('error', ['code' => $code, 'message' => $errorMessage]);
 
         return new Response(
             content: $content,
-            status: $responseStatus
+            status: $code
         );
     }
 

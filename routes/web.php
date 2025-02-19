@@ -1,13 +1,13 @@
 <?php
 
-use App\Framework\Http\Router;
+use App\Framework\Facades\Route;
 use App\Http\Controllers\AnaoController;
 use App\Http\Controllers\AuthenticationController;
 
-Router::get('/', function () {
+Route::get('/', function () {
     return '<a href="/login">Login</a>';
 });
 
-Router::get('/login', [AuthenticationController::class, 'index']);
+Route::get('/login', [AuthenticationController::class, 'index']);
 
-Router::get('/anao', [AnaoController::class, 'index']);
+Route::get('/anao', [AnaoController::class, 'index']);
