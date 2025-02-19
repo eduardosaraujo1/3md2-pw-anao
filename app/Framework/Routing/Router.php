@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Framework\Http;
+namespace App\Framework\Routing;
 
 use App\Framework\Core\Classes\Route;
 
