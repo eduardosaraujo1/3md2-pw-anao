@@ -73,9 +73,9 @@ class Connection
      * Runs a database query on the current connection
      * @param string $query
      * @param array<string,mixed> $params
-     * @return array|int
+     * @return int
      */
-    public function query(string $query, array $params = []): array|int
+    public function query(string $query, array $params = []): int
     {
         $stmt = $this->pdo->prepare($query);
 
@@ -97,10 +97,10 @@ class Connection
     /**
      * Runs a database query on the current connection
      * @param string $query
-     * @param array<string,mixed> $params
-     * @return array|int
+     * @param array<object> $params
+     * @return array
      */
-    public function fetch(string $query, array $params = []): array|int
+    public function fetch(string $query, array $params = []): array
     {
         $stmt = $this->pdo->prepare($query);
 
@@ -117,6 +117,25 @@ class Connection
         }
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * Runs \$callback in a php transaction
+     * @param callable(DTO) $callback: void
+     * @return bool
+     */
+    public function transaction(callable $callback): bool
+    {
+        $this->pdo->beginTransaction();
+
+        try {
+            $callback($this->pdo);
+            $status = $this->pdo->commit();
+        } catch (\Throwable $e) {
+            $status = $this->pdo->rollBack();
+        }
+
+        return $status;
     }
 
     public function close()
