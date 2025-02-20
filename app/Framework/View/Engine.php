@@ -2,50 +2,64 @@
 
 namespace App\Framework\View;
 
+use App\Framework\Exception\ViewDirectoryNotFoundException;
+
 class Engine
 {
-    private \League\Plates\Engine $platesEngine;
+    public const EXTENSION = "phtml";
+    public \League\Plates\Engine $engine;
 
+    // singleton
     private static Engine $_instance;
-    private function __construct($extension)
+    private function __construct()
     {
         // declare params
-        $defaultPath = realpath(__DIR__ . '/templates');
+        $defaultPath = realpath(__DIR__ . '/defaults');
         $viewPath = realpath(__DIR__ . '/../../../resources/views');
 
+        // throw exceptions if paths were not found
+        if (!$defaultPath) {
+            throw new ViewDirectoryNotFoundException("Folder 'defaults' required for view engine not found");
+        }
+
+        if (!$viewPath) {
+            throw new ViewDirectoryNotFoundException("Folder 'resources/views' required for view engine not found");
+        }
+
         // create plate engine with folder
-        $this->platesEngine = new \League\Plates\Engine($defaultPath, $extension);
-        $this->platesEngine->addFolder('view', $viewPath, true);
+        $this->engine = new \League\Plates\Engine($defaultPath, self::EXTENSION);
+        $this->engine->addFolder('view', $viewPath, true);
     }
 
-    private static function singleton(): Engine
+    public static function singleton(): Engine
     {
         if (!isset(self::$_instance)) {
-            self::$_instance = new Engine("phtml");
+            self::$_instance = new Engine();
         }
         return self::$_instance;
     }
+    // end singleton
 
-    public static function render(string $name, array $data = [])
+    /**
+     * Use Plates's Engine to render a .phtml view
+     * @param string $name View name (syntax: file path with dot notation starting from resources/views/). Example: 'layout.app' => 'resources/views/layout/app.phtml'
+     * @param array<string,mixed> $data Data to be passed to the view
+     */
+    public function render(string $name, array $data = []): string
     {
-        // support dot syntax for folder pathing
+        // Support dot syntax for folder pathing
         $name = str_replace('.', '/', $name);
 
-        // Render the engine
         try {
-            $result = Engine::get()->render("view::$name", $data);
+            $result = $this->engine->render("view::$name", $data);
         } catch (\League\Plates\Exception\TemplateNotFound $e) {
             $message = $e->getMessage();
-            $result = Engine::get()->render("view::error", [
-                "error" => "Página não encontrada. Detalhes: $message"
+            $result = $this->engine->render("view::error", [
+                "code" => 500,
+                "message" => "Erro ao renderizar página. Detalhes: $message",
             ]);
         }
 
         return $result;
-    }
-
-    public static function get()
-    {
-        return static::singleton()->platesEngine;
     }
 }

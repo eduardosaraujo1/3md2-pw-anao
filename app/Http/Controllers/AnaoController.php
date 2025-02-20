@@ -10,7 +10,7 @@ class AnaoController
     {
     }
 
-    public static function index(Request $request)
+    public static function index(Request $request): string
     {
         return view('anao.view');
     }

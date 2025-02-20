@@ -1,13 +1,20 @@
 <?php
 
-use App\Framework\Router\Router;
+use App\Framework\Facades\Route;
+use App\Framework\Http\Request;
 use App\Http\Controllers\AnaoController;
 use App\Http\Controllers\AuthenticationController;
 
-Router::get('/', function () {
+Route::get('/', function (Request $request) {
     return '<a href="/login">Login</a>';
 });
 
-Router::get('/login', [AuthenticationController::class, 'index']);
+Route::get('/login', [AuthenticationController::class, 'index']);
 
-Router::get('/anao', [AnaoController::class, 'index']);
+Route::get('/anao', [AnaoController::class, 'index']);
+
+// for testing purposes (low time constraints will not invest on learning Pest)
+Route::get('/test', [AnaoController::class, 'index']);
+Route::get('/test/{id:\d+}', function (string $id) {
+});
+Route::post('/testPost', function () { });
