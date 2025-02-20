@@ -7,7 +7,6 @@ use App\Http\Controllers\AnaoController;
 use App\Http\Controllers\AuthenticationController;
 
 Route::get('/', function (Request $request) {
-    dd(Connection::singleton()->query("SELECT * FROM users"));
     return '<a href="/login">Login</a>';
 });
 
