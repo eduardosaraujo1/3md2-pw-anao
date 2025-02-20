@@ -9,6 +9,3 @@
 -   [PHP Framework Pattern - The Front Controller](https://www.youtube.com/watch?v=akPcD5e9N4M&list=PLQH1-k79HB3-0SKspp8814ZI1GIqRYLAu)
 
 # TODO
-
--   Fix code errors after structural modification
--   Rewrite error.phtml, using laravel's insertion of variables $code and $content as inspiration

@@ -24,7 +24,7 @@ class Kernel
 
         // create response using handler
         if ($routeInfo->status === Dispatcher::FOUND && is_callable($routeInfo->handler)) {
-            $content = Invoker::call($routeInfo->handler, $routeInfo->params, [$request]);
+            $content = (string) Invoker::call($routeInfo->handler, $routeInfo->params, [$request]);
 
             return new Response(
                 content: $content

@@ -3,7 +3,6 @@
 namespace App\Framework\Routing;
 
 use App\Framework\DTOs\DispatchResult;
-use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
 
@@ -39,19 +38,6 @@ class Router
         return $routeObject;
     }
 
-    private function makeDispatcher(): Dispatcher
-    {
-        return simpleDispatcher(function (RouteCollector $r) {
-            foreach ($this->routeList as $route) {
-                $r->addRoute(
-                    httpMethod: $route->httpMethod,
-                    route: $route->path,
-                    handler: $route->handler
-                );
-            }
-        });
-    }
-
     public function dispatch(string $method, string $uri): DispatchResult
     {
         // Load the routes specified in routes/web.php
@@ -67,6 +53,7 @@ class Router
             }
         });
 
+        /** @var array{int,callable,array<string,string>}|array{int,array<string>}|array{int} $rawResult */
         $rawResult = $dispatcher->dispatch($method, $uri);
         $result = DispatchResult::createFromFastRoute($rawResult);
 

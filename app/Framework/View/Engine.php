@@ -2,9 +2,11 @@
 
 namespace App\Framework\View;
 
+use App\Framework\Exception\ViewDirectoryNotFoundException;
+
 class Engine
 {
-    private const EXTENSION = "phtml";
+    public const EXTENSION = "phtml";
     public \League\Plates\Engine $engine;
 
     // singleton
@@ -14,6 +16,15 @@ class Engine
         // declare params
         $defaultPath = realpath(__DIR__ . '/defaults');
         $viewPath = realpath(__DIR__ . '/../../../resources/views');
+
+        // throw exceptions if paths were not found
+        if (!$defaultPath) {
+            throw new ViewDirectoryNotFoundException("Folder 'defaults' required for view engine not found");
+        }
+
+        if (!$viewPath) {
+            throw new ViewDirectoryNotFoundException("Folder 'resources/views' required for view engine not found");
+        }
 
         // create plate engine with folder
         $this->engine = new \League\Plates\Engine($defaultPath, self::EXTENSION);
@@ -29,6 +40,11 @@ class Engine
     }
     // end singleton
 
+    /**
+     * Use Plates's Engine to render a .phtml view
+     * @param string $name View name (syntax: file path with dot notation starting from resources/views/). Example: 'layout.app' => 'resources/views/layout/app.phtml'
+     * @param array<string,mixed> $data Data to be passed to the view
+     */
     public function render(string $name, array $data = []): string
     {
         // Support dot syntax for folder pathing

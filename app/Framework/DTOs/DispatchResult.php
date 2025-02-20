@@ -9,36 +9,46 @@ class DispatchResult
     public function __construct(
         public int $status,
         public mixed $handler = null,
-        public ?array $params = null,
-        public ?array $allowedMethods = null
+        /** @var array<string,string> */
+        public array $params = [],
+        /** @var array<string> */
+        public array $allowedMethods = []
     ) {
     }
 
     /**
      * Creates DispatchResult object from the FastRoute ad hoc array output
+     * @param array{int,callable,array<string,string>}|array{int,array<string>}|array{int} $output
      * @throws \InvalidArgumentException
      */
-    public static function createFromFastRoute(array $fastRouteResult): DispatchResult
+    public static function createFromFastRoute(array $output): DispatchResult
     {
-        $status = $fastRouteResult[0];
+        $status = $output[0];
 
-        return match ($status) {
-            Dispatcher::FOUND => new self(
-                status: Dispatcher::FOUND,
-                handler: $fastRouteResult[1],
-                params: $fastRouteResult[2]
-            ),
+        if ($status === Dispatcher::FOUND && count($output) === 3) {
+            /** @var array{int,callable,array<string,string>} $output */
+            return new self(
+                status: $output[0],
+                handler: $output[1],
+                params: $output[2]
+            );
+        }
 
-            Dispatcher::METHOD_NOT_ALLOWED => new self(
+        if ($status === Dispatcher::METHOD_NOT_ALLOWED && count($output) === 2) {
+            /** @var array{int,array<string>} $output */
+            return new self(
                 status: Dispatcher::METHOD_NOT_ALLOWED,
-                allowedMethods: $fastRouteResult[1]
-            ),
+                allowedMethods: $output[1]
+            );
+        }
 
-            Dispatcher::NOT_FOUND => new self(
+        if ($status === Dispatcher::NOT_FOUND && count($output) === 1) {
+            /** @var array{int} $output */
+            return new self(
                 status: Dispatcher::NOT_FOUND,
-            ),
+            );
+        }
 
-            default => throw new \InvalidArgumentException("Invalid FastRoute array format: " . var_export($fastRouteResult, true), 1)
-        };
+        throw new \InvalidArgumentException("Invalid FastRoute array format: " . var_export($output, true), 1);
     }
 }

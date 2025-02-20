@@ -2,38 +2,44 @@
 
 namespace App\Framework\Support;
 
-use App\Framework\Exception\MissingCallableDependencyException;
+use App\Framework\Exception\ViewDirectoryNotFoundException;
 
 class Invoker
 {
+    /**
+     * Calls the method performing Dependency Injection. In other words, pass parameters without having to know the order the function demands, just variable name and/or type
+     * @param callable $handler
+     * @param array<string,mixed> $namedDeps
+     * @param array<mixed> $typedDeps
+     * @throws \App\Framework\Exception\ViewDirectoryNotFoundException
+     */
     public static function call(callable $handler, array $namedDeps = [], array $typedDeps = []): mixed
     {
         // Reflection API: used to read the arguments a function has specified and using that to decide which params should be passed
         // pretty much replicates Laravel's parameter injection structure (laravel's is obviously more polished)
 
-        // isMethod: checks if handler is in format [class_name, method_name]
-        $isMethod = is_array($handler) && count($handler) === 2;
-        $reflection = $isMethod
-            ? new \ReflectionMethod($handler[0], $handler[1])
-            : new \ReflectionFunction($handler);
+        // isMethod: checks if handler is in format [class_name, method_name] (most is done by the callable prop)
+        $reflection = is_array($handler)
+            ? new \ReflectionMethod($handler[0], $handler[1]) // @phpstan-ignore argument.type (callable ensures propper typing)
+            : new \ReflectionFunction($handler); // @phpstan-ignore argument.type (callable ensures propper typing)
 
         // Group typedDeps by their type
-        $groupByType = static::groupByClass($typedDeps);
+        $groupByType = self::groupByClass($typedDeps);
 
         // store parameters to send to handler
         $params = [];
         foreach ($reflection->getParameters() as $param) {
             $name = $param->getName();
-            $type = $param->getType()?->getName();
+            $type = ($param->getType() instanceof \ReflectionNamedType) ? $param->getType()->getName() : null;
 
             // check if param name matches injected named dep
-            if ($name && isset($namedDeps[$name])) {
+            if ($name && isset($namedDeps[$name]) && $type === get_debug_type($namedDeps[$name])) {
                 $params[] = $namedDeps[$name];
                 continue;
             }
 
             // check if type was injected (and injection was not consumes previously)
-            if ($type && isset($groupByType[$type]) && is_array($groupByType[$type]) && !empty($groupByType[$type])) {
+            if ($type && isset($groupByType[$type]) && !empty($groupByType[$type])) {
                 $params[] = array_shift($groupByType[$type]);
                 continue;
             }
@@ -51,7 +57,7 @@ class Invoker
             }
 
             // error that a dependency was missing
-            throw new MissingCallableDependencyException("Could not resolve '$type' dependency of argument '$name'", 1);
+            throw new ViewDirectoryNotFoundException("Could not resolve '$type' dependency of argument '$name'", 1);
         }
 
         return call_user_func_array($handler, $params);
@@ -61,12 +67,11 @@ class Invoker
      * Group all types in separate arrays inside an associative array.
      * In other words, put all variables in a "box" and label that "box" with the type of the variables inside it
      * Warning: php native types (string, int, double, array) are REMOVED from the array. Only objects are grouped
-     * @param array $typedDeps
-     * @return void
+     * @param array<mixed> $typedDeps
+     * @return array<string,array<mixed>>
      */
     private static function groupByClass(array $typedDeps): array
     {
-        // [User, Request, string, type]
         $groupedDeps = [];
 
         foreach ($typedDeps as $dep) {
