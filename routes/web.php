@@ -1,11 +1,13 @@
 <?php
 
+use App\Framework\Database\Connection;
 use App\Framework\Facades\Route;
 use App\Framework\Http\Request;
 use App\Http\Controllers\AnaoController;
 use App\Http\Controllers\AuthenticationController;
 
 Route::get('/', function (Request $request) {
+    dd(Connection::singleton()->query("SELECT * FROM users"));
     return '<a href="/login">Login</a>';
 });
 

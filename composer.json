@@ -6,7 +6,8 @@
         }
     },
     "scripts": {
-        "stan": ["vendor/bin/phpstan"]
+        "stan": ["vendor/bin/phpstan"],
+        "migrate:refresh": ["php ./database/migrate.php"]
     },
     "require": {
         "php": "^8.0",
