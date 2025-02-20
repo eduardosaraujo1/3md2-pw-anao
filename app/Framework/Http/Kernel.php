@@ -2,6 +2,8 @@
 
 namespace App\Framework\Http;
 
+use App\Framework\Exception\Routing\RouteMethodNotAllowedException;
+use App\Framework\Exception\Routing\RouteMethodNotFoundException;
 use App\Framework\Facades\Route;
 use App\Framework\Support\Invoker;
 use FastRoute\Dispatcher;
@@ -21,29 +23,41 @@ class Kernel
         // get route info, containing if the route was found, the callback for that route and the parameters passed into it
         $routeInfo = Route::dispatch(method: $method, uri: $uri);
 
-        // create response using handler
-        if ($routeInfo->status === Dispatcher::FOUND && is_callable($routeInfo->handler)) {
-            $content = (string) Invoker::call($routeInfo->handler, $routeInfo->params, [$request]);
+        // handle the statuses
+        try {
+            switch ($routeInfo->status) {
+                case Dispatcher::FOUND:
+                    if (!is_callable($routeInfo->handler)) {
+                        throw new \Exception("Ocorreu um erro na implementação da rota");
+                    }
+                    // Call the handler and set a success status code
+                    $content = (string) Invoker::call($routeInfo->handler, $routeInfo->params, [$request]);
+                    $code = 200;
+                    break;
 
-            return new Response(
-                content: $content
-            );
-        }
+                case Dispatcher::METHOD_NOT_ALLOWED:
+                    $errorMessage = "Este recurso suporta apenas os métodos '"
+                        . implode(', ', $routeInfo->allowedMethods) . "'";
+                    throw new RouteMethodNotAllowedException($errorMessage);
 
-        // handle route errors
-        if ($routeInfo->status === Dispatcher::METHOD_NOT_ALLOWED) {
+                case Dispatcher::NOT_FOUND:
+                    $errorMessage = "Recurso '$uri' não foi encontrado";
+                    throw new RouteMethodNotFoundException($errorMessage);
+
+                default:
+                    throw new \Exception("Unhandled route status: {$routeInfo->status}");
+            }
+        } catch (RouteMethodNotAllowedException $ex) {
             $code = 405;
-            $errorMessage = "Este recurso suporta apenas os métodos '" . implode(', ', $routeInfo->allowedMethods) . "'";
-        } else {
+            $content = view('error', ['code' => $code, 'message' => $ex->getMessage()]);
+        } catch (RouteMethodNotFoundException $ex) {
             $code = 404;
-            $errorMessage = "Recurso '$uri' não foi encontrado";
+            $content = view('error', ['code' => $code, 'message' => $ex->getMessage()]);
+        } catch (\Throwable $ex) {
+            $code = 500;
+            $content = view('error', ['code' => $code, 'message' => $ex->getMessage() ?: 'Internal Server Error']);
         }
 
-        $content = view('error', ['code' => $code, 'message' => $errorMessage]);
-
-        return new Response(
-            content: $content,
-            status: $code
-        );
+        return new Response(status: $code, content: $content);
     }
 }
