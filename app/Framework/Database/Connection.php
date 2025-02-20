@@ -4,7 +4,6 @@ namespace App\Framework\Database;
 
 use App\Framework\Exception\Database\InvalidConnectionCredentialsException;
 use PDO;
-use PDOStatement;
 
 class Connection
 {
@@ -31,13 +30,11 @@ class Connection
     private static function createFromEnv(): Connection
     {
         /** @var array<string,string> */
-        $env = getenv();
-
-        $host = $env['DB_HOST'] ?? null;
-        $port = $env['DB_PORT'] ?? '3306';
-        $user = $env['DB_USER'] ?? null;
-        $password = $env['DB_PASSWORD'] ?? null;
-        $db = $env['DB_DATABASE'] ?? 'db_anoes';
+        $host = $_ENV['DB_HOST'] ?? null;
+        $port = $_ENV['DB_PORT'] ?? '3306';
+        $user = $_ENV['DB_USER'] ?? null;
+        $password = $_ENV['DB_PASSWORD'] ?? null;
+        $db = $_ENV['DB_DATABASE'] ?? 'db_anoes';
 
         if (!isset($host, $user)) {
             throw new InvalidConnectionCredentialsException("Connection: parametros DB_HOST e/ou DB_USER não estão definidos em seu .env");
