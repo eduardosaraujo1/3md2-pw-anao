@@ -2,7 +2,7 @@
 
 namespace App\Framework\Http;
 
-readonly class Request
+class Request
 {
 
     public function __construct(
