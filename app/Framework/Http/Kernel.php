@@ -2,7 +2,6 @@
 
 namespace App\Framework\Http;
 
-use App\Framework\Core\Factory\DispatcherFactory;
 use App\Framework\Facades\Route;
 use App\Framework\Support\Invoker;
 use FastRoute\Dispatcher;

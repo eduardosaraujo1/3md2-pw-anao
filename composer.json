@@ -6,7 +6,7 @@
         }
     },
     "scripts": {
-        "phpstan": ["vendor/bin/phpstan"]
+        "stan": ["vendor/bin/phpstan"]
     },
     "require": {
         "php": "^8.0",
