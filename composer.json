@@ -5,6 +5,9 @@
             "App\\": "app/"
         }
     },
+    "scripts": {
+        "phpstan": ["vendor/bin/phpstan"]
+    },
     "require": {
         "php": "^8.2",
         "nikic/fast-route": "^1.3",
