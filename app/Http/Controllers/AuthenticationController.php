@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Framework\Auth\User;
+use App\Framework\Facades\Auth;
 use App\Framework\Http\Request;
 
 class AuthenticationController

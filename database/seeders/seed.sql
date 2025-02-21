@@ -1,9 +1,9 @@
 INSERT INTO users(login, password) VALUES
-('eduardosaraujo1', 'admin01'),
-('dwalin_the_brave', 'strongaxe456'),
-('thorin_oakenshield', 'ereborking789'),
-('bofur_the_miner', 'digdeeper321'),
-('balin_the_wise', 'wisdomforever999');
+('eduardosaraujo1', '$2a$12$GdSWgz..u4K9ICDEJ5i8neKGsflW/2KGLjMFsHEPqeSKk1A3E6cfa'), -- admin01
+('dwalin_the_brave', '$2a$12$rCwQbXYUFfhccQNw4Bk0B.kkq49mDbJe2xz8gtN5nq0CfLTgfwHi.'), -- Password
+('thorin_oakenshield', '$2a$12$XzCRUwbnlQNfS0WTFrzZE.Up.mE6RQxYYqwc/ZpuxVoOwmybgNjEO'), -- johnny
+('bofur_the_miner', '$2a$12$ok9.G7CO3agiw18V.IDH0uSL/IakjgqVMWAmx4ImKpAN6DXT6M9de'), -- A$$word
+('balin_the_wise', '$2a$12$oxH7iZCNj1b9UYRSm8GqGeU99R32NGBcQoqwUDwibmeOGX1tkK2iS'); -- wisdomforever999
 
 INSERT INTO anao(name, age, race, height, is_gay) VALUES
 ('Gimli', 139, 0, 1.35, 1),

@@ -75,7 +75,6 @@ class Connection
      */
     public function query(string $query, array $params = []): int
     {
-        dd($query, $params);
         $stmt = $this->pdo->prepare($query);
 
         if (!$stmt) {

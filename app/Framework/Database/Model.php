@@ -28,6 +28,6 @@ class Model
      */
     public static function make(array $params): static
     {
-        throw new \Exception("Not Implemented Method: 'Model::make'");
+        throw new \Exception("NotImplementedMethodException: '" . static::class . "::make'");
     }
 }

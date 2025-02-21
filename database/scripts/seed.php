@@ -7,15 +7,18 @@ require __DIR__ . '/../../bootstrap/app.php';
 // create connection
 $conn = Connection::singleton();
 
-// run each sql script in seeders
+// run each sql script in migrations
 $dir = realpath(__DIR__ . '/../seeders');
-$iterator = new DirectoryIterator($dir);
+$files = array_diff(scandir($dir), ['.', '..']); // Get sorted list
 
-foreach ($iterator as $file) {
-    if (!$file->isDot()) {
-        $filecontents = file_get_contents($file->getPathName());
-        $conn->exec($filecontents);
-    }
+foreach ($files as $file) {
+    // get file path
+    $filePath = realpath("$dir/$file");
+
+    // get file contents
+    $content = file_get_contents($filePath);
+
+    $conn->exec($content);
 }
 
 $conn->close();

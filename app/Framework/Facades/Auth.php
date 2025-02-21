@@ -3,13 +3,14 @@
 namespace App\Framework\Facades;
 
 use App\Framework\Auth\AuthSession;
+use App\Framework\Auth\User;
 
 /**
- * @method static int query(string $query, array $params = [])
- * @method static array<object> fetch(string $query, array $params = [])
- * @method static bool transaction(callable $callback)
- * @method static void exec(string $query)
- * @method static void close()
+ * @method static bool attempt(string $login, string $password)
+ * @method static bool check()
+ * @method static User user()
+ * @method static void logout()
+ * @method static void forceLogin(User $user)
  */
 class Auth extends Facade
 {
