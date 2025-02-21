@@ -30,10 +30,16 @@ class Kernel
                     if (!is_callable($routeInfo->handler)) {
                         throw new \Exception("Ocorreu um erro na implementação da rota");
                     }
-                    // Call the handler and set a success status code
-                    $content = (string) Invoker::call($routeInfo->handler, $routeInfo->params, [$request]);
-                    $code = 200;
-                    break;
+
+                    // Call the handler, which should return an HTTP Response
+                    $response = Invoker::call($routeInfo->handler, $routeInfo->params, [$request]);
+
+                    if (!$response instanceof Response) {
+                        $type = is_object($response) ? get_class($response) : gettype($response);
+                        throw new \Exception("Controladores de classe devem retornar objectos Response. Retornado $type");
+                    }
+
+                    return $response;
 
                 case Dispatcher::METHOD_NOT_ALLOWED:
                     $errorMessage = "Este recurso suporta apenas os métodos '"
@@ -48,16 +54,25 @@ class Kernel
                     throw new \Exception("Unhandled route status: {$routeInfo->status}");
             }
         } catch (RouteMethodNotAllowedException $ex) {
-            $code = 405;
-            $content = view('error', ['code' => $code, 'message' => $ex->getMessage()]);
+            $errorCode = 405;
+            return view(
+                name: 'error',
+                params: ['code' => $errorCode, 'message' => $ex->getMessage()]
+            );
         } catch (RouteMethodNotFoundException $ex) {
-            $code = 404;
-            $content = view('error', ['code' => $code, 'message' => $ex->getMessage()]);
+            $errorCode = 404;
+            return view(
+                name: 'error',
+                params: ['code' => $errorCode, 'message' => $ex->getMessage() ?: 'Internal Server Error']
+            )
+                ->setStatus($errorCode);
         } catch (\Throwable $ex) {
-            $code = 500;
-            $content = view('error', ['code' => $code, 'message' => $ex->getMessage() ?: 'Internal Server Error']);
+            $errorCode = 500;
+            return view(
+                name: 'error',
+                params: ['code' => $errorCode, 'message' => $ex->getMessage() ?: 'Internal Server Error']
+            )
+                ->setStatus($errorCode);
         }
-
-        return new Response(status: $code, content: $content);
     }
 }

@@ -7,7 +7,8 @@ use App\Http\Controllers\AnaoController;
 use App\Http\Controllers\AuthenticationController;
 
 Route::get('/', function (Request $request) {
-    return '<a href="/login">Login</a>';
+    // return '<a href="/login">Login</a>';
+    return redirect('/login');
 });
 
 Route::get('/login', [AuthenticationController::class, 'index']);

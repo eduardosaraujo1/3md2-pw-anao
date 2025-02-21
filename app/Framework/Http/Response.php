@@ -13,6 +13,13 @@ class Response
         $this->headers = headers_list();
     }
 
+    public function setStatus(int $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
     public function send(): void
     {
         // set http status

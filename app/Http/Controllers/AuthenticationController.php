@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Framework\Auth\User;
 use App\Framework\Facades\Auth;
 use App\Framework\Http\Request;
+use App\Framework\Http\Response;
 
 class AuthenticationController
 {
@@ -12,7 +13,7 @@ class AuthenticationController
     {
     }
 
-    public static function index(Request $request): string
+    public static function index(Request $request): Response
     {
         return view('auth.login');
     }

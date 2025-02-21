@@ -1,6 +1,7 @@
 <?php
 
 use App\Framework\Facades\ViewEngine;
+use App\Framework\Http\Response;
 use App\Framework\View\Engine;
 
 if (!function_exists('view')) {
@@ -9,12 +10,28 @@ if (!function_exists('view')) {
      * @param string $name path to view starting from `resources/views/` with dot notation and no extension. 
      * Example: 'layout.app' => 'resources/views/layout/app.phtml'
      * @param array<string,mixed> $params Parameters to be passed into the view as variables
-     * @return string
      */
-    function view(string $name, array $params = []): string
+    function view(string $name, array $params = []): Response
     {
         $str = ViewEngine::render($name, $params);
 
-        return $str;
+        return new Response(
+            status: 200,
+            content: $str
+        );
+    }
+}
+
+if (!function_exists('redirect')) {
+    /**
+     * Create a redirect response
+     * @param string $location Location to redirect the user to
+     */
+    function redirect(string $location): Response
+    {
+        return new Response(
+            status: 301,
+            headers: ["Location: $location"]
+        );
     }
 }
