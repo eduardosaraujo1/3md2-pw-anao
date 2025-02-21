@@ -13,7 +13,7 @@ class AuthenticationController
     {
     }
 
-    public static function index(Request $request): Response
+    public static function index(Request $request): string
     {
         return view('auth.login');
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Framework\Classes;
+namespace App\Framework\Routing;
 
 use FastRoute\Dispatcher;
 
-class DispatchResult
+class RouteDispatchResult
 {
     public function __construct(
         public int $status,
@@ -21,7 +21,7 @@ class DispatchResult
      * @param array{int,callable,array<string,string>}|array{int,array<string>}|array{int} $output
      * @throws \InvalidArgumentException
      */
-    public static function createFromFastRoute(array $output): DispatchResult
+    public static function createFromFastRoute(array $output): RouteDispatchResult
     {
         $status = $output[0];
 

@@ -3,11 +3,11 @@
 namespace App\Framework\Facades;
 
 use App\Framework\Routing\Router;
-use App\Framework\Classes\DispatchResult;
+use App\Framework\Classes\RouteDispatchResult;
 use App\Framework\Routing\Route as RouteDTO;
 
 /**
- * @method static DispatchResult dispatch(string $method, string $uri)
+ * @method static RouteDispatchResult dispatch(string $method, string $uri)
  * @method static RouteDTO get(string $route, callable $handler)
  * @method static RouteDTO post(string $route, callable $handler)
  * @method static RouteDTO put(string $route, callable $handler)

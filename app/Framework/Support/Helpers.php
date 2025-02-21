@@ -11,14 +11,11 @@ if (!function_exists('view')) {
      * Example: 'layout.app' => 'resources/views/layout/app.phtml'
      * @param array<string,mixed> $params Parameters to be passed into the view as variables
      */
-    function view(string $name, array $params = []): Response
+    function view(string $name, array $params = []): string
     {
         $str = ViewEngine::render($name, $params);
 
-        return new Response(
-            status: 200,
-            content: $str
-        );
+        return $str;
     }
 }
 

@@ -2,7 +2,6 @@
 
 namespace App\Framework\Routing;
 
-use App\Framework\Classes\DispatchResult;
 use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
 
@@ -38,7 +37,7 @@ class Router
         return $routeObject;
     }
 
-    public function dispatch(string $method, string $uri): DispatchResult
+    public function dispatch(string $method, string $uri): RouteDispatchResult
     {
         // Load the routes specified in routes/web.php
         require_once realpath(__DIR__ . '/../../../routes/web.php');
@@ -55,7 +54,7 @@ class Router
 
         /** @var array{int,callable,array<string,string>}|array{int,array<string>}|array{int} $rawResult */
         $rawResult = $dispatcher->dispatch($method, $uri);
-        $result = DispatchResult::createFromFastRoute($rawResult);
+        $result = RouteDispatchResult::createFromFastRoute($rawResult);
 
         return $result;
     }

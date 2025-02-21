@@ -12,7 +12,7 @@ class AnaoController
     {
     }
 
-    public static function index(Request $request): Response
+    public static function index(Request $request): string
     {
         Anao::fromQuery("SELECT * FROM anao");
         return view('anao.view');
