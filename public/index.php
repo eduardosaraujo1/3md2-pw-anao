@@ -3,11 +3,8 @@
 use App\Framework\Http\Kernel;
 use App\Framework\Http\Request;
 
-// Require composer autoload dependencies
-require '../vendor/autoload.php';
-
-// Require function helpers for application
-require '../app/Framework/Support/Helpers.php';
+// Bootstrap app
+require "../bootstrap/app.php";
 
 // create request object
 $request = Request::createFromGlobals();

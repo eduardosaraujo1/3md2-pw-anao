@@ -6,12 +6,15 @@
         }
     },
     "scripts": {
-        "phpstan": ["vendor/bin/phpstan"]
+        "stan": ["vendor/bin/phpstan"],
+        "db:migrate": ["php ./database/scripts/migrate.php"],
+        "db:seed": ["php ./database/scripts/seed.php"]
     },
     "require": {
         "php": "^8.0",
         "nikic/fast-route": "^1.3",
-        "league/plates": "^3.6"
+        "league/plates": "^3.6",
+        "vlucas/phpdotenv": "*"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.4",

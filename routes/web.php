@@ -1,5 +1,6 @@
 <?php
 
+use App\Framework\Database\Connection;
 use App\Framework\Facades\Route;
 use App\Framework\Http\Request;
 use App\Http\Controllers\AnaoController;

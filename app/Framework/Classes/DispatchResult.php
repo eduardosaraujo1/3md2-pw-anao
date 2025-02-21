@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Framework\DTOs;
+namespace App\Framework\Classes;
 
 use FastRoute\Dispatcher;
 

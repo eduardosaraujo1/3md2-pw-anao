@@ -2,7 +2,7 @@
 
 namespace App\Framework\Routing;
 
-use App\Framework\DTOs\DispatchResult;
+use App\Framework\Classes\DispatchResult;
 use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
 

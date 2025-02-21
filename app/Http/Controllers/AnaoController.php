@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Framework\Http\Request;
+use App\Models\Anao;
 
 class AnaoController
 {
@@ -12,6 +13,7 @@ class AnaoController
 
     public static function index(Request $request): string
     {
+        Anao::fromQuery("SELECT * FROM anao");
         return view('anao.view');
     }
 }
