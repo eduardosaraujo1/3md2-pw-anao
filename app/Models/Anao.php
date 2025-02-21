@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Framework\Database\Model;
+use App\Framework\Exception\NullPropertyException;
 
 class Anao extends Model
 {
@@ -23,6 +24,18 @@ class Anao extends Model
      */
     public static function make(array $params): static
     {
+        if (
+            !isset(
+            $params['id'],
+            $params['name'],
+            $params['age'],
+            $params['race'],
+            $params['height'],
+            $params['is_gay'],
+        )
+        ) {
+            throw new NullPropertyException("Missing property to make 'Anao': " . var_export($params, true));
+        }
         return new Anao(
             id: $params['id'],
             name: $params['name'],

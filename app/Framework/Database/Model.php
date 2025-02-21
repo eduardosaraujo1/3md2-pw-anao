@@ -12,11 +12,13 @@ class Model
      * @param array<string,mixed> $params
      * @return array<static>
      */
-    public static function fromQuery(string $query, array $params): array
+    public static function fromQuery(string $query, array $params = []): array
     {
         $result = DB::fetch($query, $params);
 
-        dd($result);
+        return array_map(function (array $item) {
+            return static::make($item);
+        }, $result);
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Framework\Exception\NullPropertyException;
+
 class User extends \App\Framework\Auth\User
 {
     public function __construct(
@@ -18,6 +20,15 @@ class User extends \App\Framework\Auth\User
      */
     public static function make(array $params): User
     {
+        if (
+            !isset(
+            $params['id'],
+            $params['login'],
+            $params['password']
+        )
+        ) {
+            throw new NullPropertyException("Missing property to make 'User': " . var_export($params, true));
+        }
         return new User(
             id: $params['id'],
             login: $params['login'],
