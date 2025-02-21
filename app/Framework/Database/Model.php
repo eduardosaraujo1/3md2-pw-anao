@@ -4,20 +4,28 @@ namespace App\Framework\Database;
 
 use App\Framework\Facades\DB;
 
-abstract class Model
+class Model
 {
-    protected static string $table;
-
-    public static function all(): array
+    /**
+     * Creates model instance
+     * @param string $query
+     * @param array<string,mixed> $params
+     * @return array<static>
+     */
+    public static function fromQuery(string $query, array $params): array
     {
-        return DB::fetch("SELECT * FROM " . static::$table);
+        $result = DB::fetch($query, $params);
+
+        dd($result);
     }
 
-    
     /**
-     * @param array<string,mixed> $data
+     * Make instance from array of parameters
+     * @param array<string,mixed> $params
+     * @return static
      */
-    public static function create(array $data): self {
-        throw new \Exception("Method not implemented", 1);
+    public static function make(array $params): static
+    {
+        throw new \Exception("Not Implemented Method: 'Model::make'");
     }
 }

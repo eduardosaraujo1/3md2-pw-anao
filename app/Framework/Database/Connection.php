@@ -13,14 +13,13 @@ class Connection
     private static self $_instance;
 
     private function __construct(
-        string $host, 
-        string $user, 
-        string $password, 
+        string $host,
+        string $user,
+        string $password,
         ?string $database = null,
         string $port = '3306'
-        )
-    {
-        $dsn = isset($database) 
+    ) {
+        $dsn = isset($database)
             ? "mysql:host=$host;dbname=$database;port=$port;charset=utf8"
             : "mysql:host=$host;port=$port;charset=utf8";
 
@@ -31,7 +30,6 @@ class Connection
         );
 
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
         $this->pdo = $pdo;
     }
@@ -77,6 +75,7 @@ class Connection
      */
     public function query(string $query, array $params = []): int
     {
+        dd($query, $params);
         $stmt = $this->pdo->prepare($query);
 
         if (!$stmt) {
@@ -136,6 +135,11 @@ class Connection
         }
 
         return $status;
+    }
+
+    public function exec(string $query)
+    {
+        $this->pdo->exec($query);
     }
 
     public function close()

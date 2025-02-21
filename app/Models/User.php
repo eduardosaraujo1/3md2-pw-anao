@@ -2,22 +2,26 @@
 
 namespace App\Models;
 
-use App\Framework\Database\Model;
-
-class User extends Model {
-    protected static string $table = "users";
+class User extends \App\Framework\Auth\User
+{
+    public function __construct(
+        public int $id,
+        public string $login,
+        public string $password,
+    ) {
+    }
 
     /**
-     * Created new instance of class using specified data
-     * @param array{login:string,password:string} $data
-     * @return void
+     * Make instance from array of parameters
+     * @param array<string,mixed> $params
+     * @return self
      */
-    public static function create(array $data): User
+    public static function make(array $params): User
     {
-        if (!isset($data['login'], $data['password'])) {
-            throw new \Exception("Missing required values");
-        }
-
-        // TODO: finish implementation
+        return new User(
+            id: $params['id'],
+            login: $params['login'],
+            password: $params['password'],
+        );
     }
 }

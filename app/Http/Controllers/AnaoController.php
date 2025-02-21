@@ -13,7 +13,7 @@ class AnaoController
 
     public static function index(Request $request): string
     {
-        dd(Anao::all());
+        Anao::fromQuery("SELECT * FROM anao WHERE id = :id", ['id' => 5]);
         return view('anao.view');
     }
 }

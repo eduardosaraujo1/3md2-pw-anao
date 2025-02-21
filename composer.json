@@ -7,7 +7,8 @@
     },
     "scripts": {
         "stan": ["vendor/bin/phpstan"],
-        "migrate": ["php ./database/scripts/migrate.php"]
+        "db:migrate": ["php ./database/scripts/migrate.php"],
+        "db:seed": ["php ./database/scripts/seed.php"]
     },
     "require": {
         "php": "^8.0",

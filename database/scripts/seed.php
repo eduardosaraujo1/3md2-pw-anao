@@ -5,10 +5,10 @@ use App\Framework\Database\Connection;
 require __DIR__ . '/../../bootstrap/app.php';
 
 // create connection
-$conn = Connection::createFromEnv(false);
+$conn = Connection::singleton();
 
-// run each sql script in migrations
-$dir = realpath(__DIR__ . '/../migrations');
+// run each sql script in seeders
+$dir = realpath(__DIR__ . '/../seeders');
 $iterator = new DirectoryIterator($dir);
 
 foreach ($iterator as $file) {
