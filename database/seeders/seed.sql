@@ -10,7 +10,7 @@ INSERT INTO anao(name, age, race, height, is_gay) VALUES
 ('Dwalin', 150, 1, 1.40, 0),
 ('Thorin', 195, 3, 1.38, 1),
 ('Balin', 178, 2, 1.37, 1),
-('Bofur', 160, 5, 1.36, 0);
+('Bofur', 160, 4, 1.36, 0);
 
 INSERT INTO parceiro(name, contact, is_gay, is_anao, id_anao) VALUES
 ('Legolas', 'legolas@rivendell.com', 1, 0, 1),
