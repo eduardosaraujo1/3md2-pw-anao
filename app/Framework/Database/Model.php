@@ -2,6 +2,10 @@
 
 namespace App\Framework\Database;
 
+use App\Framework\Exception\Database\InvalidQueryException;
+use App\Framework\Exception\Database\InvalidTableException;
+use App\Framework\Exception\NotImplementedException;
+use App\Framework\Exception\NullPropertyException;
 use App\Framework\Facades\DB;
 
 class Model
@@ -16,9 +20,17 @@ class Model
     {
         $result = DB::fetch($query, $params);
 
-        return array_map(function (array $item) {
-            return static::make($item);
-        }, $result);
+        try {
+            return array_map(
+                callback: fn(array $item): Model => static::make($item),
+                array: $result
+            );
+        } catch (NullPropertyException $th) {
+            throw new InvalidQueryException(
+                message: "SQL Query did not return parameters for constructing '" . static::class
+                . "'. Please correct your SQL Statement: '$query' returned " . var_export($result, true)
+            );
+        }
     }
 
     /**
@@ -28,6 +40,6 @@ class Model
      */
     public static function make(array $params): static
     {
-        throw new \Exception("NotImplementedMethodException: '" . static::class . "::make'");
+        throw new NotImplementedException("Method '" . static::class . "::make' does not exist");
     }
 }

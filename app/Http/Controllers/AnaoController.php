@@ -14,7 +14,7 @@ class AnaoController
 
     public static function index(Request $request): string
     {
-        Anao::fromQuery("SELECT * FROM anao");
+        Anao::fromQuery("SELECT * FROM parceiro");
         return view('anao.view');
     }
 }
