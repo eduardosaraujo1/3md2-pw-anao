@@ -10,7 +10,7 @@ class Response
         /** @var array<string> */
         private array $headers = []
     ) {
-        $this->headers = headers_list();
+        $this->headers = array_merge(headers_list(), $headers);
     }
 
     public function setStatus(int $status): static
