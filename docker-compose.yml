@@ -49,7 +49,7 @@ services:
     volumes:
       - .:/app
     restart: unless-stopped
-    command: sh -c 'npm i && npm run dev && tail -f /dev/null'
+    command: sh -c 'npm i && npm run dev'
     stdin_open: true # This allows the npm dev command to actually work
     tty: true # This keeps the container up even if npm run dev crashes
 
