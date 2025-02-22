@@ -24,7 +24,7 @@ services:
       DB_USER: ${DB_USER:-user}
       DB_PASSWORD: ${DB_PASSWORD:-root}
     depends_on:
-      - node
+      - vite
       - db
   #mysql
   db:
@@ -41,9 +41,11 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-root}
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
   #node
-  node:
+  vite:
     image: node:22-alpine
     working_dir: /app
+    ports:
+      - "5173:5173"
     volumes:
       - .:/app
     restart: unless-stopped
