@@ -45,7 +45,6 @@ class Connection
 
     public static function createFromEnv(bool $useSchema): Connection
     {
-        /** @var array<string,string> */
         $host = $_ENV['DB_HOST'] ?? null;
         $port = $_ENV['DB_PORT'] ?? '3306';
         $user = $_ENV['DB_USER'] ?? null;
@@ -75,10 +74,10 @@ class Connection
      */
     public function query(string $query, array $params = []): int
     {
-        $stmt = $this->pdo->prepare($query);
+        $stmt = $this->pdo?->prepare($query);
 
         if (!$stmt) {
-            throw new \RuntimeException("Failed to prepare query: " . $this->pdo->errorInfo()[2]);
+            throw new \RuntimeException("Failed to prepare query: " . (string) $this->pdo?->errorInfo()[2]);
         }
 
         foreach ($params as $key => $value) {
@@ -86,7 +85,7 @@ class Connection
         }
 
         if (!$stmt->execute()) {
-            throw new \RuntimeException("Query execution failed: " . implode(", ", $stmt->errorInfo()));
+            throw new \RuntimeException("Query execution failed: " . (string) implode(", ", $stmt->errorInfo()));
         }
 
         return $stmt->rowCount();
@@ -95,15 +94,15 @@ class Connection
     /**
      * Runs a database query on the current connection
      * @param string $query
-     * @param array<object> $params
-     * @return array
+     * @param array<array<string,mixed>> $params
+     * @return array<mixed>
      */
     public function fetch(string $query, array $params = []): array
     {
-        $stmt = $this->pdo->prepare($query);
+        $stmt = $this->pdo?->prepare($query);
 
         if (!$stmt) {
-            throw new \RuntimeException("Failed to prepare query: " . $this->pdo->errorInfo()[2]);
+            throw new \RuntimeException("Failed to prepare query: " . (string) $this->pdo?->errorInfo()[2]);
         }
 
         foreach ($params as $key => $value) {
@@ -111,7 +110,7 @@ class Connection
         }
 
         if (!$stmt->execute()) {
-            throw new \RuntimeException("Query execution failed: " . implode(", ", $stmt->errorInfo()));
+            throw new \RuntimeException("Query execution failed: " . (string) implode(", ", $stmt->errorInfo()));
         }
 
         return $stmt->fetchAll();
@@ -119,29 +118,29 @@ class Connection
 
     /**
      * Runs \$callback in a php transaction
-     * @param callable(DTO) $callback: void
+     * @param callable(PDO): mixed $callback
      * @return bool
      */
     public function transaction(callable $callback): bool
     {
-        $this->pdo->beginTransaction();
+        $this->pdo?->beginTransaction();
 
         try {
             $callback($this->pdo);
-            $status = $this->pdo->commit();
+            $status = $this->pdo?->commit();
         } catch (\Throwable $e) {
-            $status = $this->pdo->rollBack();
+            $status = $this->pdo?->rollBack();
         }
 
-        return $status;
+        return $status ?? false;
     }
 
-    public function exec(string $query)
+    public function exec(string $query): void
     {
-        $this->pdo->exec($query);
+        $this->pdo?->exec($query);
     }
 
-    public function close()
+    public function close(): void
     {
         $this->pdo = null;
     }

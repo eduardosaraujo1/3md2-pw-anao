@@ -17,9 +17,8 @@ class User extends Model
     /**
      * Make instance from array of parameters
      * @param array<string,mixed> $params
-     * @return self
      */
-    public static function make(array $params): static
+    public static function make(array $params): User
     {
         if (
             !isset(

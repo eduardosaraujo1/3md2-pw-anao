@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Framework\Database\Model;
 use App\Framework\Exception\NullPropertyException;
 
-class Parceiro
+class Parceiro extends Model
 {
     public function __construct(
         public int $id,
@@ -17,6 +17,10 @@ class Parceiro
     ) {
     }
 
+    /**
+     * @param array<string,mixed> $params
+     * @throws \App\Framework\Exception\NullPropertyException
+     */
     public static function make(array $params): Parceiro
     {
         if (
@@ -31,6 +35,7 @@ class Parceiro
         ) {
             throw new NullPropertyException("Missing property to make 'Anao': " . var_export($params, true));
         }
+
         return new Parceiro(
             id: $params['id'],
             name: $params['name'],

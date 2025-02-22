@@ -60,15 +60,15 @@ class Kernel
                     throw new \Exception("Unhandled route status: {$routeResult->status}");
             }
         } catch (RouteMethodNotAllowedException $ex) {
-            return static::createErrorResponse($ex->getMessage(), 405);
+            return self::createErrorResponse($ex->getMessage(), 405);
         } catch (RouteMethodNotFoundException $ex) {
-            return static::createErrorResponse($ex->getMessage(), 404);
+            return self::createErrorResponse($ex->getMessage(), 404);
         } catch (\Throwable $ex) {
-            return static::createErrorResponse($ex->getMessage(), 500);
+            return self::createErrorResponse($ex->getMessage(), 500);
         }
     }
 
-    private static function createErrorResponse(string $response = 'Internal Server Error', int $code = 500)
+    private static function createErrorResponse(string $response = 'Internal Server Error', int $code = 500): Response
     {
         $view = view(
             name: 'error',
