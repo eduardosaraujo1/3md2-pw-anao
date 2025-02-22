@@ -2,7 +2,6 @@
 
 use App\Framework\Facades\ViewEngine;
 use App\Framework\Http\Response;
-use App\Framework\View\Engine;
 
 if (!function_exists('view')) {
     /**
@@ -16,6 +15,21 @@ if (!function_exists('view')) {
         $str = ViewEngine::render($name, $params);
 
         return $str;
+    }
+}
+
+if (!function_exists('component')) {
+    /**
+     * Render a component into a string with passed params
+     * @param string $name path to component starting from `resources/views/components/` with dot notation and no extension. 
+     * Example: 'primary-button' => 'resources/views/components/primary-button.phtml'
+     * @param array<string,mixed> $params Parameters to be passed into the component as variables
+     */
+    function component(string $name, array $params = []): string
+    {
+        $path = 'components/' . str_replace('.', '/', $name);
+
+        return view($path, $params);
     }
 }
 
