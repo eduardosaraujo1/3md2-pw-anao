@@ -20,9 +20,8 @@ class Anao extends Model
     /**
      * Make instance from array of parameters
      * @param array<string,mixed> $params
-     * @return static
      */
-    public static function make(array $params): static
+    public static function make(array $params): Anao
     {
         if (
             !isset(

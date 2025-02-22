@@ -21,12 +21,12 @@ class Request
 
     public function getPathInfo(): string
     {
-        return strtok($this->server['REQUEST_URI'] ?? '', '?') ?: ''; // @phpstan-ignore argument.type (REQUEST_URI is a string)
+        return strtok($this->server['REQUEST_URI'] ?? '', '?') ?: '';
     }
 
     public function getMethod(): string
     {
-        return strtoupper($this->server['REQUEST_METHOD'] ?? ''); // @phpstan-ignore argument.type (REQUEST_METHOD is a string)
+        return strtoupper($this->server['REQUEST_METHOD'] ?? '');
     }
 
     public static function createFromGlobals(): self

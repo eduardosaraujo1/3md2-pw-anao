@@ -1,6 +1,6 @@
 <?php $this->layout('view::layout/app', ['title' => "Login"]); ?>
 
-<div class="min-h-screen py-4 mx-auto max-w-7xl">
+<div class="min-h-screen py-4 px-2 mx-auto max-w-7xl">
     <h1 class="text-3xl font-bold text-center">Login Page</h1>
-    <?php $this->insert('view::components/primary-button', ['href' => '/anao', 'content' => 'Login']) ?>
+    <?= component('primary-button', ['href' => '/anao', 'content' => 'Login']) ?>
 </div>

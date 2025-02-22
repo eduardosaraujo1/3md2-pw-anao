@@ -3,7 +3,7 @@
 namespace App\Framework\Facades;
 
 use App\Framework\Routing\Router;
-use App\Framework\Classes\RouteDispatchResult;
+use App\Framework\Routing\RouteDispatchResult;
 use App\Framework\Routing\Route as RouteDTO;
 
 /**

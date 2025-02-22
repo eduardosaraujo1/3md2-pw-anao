@@ -22,7 +22,7 @@ class Model
 
         try {
             return array_map(
-                callback: fn(array $item): Model => static::make($item),
+                callback: fn(array $item): static => static::make($item),
                 array: $result
             );
         } catch (NullPropertyException $th) {
@@ -36,9 +36,8 @@ class Model
     /**
      * Make instance from array of parameters
      * @param array<string,mixed> $params
-     * @return static
      */
-    public static function make(array $params): static
+    public static function make(array $params): mixed
     {
         throw new NotImplementedException("Method '" . static::class . "::make' does not exist");
     }

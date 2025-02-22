@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Parceiro;
+use App\Models\User;
 use App\Framework\Http\Request;
 use App\Framework\Http\Response;
 use App\Models\Anao;
@@ -14,7 +16,9 @@ class AnaoController
 
     public static function index(Request $request): string
     {
-        Anao::fromQuery("SELECT * FROM parceiro");
-        return view('anao.view');
+        dump(Anao::fromQuery("SELECT * FROM anao"));
+        // dump(User::fromQuery("SELECT * FROM users"));
+        // dump(Parceiro::fromQuery("SELECT * FROM parceiro"));
+        return view('anao');
     }
 }

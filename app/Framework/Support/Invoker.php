@@ -20,8 +20,8 @@ class Invoker
 
         // isMethod: checks if handler is in format [class_name, method_name] (most is done by the callable prop)
         $reflection = is_array($handler)
-            ? new \ReflectionMethod($handler[0], $handler[1]) // @phpstan-ignore argument.type (callable ensures propper typing)
-            : new \ReflectionFunction($handler); // @phpstan-ignore argument.type (callable ensures propper typing)
+            ? new \ReflectionMethod($handler[0], $handler[1])
+            : new \ReflectionFunction($handler);
 
         // Group typedDeps by their type
         $groupByType = self::groupByClass($typedDeps);
