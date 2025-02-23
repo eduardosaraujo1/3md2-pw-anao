@@ -3,6 +3,7 @@
 use App\Framework\Facades\ViewEngine;
 use App\Framework\Facades\Vite;
 use App\Framework\Http\Response;
+use App\Framework\View\AttributeBag;
 
 if (!function_exists('view')) {
     /**
@@ -24,11 +25,18 @@ if (!function_exists('component')) {
      * Render a component into a string with passed params
      * @param string $name path to component starting from `resources/views/components/` with dot notation and no extension. 
      * Example: 'primary-button' => 'resources/views/components/primary-button.phtml'
-     * @param array<string,mixed> $params Parameters to be passed into the component as variables
+     * @param array<string,mixed> $props Parameters to be passed into the component as variables
+     * @param array<string,mixed> $attributes Attribute bag to include in the component
      */
-    function component(string $name, array $params = []): string
+    function component(string $name, array $props = [], array $attributes = []): string
     {
         $path = 'components/' . str_replace('.', '/', $name);
+
+        $bag = new AttributeBag($attributes);
+        $params = [
+            ...$props,
+            'attributes' => $bag
+        ];
 
         return view($path, $params);
     }
