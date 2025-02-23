@@ -14,9 +14,4 @@ Route::get('/login', [AuthenticationController::class, 'index']);
 
 Route::get('/anao', [AnaoController::class, 'index']);
 Route::get('/anao/show', [AnaoController::class, 'show']);
-
-// for testing purposes (low time constraints will not invest on learning Pest)
-Route::get('/test', [AnaoController::class, 'index']);
-Route::get('/test/{id:\d+}', function (string $id) {
-});
-Route::post('/testPost', function () { });
+Route::get('/anao/edit', [AnaoController::class, 'edit']);

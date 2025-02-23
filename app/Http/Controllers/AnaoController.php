@@ -26,4 +26,9 @@ class AnaoController
     {
         return view('partials.anao.view');
     }
+
+    public static function edit()
+    {
+        return view('partials.anao.edit');
+    }
 }

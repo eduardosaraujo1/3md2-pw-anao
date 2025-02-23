@@ -1,11 +1,22 @@
 <?php $this->layout('view::layout/app', ['title' => "Visualizar Anão"]); ?>
+<div id="container"></div>
 
 <div class="min-h-screen py-4 px-2 mx-auto max-w-7xl">
     <div id="container"></div>
     <?= component('primary-button', [
-        'content' => "SWAP",
-        'href' => '#'
+        'content' => "SHOW",
     ], [
-        'hx-get' => '/anao/show'
+        'hx-get' => '/anao/show',
+        'hx-trigger' => 'load, click',
+        'hx-target' => '#container',
+        'hx-swap' => 'innerHTML'
+    ]) ?>
+    <?= component('primary-button', [
+        'content' => "EDIT",
+    ], [
+        'hx-get' => '/anao/edit',
+        'hx-trigger' => 'click',
+        'hx-target' => '#container',
+        'hx-swap' => 'innerHTML'
     ]) ?>
 </div>
