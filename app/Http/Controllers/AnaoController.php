@@ -21,4 +21,9 @@ class AnaoController
         // dump(Parceiro::fromQuery("SELECT * FROM parceiro"));
         return view('anao');
     }
+
+    public static function show()
+    {
+        return view('partials.anao.view');
+    }
 }

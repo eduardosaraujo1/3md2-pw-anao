@@ -1,6 +1,5 @@
 <?php
 
-use App\Framework\Database\Connection;
 use App\Framework\Facades\Route;
 use App\Framework\Http\Request;
 use App\Http\Controllers\AnaoController;
@@ -14,6 +13,7 @@ Route::get('/', function (Request $request) {
 Route::get('/login', [AuthenticationController::class, 'index']);
 
 Route::get('/anao', [AnaoController::class, 'index']);
+Route::get('/anao/show', [AnaoController::class, 'show']);
 
 // for testing purposes (low time constraints will not invest on learning Pest)
 Route::get('/test', [AnaoController::class, 'index']);
