@@ -8,10 +8,7 @@ class AuthSession
 {
     private ?User $user = null;
 
-    // singleton pattern
-    private static self $_instance;
-
-    private function __construct()
+    public function __construct()
     {
         $storedId = $_SESSION['user_id'] ?? null;
         if (!isset($storedId)) {
@@ -20,16 +17,6 @@ class AuthSession
 
         $this->user = User::fromQuery('SELECT * FROM users WHERE id=:id', ['id' => $storedId])[0];
     }
-
-    public static function singleton(): self
-    {
-        if (!isset(self::$_instance)) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
-    }
-    // end singleton pattern
 
     // Auth::attempt($user, $password) -> check database for credentials($this->checkCredentials) and if they match create current session. Return status either success or failure
     public function attempt(string $login, string $password): bool

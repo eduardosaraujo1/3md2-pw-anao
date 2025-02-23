@@ -16,8 +16,13 @@ use App\Framework\Routing\Route as RouteDTO;
  */
 class Route extends Facade
 {
+    private static object $_instance;
     protected static function getFacadeAccessor(): Router
     {
-        return Router::singleton();
+        if (!isset(static::$_instance)) {
+            static::$_instance = new Router();
+        }
+
+        return static::$_instance;
     }
 }

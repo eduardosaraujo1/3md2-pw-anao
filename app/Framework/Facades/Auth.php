@@ -14,8 +14,13 @@ use App\Framework\Auth\User;
  */
 class Auth extends Facade
 {
+    private static object $_instance;
     protected static function getFacadeAccessor(): AuthSession
     {
-        return AuthSession::singleton();
+        if (!isset(static::$_instance)) {
+            static::$_instance = new AuthSession();
+        }
+
+        return static::$_instance;
     }
 }

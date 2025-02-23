@@ -10,19 +10,9 @@ class Router
     /** @var Route[] */
     private array $routeList = [];
 
-    // singleton pattern
-    private static ?Router $_instance = null;
-    private function __construct()
+    public function __construct()
     {
     }
-    public static function singleton(): Router
-    {
-        if (!isset(self::$_instance)) {
-            self::$_instance = new Router();
-        }
-        return self::$_instance;
-    }
-    // end singleton pattern
 
     private function addRoute(string $method, string $path, callable $handler): Route
     {

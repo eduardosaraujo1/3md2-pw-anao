@@ -11,19 +11,7 @@ class Vite
     /** @var array<string,mixed> */
     private array $manifest = [];
 
-    // singleton
-    private static self $_instance;
-
-    public static function singleton(): Vite
-    {
-        if (!isset(self::$_instance)) {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
-    }
-    // end singleton
-
-    private function __construct()
+    public function __construct()
     {
         $this->port = $_ENV['VITE_PORT'] ?? '5173';
         $this->isProd = strtolower($_ENV['APP_ENV'] ?? '') !== 'local';

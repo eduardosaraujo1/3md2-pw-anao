@@ -9,9 +9,7 @@ class Engine
     public const EXTENSION = "phtml";
     public \League\Plates\Engine $engine;
 
-    // singleton
-    private static Engine $_instance;
-    private function __construct()
+    public function __construct()
     {
         // declare params
         $defaultPath = realpath(__DIR__ . '/defaults');
@@ -30,15 +28,6 @@ class Engine
         $this->engine = new \League\Plates\Engine($defaultPath, self::EXTENSION);
         $this->engine->addFolder('view', $viewPath, true);
     }
-
-    public static function singleton(): Engine
-    {
-        if (!isset(self::$_instance)) {
-            self::$_instance = new Engine();
-        }
-        return self::$_instance;
-    }
-    // end singleton
 
     /**
      * Use Plates's Engine to render a .phtml view

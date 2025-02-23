@@ -9,10 +9,7 @@ class Connection
 {
     public ?PDO $pdo;
 
-    // singleton pattern
-    private static self $_instance;
-
-    private function __construct(
+    public function __construct(
         string $host,
         string $user,
         string $password,
@@ -33,16 +30,13 @@ class Connection
 
         $this->pdo = $pdo;
     }
-    public static function singleton(): self
-    {
-        if (!isset(self::$_instance)) {
-            self::$_instance = self::createFromEnv(useSchema: true);
-        }
 
-        return self::$_instance;
-    }
-    // end singleton pattern
-
+    /**
+     * Creates a connection from the environment variables
+     * @param bool $useSchema should the connection start with the schema defined in DB_DATABASE?
+     * @throws \App\Framework\Exception\Database\InvalidConnectionCredentialsException
+     * @return Connection
+     */
     public static function createFromEnv(bool $useSchema): Connection
     {
         $host = $_ENV['DB_HOST'] ?? null;

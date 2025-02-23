@@ -9,8 +9,13 @@ use App\Framework\Database\Connection;
  */
 class Vite extends Facade
 {
+    private static object $_instance;
     protected static function getFacadeAccessor(): \App\Framework\Support\Vite
     {
-        return \App\Framework\Support\Vite::singleton(); // TODO: move singleton responsability to facade (not sure why I didn't do that earlier)
+        if (!isset(static::$_instance)) {
+            static::$_instance = new \App\Framework\Support\Vite();
+        }
+
+        return static::$_instance;
     }
 }

@@ -13,8 +13,13 @@ use App\Framework\Database\Connection;
  */
 class DB extends Facade
 {
+    private static object $_instance;
     protected static function getFacadeAccessor(): Connection
     {
-        return Connection::singleton();
+        if (!isset(static::$_instance)) {
+            static::$_instance = Connection::createFromEnv(true);
+        }
+
+        return static::$_instance;
     }
 }

@@ -9,8 +9,14 @@ use App\Framework\View\Engine;
  */
 class ViewEngine extends Facade
 {
+    private static object $_instance;
+
     protected static function getFacadeAccessor(): Engine
     {
-        return Engine::singleton();
+        if (!isset(static::$_instance)) {
+            static::$_instance = new Engine();
+        }
+
+        return static::$_instance;
     }
 }
