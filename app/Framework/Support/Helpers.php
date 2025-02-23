@@ -1,6 +1,7 @@
 <?php
 
 use App\Framework\Facades\ViewEngine;
+use App\Framework\Facades\Vite;
 use App\Framework\Http\Response;
 
 if (!function_exists('view')) {
@@ -44,5 +45,16 @@ if (!function_exists('redirect')) {
             status: 301,
             headers: ["Location: $location"]
         );
+    }
+}
+
+if (!function_exists('vite')) {
+    /**
+     * Create link tags for using Vite resource manager (used for importing default JS and CSS)
+     * @param array<string> $params
+     */
+    function vite(array $params): string
+    {
+        return Vite::compile($params);
     }
 }

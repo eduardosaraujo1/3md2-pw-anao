@@ -16,9 +16,14 @@ class AnaoController
 
     public static function index(Request $request): string
     {
-        dump(Anao::fromQuery("SELECT * FROM anao"));
+        // dump(Anao::fromQuery("SELECT * FROM anao"));
         // dump(User::fromQuery("SELECT * FROM users"));
         // dump(Parceiro::fromQuery("SELECT * FROM parceiro"));
         return view('anao');
+    }
+
+    public static function show()
+    {
+        return view('partials.anao.view');
     }
 }
