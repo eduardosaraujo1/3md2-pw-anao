@@ -3,9 +3,11 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     server: {
-        host: '0.0.0.0', // docker-compone
-        // host: 'localhost', // windows
-        port: 5173, // forward port in docker compose
+        allowedHosts: [
+            'vite', // for accessing the vite server from PHP
+        ],
+        host: process.env.VITE_HOST || '0.0.0.0',
+        port: process.env.VITE_PORT ?? 5173,
     },
     build: {
         outDir: 'public/build',
