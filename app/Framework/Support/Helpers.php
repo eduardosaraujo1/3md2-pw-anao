@@ -1,6 +1,7 @@
 <?php
 
 use App\Framework\Facades\ViewEngine;
+use App\Framework\Facades\Vite;
 use App\Framework\Http\Response;
 
 if (!function_exists('view')) {
@@ -54,15 +55,6 @@ if (!function_exists('vite')) {
      */
     function vite(array $params): string
     {
-        // if on docker, the vite server address is the container name (in this case, vite)
-        $vitePort = (int) ($_ENV['VITE_PORT'] ?? 5173);
-        $viteHref = "http://localhost:$vitePort";
-
-        // TODO: implement build logic (if manifest is available, return the build assets)
-        return <<<HTML
-            <script type="module" src="{$viteHref}/@vite/client"></script>
-            <script type="module" src="{$viteHref}/resources/js/app.js"></script>
-            <link rel="stylesheet" href="{$viteHref}/resources/css/app.css">
-        HTML;
+        return Vite::compile($params);
     }
 }
