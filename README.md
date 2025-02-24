@@ -4,9 +4,10 @@
 -   Maria Eduarda Fagundes Pires
 
 ### Instalação ambiente Windows + XAMPP
+
 1. Certifique-se que tenha instalado as seguintes ferramentas
     - XAMPP
-    - PHP ^8.0
+    - PHP >=8.0
     - Composer
     - MySQL
     - NodeJS + NPM
@@ -21,6 +22,7 @@
     - `npm run dev`
 
 ### Instalação ambiente Linux + Docker
+
 1. Certifique-se que tem Docker e Docker Compose instalado
 2. Copie o arquivo .env.example para .env
     - `cp .env.example .env`
