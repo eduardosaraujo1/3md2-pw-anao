@@ -13,7 +13,7 @@ class Engine
     {
         // declare params
         $defaultPath = realpath(__DIR__ . '/defaults');
-        $viewPath = realpath(__DIR__ . '/../../../resources/views');
+        $viewPath = realpath(PROJECT_ROOT . '/resources/views');
 
         // throw exceptions if paths were not found
         if (!$defaultPath) {

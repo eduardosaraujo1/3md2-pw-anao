@@ -30,7 +30,7 @@ class Router
     public function dispatch(string $method, string $uri): RouteDispatchResult
     {
         // Load the routes specified in routes/web.php
-        require_once realpath(__DIR__ . '/../../../routes/web.php');
+        require_once realpath(PROJECT_ROOT . "/routes/web.php");
 
         $dispatcher = simpleDispatcher(function (RouteCollector $r) {
             foreach ($this->routeList as $route) {

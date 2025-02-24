@@ -17,8 +17,8 @@ class Vite
         $host = 'localhost';
         $port = $_ENV['VITE_PORT'] ?? '5173';
 
-        $build = realpath($_ENV['PROJECT_ROOT'] . "/public/build") ?? '';
-        $hotfile = realpath($_ENV['PROJECT_ROOT'] . "/public/hot") ?? '';
+        $build = realpath(PROJECT_ROOT . "/public/build") ?? '';
+        $hotfile = realpath(PROJECT_ROOT . "/public/hot") ?? '';
 
         $this->buildExists = is_dir($build);
         $this->hotfileExists = file_exists($hotfile);

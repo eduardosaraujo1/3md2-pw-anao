@@ -8,7 +8,7 @@ require __DIR__ . '/../../bootstrap/app.php';
 $conn = Connection::createFromEnv(true);
 
 // run each sql script in migrations
-$dir = realpath(__DIR__ . '/../seeders');
+$dir = realpath(PROJECT_ROOT . '/seeders');
 $files = array_diff(scandir($dir), ['.', '..']); // Get sorted list
 
 foreach ($files as $file) {
