@@ -23,7 +23,8 @@ export default defineConfig(({ mode }) => {
             tailwindcss(),
             {
                 // creates a file containing the server ip while the server is running
-                // used by framework to determine if should use vite server or
+                // used by framework to determine if should use vite server or build assets
+                // inspired by laravel/vite-plugin
                 name: 'hot-file-handler',
                 configureServer() {
                     const hotFilePath = path.resolve(__dirname, 'public/hot');
