@@ -5,7 +5,7 @@ use App\Framework\Database\Connection;
 require __DIR__ . '/../../bootstrap/app.php';
 
 // create connection
-$conn = Connection::singleton();
+$conn = Connection::createFromEnv(true);
 
 // run each sql script in migrations
 $dir = realpath(__DIR__ . '/../seeders');
