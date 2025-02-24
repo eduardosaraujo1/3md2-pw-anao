@@ -1,6 +1,9 @@
 {
     "name": "eduardosaraujo/pw-anao",
     "autoload": {
+        "files": [
+            "app/Framework/Support/Helpers.php"
+        ],
         "psr-4": {
             "App\\": "app/"
         }
