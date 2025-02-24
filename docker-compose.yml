@@ -44,11 +44,12 @@ services:
   vite:
     image: node:22-alpine
     working_dir: /app
+    env_file:
+      - .env
     ports:
-      - "5173:5173"
+      - "${VITE_PORT:-5173}:${VITE_PORT:-5173}"
     volumes:
       - .:/app
-    restart: unless-stopped
     command: sh -c 'npm i && npm run dev'
     stdin_open: true # This allows the npm dev command to actually work
     tty: true # This keeps the container up even if npm run dev crashes

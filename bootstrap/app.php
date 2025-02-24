@@ -12,3 +12,6 @@ session_start();
 // Load env
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
+
+// Track project root path
+$_ENV['PROJECT_ROOT'] = realpath(__DIR__ . '/..');
