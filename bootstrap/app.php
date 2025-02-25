@@ -21,5 +21,15 @@ if (file_exists($autoloadPath)) {
 session_start();
 
 // Load .env file
-$dotenv = Dotenv\Dotenv::createImmutable(PROJECT_ROOT);
-$dotenv->load();
+try {
+    $dotenv = Dotenv\Dotenv::createImmutable(PROJECT_ROOT);
+    $dotenv->load();
+} catch (\Dotenv\Exception\InvalidPathException) {
+    exit(
+        <<<HTML
+        <div style="text-align:center">
+            <h1>Arquivo <code>.env</code> não foi encontrado</h1>
+            <span>Por favor copie o arquivo <code>.env.example</code> e renomeie-o para <code>.env</code></span>
+        </div>
+        HTML);
+}
