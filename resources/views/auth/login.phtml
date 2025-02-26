@@ -1,6 +1,20 @@
 <?php $this->layout('view::layout/app', ['title' => "Login"]); ?>
 
-<div class="min-h-screen py-4 px-2 mx-auto max-w-7xl">
-    <h1 class="text-3xl font-bold text-center">Login Page</h1>
-    <?= component('primary-button', ['href' => '/anao', 'content' => 'Login']) ?>
+<div class="min-h-screen px-2 py-4 mx-auto max-w-7xl">
+    <form action="" class="max-w-[45rem] mx-auto flex flex-col gap-2 mt-12 px-2">
+        <h1 class="text-3xl font-bold text-center">Login</h1>
+        <!-- <x-error /> -->
+        <?= component('error', ['errors' => $errors]) ?>
+
+        <!-- <x-input id="user_login" label="Usuáruio" placeholder="username"> -->
+        <?= component('input', ['id' => 'user_login', 'label' => 'Usuário', 'placeholder' => 'username']) ?>
+
+        <!-- <x-input id="first_name" label="First Name" placeholder="Hello"> -->
+        <?= component('input', ['id' => 'user_password', 'label' => 'Senha'], ['type' => 'password']) ?>
+
+        <!-- <x-primary-button /> -->
+        <?= component('primary-button', ['slot' => 'Login'], [
+            'class' => 'w-min ml-auto'
+        ]) ?>
+    </form>
 </div>

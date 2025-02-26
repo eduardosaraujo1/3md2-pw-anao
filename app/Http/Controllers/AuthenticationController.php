@@ -15,6 +15,10 @@ class AuthenticationController
 
     public static function index(Request $request): string
     {
-        return view('auth.login');
+        return view('auth.login', [
+            'errors' => [
+                'Usuário não encontrado ou senha incorreta.'
+            ]
+        ]);
     }
 }

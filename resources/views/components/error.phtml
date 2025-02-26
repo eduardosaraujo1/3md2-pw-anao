@@ -1,0 +1,7 @@
+<?php if (isset($errors) && is_array($errors)): ?>
+    <?php foreach ($errors as $error): ?>
+        <span class="text-sm text-red-700">
+            <?= $error ?>
+        </span>
+    <?php endforeach; ?>
+<?php endif; ?>
