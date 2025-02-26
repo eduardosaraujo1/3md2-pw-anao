@@ -14,24 +14,25 @@ class AttributeBag
 
     /**
      * Merge this attribute bag with default attributes from component
-     * @param array $attributes
+     * @param array $defaults the default attributes to use if none are set in the bag
      */
-    public function merge(array $attributes): string
+    public function merge(array $defaults): string
     {
-        $merged = $attributes;
+        $attributes = $this->bag;
+        $result = $defaults;
 
-        foreach ($this->bag as $key => $value) {
-            if (isset($attributes[$key]) && $key === 'class') {
-                // Concatenate class values with a space separator
-                $merged[$key] = trim($attributes[$key] . ' ' . $value);
-            } elseif (!isset($attributes[$key])) {
-                // If key does not exist in $a, keep it from $b
-                $merged[$key] = $value;
+        foreach ($attributes as $name => $value) {
+            if (isset($defaults[$name]) && $name === 'class') {
+                // The component default includes a class to merge
+                $result[$name] = trim($defaults[$name] . ' ' . $value);
+            } else {
+                // Override the component defaults with the user defined attribute bag
+                $result[$name] = $value;
             }
-            // Otherwise, keep $a[$key] (overwrite $b[$key])
         }
 
-        $attributeFormat = self::attributesToString($merged);
+        // convert format from assoc array to html
+        $attributeFormat = self::attributesToString($result);
 
         return $attributeFormat;
     }
