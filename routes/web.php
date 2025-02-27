@@ -1,12 +1,17 @@
 <?php
 
+use App\Framework\Facades\Auth;
 use App\Framework\Facades\Route;
 use App\Framework\Http\Request;
 use App\Http\Controllers\AnaoController;
 use App\Http\Controllers\AuthenticationController;
 
 Route::get('/', function (Request $request) {
-    // return '<a href="/login">Login</a>';
+    $auth = Auth::check();
+
+    if ($auth) {
+        return redirect('/anao');
+    }
     return redirect('/login');
 });
 
