@@ -7,10 +7,10 @@
         <?= component('error', ['errors' => $errors]) ?>
 
         <!-- <x-input id="user_login" label="Usuáruio" placeholder="username"> -->
-        <?= component('input', ['id' => 'user_login', 'label' => 'Usuário', 'placeholder' => 'Usuário']) ?>
+        <?= component('input', ['id' => 'user_login', 'label' => 'Usuário']) ?>
 
         <!-- <x-input id="first_name" label="First Name"> -->
-        <?= component('input', ['id' => 'user_password', 'label' => 'Senha'], ['type' => 'password']) ?>
+        <?= component('password-input', ['id' => 'user_password', 'label' => 'Senha']) ?>
 
         <!-- <x-primary-button /> -->
         <?= component('primary-button', ['slot' => 'Login'], [
