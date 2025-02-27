@@ -19,11 +19,13 @@ class AttributeBag
     public function merge(array $defaults): string
     {
         $attributes = $this->bag;
+        // by default keep the classes specified in the component, merge it with the ones specified in the attribute bag later
         $result = $defaults;
 
+        // by later I mean now
         foreach ($attributes as $name => $value) {
             if (isset($defaults[$name]) && $name === 'class') {
-                // The component default includes a class to merge
+                // A custom class list was defined in this bag, let's merge it with the one specified in the component
                 $result[$name] = trim($defaults[$name] . ' ' . $value);
             } else {
                 // Override the component defaults with the user defined attribute bag

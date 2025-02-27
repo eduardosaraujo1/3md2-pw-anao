@@ -22,13 +22,33 @@ class AnaoController
         return view('anao');
     }
 
-    public static function show()
+    public static function show(): string
     {
         return view('partials.anao.view');
     }
 
-    public static function edit()
+    public static function edit(): string
     {
         return view('partials.anao.edit');
+    }
+
+    public static function update(): string
+    {
+        return '';
+    }
+
+    public static function create(): string
+    {
+        return '';
+    }
+
+    public static function store(): string
+    {
+        return '';
+    }
+
+    public static function destroy(): string
+    {
+        return '';
     }
 }

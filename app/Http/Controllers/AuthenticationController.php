@@ -21,4 +21,14 @@ class AuthenticationController
             ]
         ]);
     }
+
+    public static function login(Request $request): string
+    {
+        return '';
+    }
+
+    public static function logout(): string
+    {
+        return '';
+    }
 }
