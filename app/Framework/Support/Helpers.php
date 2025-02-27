@@ -51,7 +51,7 @@ if (!function_exists('redirect')) {
     function redirect(string $location): Response
     {
         $request = Request::createFromGlobals();
-        $header = $request->server['HTTP_HX-Request'] ? 'HX-Redirect' : 'Location';
+        $header = ($request->server['HTTP_HX_REQUEST'] ?? false) ? 'HX-Redirect' : 'Location';
 
         return new Response(
             status: 301,

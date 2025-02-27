@@ -13,11 +13,12 @@ class AuthenticationController
     {
     }
 
-    public static function index(Request $request): string
+    public static function index(Request $request): string|Response
     {
-        return view(
-            name: 'auth.login'
-        );
+        if (Auth::check()) {
+            return redirect('/anao');
+        }
+        return view('auth.login');
     }
 
     public static function login(Request $request): string|Response
