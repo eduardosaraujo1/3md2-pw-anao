@@ -12,7 +12,6 @@ class Parceiro extends Model
         public string $name,
         public string $contact,
         public bool $is_anao,
-        public bool $is_gay,
         public int $id_anao,
     ) {
     }
@@ -29,7 +28,6 @@ class Parceiro extends Model
             $params['name'],
             $params['contact'],
             $params['is_anao'],
-            $params['is_gay'],
             $params['id_anao'],
         )
         ) {
@@ -41,7 +39,6 @@ class Parceiro extends Model
             name: $params['name'],
             contact: $params['contact'],
             is_anao: $params['is_anao'],
-            is_gay: $params['is_gay'],
             id_anao: $params['id_anao'],
         );
     }

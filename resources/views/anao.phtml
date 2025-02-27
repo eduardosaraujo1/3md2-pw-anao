@@ -1,16 +1,10 @@
 <?php $this->layout('view::layout/app', ['title' => "Gerenciar anão"]); ?>
 
-<div class="min-h-screen px-2 py-4 mx-auto max-w-7xl">
-    <div id="container"></div>
+<div class="min-h-screen px-2 py-4 mx-auto max-w-7xl block">
+    <div id="container" class="">
+        <?= $this->fetch('view::partials/anao/view') ?>
+    </div>
 
-    <?= component('primary-button', [
-        'slot' => "SHOW",
-    ], [
-        'hx-get' => '/anao/show',
-        'hx-trigger' => 'load, click',
-        'hx-target' => '#container',
-        'hx-swap' => 'innerHTML'
-    ]) ?>
     <?= component('primary-button', [
         'slot' => "EDIT",
     ], [
