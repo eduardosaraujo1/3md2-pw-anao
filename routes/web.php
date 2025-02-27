@@ -7,19 +7,17 @@ use App\Http\Controllers\AnaoController;
 use App\Http\Controllers\AuthenticationController;
 
 Route::get('/', function (Request $request) {
-    $auth = Auth::check();
-
-    if ($auth) {
+    if (Auth::check()) {
         return redirect('/anao');
     }
     return redirect('/login');
 });
 
 Route::get('/login', [AuthenticationController::class, 'index']);
-Route::get('/anao', [AnaoController::class, 'index']);
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::get('/logout', [AuthenticationController::class, 'logout']);
 
+Route::get('/anao', [AnaoController::class, 'index']);
 Route::get('/anao/show', [AnaoController::class, 'show']);
 Route::get('/anao/edit', [AnaoController::class, 'edit']);

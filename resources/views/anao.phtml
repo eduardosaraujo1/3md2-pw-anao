@@ -1,16 +1,30 @@
 <?php $this->layout('view::layout/app', ['title' => "Gerenciar anão"]); ?>
 
-<div class="min-h-screen px-2 py-4 mx-auto max-w-7xl block">
-    <div id="container" class="">
-        <?= $this->fetch('view::partials/anao/view') ?>
+<div class="flex flex-col min-h-screen px-2 py-4 mx-auto max-w-7xl">
+    <h1 class="text-3xl font-bold">Anões cadastrados</h1>
+    <div
+        class="grid gap-2 grid-cols-[repeat(auto-fill,_minmax(24rem,1fr))] shadow min-h-full bg-gray-100 flex-1 auto-rows-min p-2">
+        <?php if (isset($anoes) && !empty($anoes)): ?>
+            <?php foreach ($anoes as $anao): ?>
+                <a href="/anao/<?= $anao->id ?>"
+                    class="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900"><?= $anao->name ?></h5>
+                    <div class="text-gray-700">
+                        <span class="font-bold">Idade:</span>
+                        <span><?= $anao->age ?></span>
+                    </div>
+                    <div class="text-gray-700">
+                        <span class="font-bold">Etnia:</span>
+                        <span><?= $anao->raceName() ?></span>
+                    </div>
+                    <div class="text-gray-700">
+                        <span class="font-bold">Altura</span>
+                        <span><?= $anao->height ?></span>m
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <span class="w-full text-xl text-center col-span-full">Nenhum anão encontrado.</span>
+        <?php endif; ?>
     </div>
-
-    <?= component('primary-button', [
-        'slot' => "EDIT",
-    ], [
-        'hx-get' => '/anao/edit',
-        'hx-trigger' => 'click',
-        'hx-target' => '#container',
-        'hx-swap' => 'innerHTML'
-    ]) ?>
 </div>

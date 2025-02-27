@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\Race;
 use App\Framework\Database\Model;
 use App\Framework\Exception\NullPropertyException;
 
@@ -40,5 +41,15 @@ class Anao extends Model
             race: $params['race'],
             height: $params['height'],
         );
+    }
+    public function raceName(): string
+    {
+        return match($this->race) {
+            Race::PRETO => 'Preto',
+            Race::BRANCO => 'Branco',
+            Race::PARDO => 'Pardo',
+            Race::ASIATICO => 'Asiático',
+            Race::OUTRO => 'Outro',
+        };
     }
 }

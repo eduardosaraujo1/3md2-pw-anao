@@ -16,10 +16,13 @@ class AnaoController
 
     public static function index(Request $request): string
     {
+        $anoes = Anao::fromQuery("SELECT * FROM anao");
         // dump(Anao::fromQuery("SELECT * FROM anao"));
         // dump(User::fromQuery("SELECT * FROM users"));
         // dump(Parceiro::fromQuery("SELECT * FROM parceiro"));
-        return view('anao');
+        return view('anao', [
+            'anoes' => $anoes
+        ]);
     }
 
     public static function show(): string
