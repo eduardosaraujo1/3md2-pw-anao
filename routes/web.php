@@ -11,6 +11,7 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('/login', [AuthenticationController::class, 'index']);
+Route::post('/login', [AuthenticationController::class, 'login']);
 
 Route::get('/anao', [AnaoController::class, 'index']);
 Route::get('/anao/show', [AnaoController::class, 'show']);

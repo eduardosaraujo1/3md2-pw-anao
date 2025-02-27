@@ -1,10 +1,10 @@
 <?php $this->layout('view::layout/app', ['title' => "Gerenciar anão"]); ?>
 
-<div class="min-h-screen py-4 px-2 mx-auto max-w-7xl">
+<div class="min-h-screen px-2 py-4 mx-auto max-w-7xl">
     <div id="container"></div>
 
     <?= component('primary-button', [
-        'content' => "SHOW",
+        'slot' => "SHOW",
     ], [
         'hx-get' => '/anao/show',
         'hx-trigger' => 'load, click',
@@ -12,7 +12,7 @@
         'hx-swap' => 'innerHTML'
     ]) ?>
     <?= component('primary-button', [
-        'content' => "EDIT",
+        'slot' => "EDIT",
     ], [
         'hx-get' => '/anao/edit',
         'hx-trigger' => 'click',

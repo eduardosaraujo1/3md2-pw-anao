@@ -15,16 +15,31 @@ class AuthenticationController
 
     public static function index(Request $request): string
     {
-        return view('auth.login', [
-            'errors' => [
-                'Usuário não encontrado ou senha incorreta.'
-            ]
-        ]);
+        return view(
+            name: 'auth.login'
+        );
     }
 
-    public static function login(Request $request): string
+    public static function login(Request $request): string|Response
     {
-        return '';
+        // collect user data
+        $userName = $request->postParams['user_login'] ?? '';
+        $userPassword = $request->postParams['user_password'] ?? '';
+
+        $result = Auth::attempt($userName, $userPassword);
+
+        if ($result) {
+            return redirect('/anao');
+        }
+
+        return view(
+            name: 'auth.login',
+            params: [
+                'errors' => [
+                    'Usuário não encontrado ou senha incorreta.'
+                ]
+            ]
+        );
     }
 
     public static function logout(): string

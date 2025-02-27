@@ -1,10 +1,10 @@
 <?php $this->layout('view::layout/app', ['title' => "Login"]); ?>
 
 <div class="min-h-screen px-2 py-4 mx-auto max-w-7xl">
-    <form action="" class="max-w-[45rem] mx-auto flex flex-col gap-2 mt-12 px-2">
+    <form hx-post="/login" hx-target="body" class="max-w-[45rem] mx-auto flex flex-col gap-2 mt-12 px-2">
         <h1 class="text-3xl font-bold text-center">Login</h1>
         <!-- <x-error /> -->
-        <?= component('error', ['errors' => $errors]) ?>
+        <?= component('error', ['errors' => $errors ?? null]) ?>
 
         <!-- <x-input id="user_login" label="Usuáruio" placeholder="username"> -->
         <?= component('input', ['id' => 'user_login', 'label' => 'Usuário']) ?>
