@@ -16,8 +16,10 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('/login', [AuthenticationController::class, 'index']);
-Route::post('/login', [AuthenticationController::class, 'login']);
-
 Route::get('/anao', [AnaoController::class, 'index']);
+
+Route::post('/login', [AuthenticationController::class, 'login']);
+Route::get('/logout', [AuthenticationController::class, 'logout']);
+
 Route::get('/anao/show', [AnaoController::class, 'show']);
 Route::get('/anao/edit', [AnaoController::class, 'edit']);

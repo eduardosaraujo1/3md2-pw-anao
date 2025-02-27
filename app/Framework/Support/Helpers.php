@@ -2,6 +2,7 @@
 
 use App\Framework\Facades\ViewEngine;
 use App\Framework\Facades\Vite;
+use App\Framework\Http\Request;
 use App\Framework\Http\Response;
 use App\Framework\View\AttributeBag;
 
@@ -49,9 +50,26 @@ if (!function_exists('redirect')) {
      */
     function redirect(string $location): Response
     {
+        $request = Request::createFromGlobals();
+        $header = $request->server['HTTP_HX-Request'] ? 'HX-Redirect' : 'Location';
+
         return new Response(
             status: 301,
-            headers: ["Location: $location"]
+            headers: ["$header: $location"]
+        );
+    }
+}
+
+if (!function_exists('hx_redirect')) {
+    /**
+     * Create a redirect response
+     * @param string $location Location to redirect the user to
+     */
+    function hx_redirect(string $location): Response
+    {
+        return new Response(
+            status: 301,
+            headers: ["HX-Redirect: $location"]
         );
     }
 }

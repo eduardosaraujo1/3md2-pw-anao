@@ -26,9 +26,9 @@ class AuthenticationController
         $userName = $request->postParams['user_login'] ?? '';
         $userPassword = $request->postParams['user_password'] ?? '';
 
-        $result = Auth::attempt($userName, $userPassword);
+        $auth = Auth::attempt($userName, $userPassword);
 
-        if ($result) {
+        if ($auth) {
             return redirect('/anao');
         }
 
@@ -42,8 +42,9 @@ class AuthenticationController
         );
     }
 
-    public static function logout(): string
+    public static function logout(): string|Response
     {
-        return '';
+        Auth::logout();
+        return redirect('/login');
     }
 }
