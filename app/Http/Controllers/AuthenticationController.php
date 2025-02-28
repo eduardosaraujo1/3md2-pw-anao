@@ -33,14 +33,9 @@ class AuthenticationController
             return redirect('/anao');
         }
 
-        return view(
-            name: 'auth.login',
-            params: [
-                'errors' => [
-                    'Usuário não encontrado ou senha incorreta.'
-                ]
-            ]
-        );
+        return <<<HTML
+            <h3 class="text-sm text-red-700">Usuário não encontrado ou senha incorreta.</h3>
+            HTML;
     }
 
     public static function logout(): string|Response

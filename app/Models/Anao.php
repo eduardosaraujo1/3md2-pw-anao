@@ -49,7 +49,7 @@ class Anao extends Model
             Race::BRANCO => 'Branco',
             Race::PARDO => 'Pardo',
             Race::ASIATICO => 'Asiático',
-            Race::OUTRO => 'Outro',
+            default => 'Outro',
         };
     }
 }

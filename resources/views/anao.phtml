@@ -1,7 +1,7 @@
 <?php $this->layout('view::layout/app', ['title' => "Gerenciar anão"]); ?>
 
 <div class="flex flex-col min-h-screen px-2 py-4 mx-auto max-w-7xl">
-    <h1 class="text-3xl font-bold">Anões cadastrados</h1>
+    <h1 class="text-3xl font-bold my-4">Anões cadastrados</h1>
     <div
         class="grid gap-2 grid-cols-[repeat(auto-fill,_minmax(24rem,1fr))] shadow min-h-full bg-gray-100 flex-1 auto-rows-min p-2">
         <?php if (isset($anoes) && !empty($anoes)): ?>
