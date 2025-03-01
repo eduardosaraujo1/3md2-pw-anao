@@ -6,6 +6,7 @@ use App\Framework\Auth\User;
 use App\Framework\Facades\Auth;
 use App\Framework\Http\Request;
 use App\Framework\Http\Response;
+use App\Http\Middleware\IsGuest;
 
 class AuthenticationController
 {
@@ -15,9 +16,9 @@ class AuthenticationController
 
     public static function index(Request $request): string|Response
     {
-        if (Auth::check()) {
-            return redirect('/anao');
-        }
+        if ($middleware = IsGuest::middleware())
+            return $middleware;
+
         return view('auth.login');
     }
 
@@ -30,7 +31,7 @@ class AuthenticationController
         $auth = Auth::attempt($userName, $userPassword);
 
         return $auth
-            ? redirect('/anao')
+            ? redirect('/anoes')
             : <<<HTML
                 <h3 class="text-sm text-red-700">Usuário não encontrado ou senha incorreta.</h3>
                 HTML;

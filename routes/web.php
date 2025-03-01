@@ -8,7 +8,7 @@ use App\Http\Controllers\AuthenticationController;
 
 Route::get('/', function (Request $request) {
     if (Auth::check()) {
-        return redirect('/anao');
+        return redirect('/anoes');
     }
     return redirect('/login');
 });
@@ -18,7 +18,7 @@ Route::get('/login', [AuthenticationController::class, 'index']);
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::get('/logout', [AuthenticationController::class, 'logout']);
 
-Route::get('/anao', [AnaoController::class, 'index']);
+Route::get('/anoes', [AnaoController::class, 'index']);
 Route::get('/anao/create', [AnaoController::class, 'create']);
 Route::get('/anao/{id:\d+}', [AnaoController::class, 'show']);
 Route::get('/anao/edit/{id:\d+}', [AnaoController::class, 'edit']);
