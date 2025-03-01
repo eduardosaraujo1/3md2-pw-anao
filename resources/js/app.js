@@ -8,7 +8,9 @@ Alpine.start();
 
 htmx.config.responseHandling = [
     {
-        code: "...",
+        code: '...',
         swap: true,
-    }
-]
+    },
+];
+
+document.querySelector('body').style.removeProperty('visibility');
