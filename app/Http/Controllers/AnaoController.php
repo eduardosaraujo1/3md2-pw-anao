@@ -20,19 +20,19 @@ class AnaoController
         // dump(Anao::fromQuery("SELECT * FROM anao"));
         // dump(User::fromQuery("SELECT * FROM users"));
         // dump(Parceiro::fromQuery("SELECT * FROM parceiro"));
-        return view('anao', [
+        return view('anao.index', [
             'anoes' => $anoes
         ]);
     }
 
-    public static function show(): string
+    public static function show(string $id): string
     {
-        return view('partials.anao.view');
+        return view('anao.view');
     }
 
-    public static function edit(): string
+    public static function edit(string $id): string
     {
-        return view('partials.anao.edit');
+        return view('anao.edit');
     }
 
     public static function update(): string
@@ -50,7 +50,7 @@ class AnaoController
         return '';
     }
 
-    public static function destroy(): string
+    public static function destroy(string $id): string
     {
         return '';
     }
