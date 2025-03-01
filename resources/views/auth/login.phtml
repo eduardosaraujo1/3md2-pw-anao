@@ -2,6 +2,7 @@
 
 <div class="min-h-screen px-2 py-4 mx-auto max-w-7xl">
     <form hx-post="/login" hx-target="#error_container" hx-swap="innerHTML"
+        hx-on:htmx:before-request="document.getElementById('error_container').innerHTML=''"
         class="max-w-[45rem] mx-auto flex flex-col gap-2 mt-12 px-2">
         <h1 class="text-3xl font-bold text-center">Login</h1>
 

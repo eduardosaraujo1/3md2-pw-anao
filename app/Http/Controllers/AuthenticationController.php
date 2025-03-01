@@ -29,18 +29,17 @@ class AuthenticationController
 
         $auth = Auth::attempt($userName, $userPassword);
 
-        if ($auth) {
-            return redirect('/anao');
-        }
-
-        return <<<HTML
-            <h3 class="text-sm text-red-700">Usuário não encontrado ou senha incorreta.</h3>
-            HTML;
+        return $auth
+            ? redirect('/anao')
+            : <<<HTML
+                <h3 class="text-sm text-red-700">Usuário não encontrado ou senha incorreta.</h3>
+                HTML;
     }
 
     public static function logout(): string|Response
     {
         Auth::logout();
+
         return redirect('/login');
     }
 }
