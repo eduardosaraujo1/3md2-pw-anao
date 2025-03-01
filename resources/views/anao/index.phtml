@@ -1,7 +1,10 @@
 <?php $this->layout('view::layout/app', ['title' => "Gerenciar anão"]); ?>
 
-<div class="flex flex-col min-h-screen px-2 py-4 mx-auto max-w-7xl">
-    <h1 class="text-3xl font-bold my-4">Anões cadastrados</h1>
+<div class="flex flex-col min-h-screen px-2 py-4 mx-auto max-w-7xl" hx-boost="true">
+    <div class="flex items-center">
+        <h1 class="flex-1 my-2 text-3xl font-bold">Anões cadastrados</h1>
+        <?= component('primary-button', ['slot' => "Novo", 'href' => '/anao/create']) ?>
+    </div>
     <div
         class="grid gap-2 grid-cols-[repeat(auto-fill,_minmax(24rem,1fr))] shadow min-h-full bg-gray-100 flex-1 auto-rows-min p-2">
         <?php if (isset($anoes) && !empty($anoes)): ?>
@@ -27,4 +30,5 @@
             <span class="w-full text-xl text-center col-span-full">Nenhum anão encontrado.</span>
         <?php endif; ?>
     </div>
+    <?= component('user-profile') ?>
 </div>

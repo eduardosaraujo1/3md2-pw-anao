@@ -1,0 +1,10 @@
+<div class="absolute top-0 right-0 flex flex-col items-end w-12 h-12 m-2" x-data="{ open: false }">
+    <img src="/assets/user.svg" alt="User Profile" class="cursor-pointer" @click="open = !open">
+    <ul class="shadow *:px-2 py-1.5 min-w-32" x-show="open" @click.outside="open = false">
+        <li class="text-lg font-medium">Usuário</li>
+        <hr class="my-2 border-gray-300">
+        <li class="hover:bg-neutral-50">
+            <button hx-get="/logout" class="w-full text-red-700 cursor-pointer text-start">Sair</button>
+        </li>
+    </ul>
+</div>
