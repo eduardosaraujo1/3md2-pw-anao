@@ -1,1 +1,23 @@
 @import 'tailwindcss';
+
+@layer base {
+    /* width */
+    ::-webkit-scrollbar {
+        @apply w-1.5 h-1.5;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        @apply bg-[#888] rounded-2xl;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-[#555];
+    }
+}

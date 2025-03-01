@@ -1,4 +1,4 @@
-<?php $this->layout('view::layout/app', ['title' => "Login"]); ?>
+<?php $this->layout('view::layout/guest', ['title' => "Login"]); ?>
 
 <div class="min-h-screen px-2 py-4 mx-auto max-w-7xl">
     <form method="post" action="/login" hx-post="/login" hx-target="#error_container" hx-swap="innerHTML"
