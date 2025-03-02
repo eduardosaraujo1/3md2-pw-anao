@@ -43,4 +43,4 @@
 
 ### TODO
 
--   Finally start coding the frontend
+-   Implement the object relationship

@@ -108,16 +108,42 @@ class AnaoController
             return $middleware;
         }
 
-        return '';
+        return view('anao.create');
     }
 
-    public static function store(): Response|string
+    public static function store(Request $request): Response|string
     {
         if ($middleware = LoggedIn::middleware()) {
             return $middleware;
         }
 
-        return '';
+        // collect data
+        $name = $request->postParams['name'] ?? null;
+        $age = $request->postParams['age'] ?? null;
+        $race = $request->postParams['race'] ?? null;
+        $height = $request->postParams['height'] ?? null;
+
+        // validate
+        if (!isset($name, $age, $race, $height)) {
+            return 'Faltando um ou mais parametros para cadastrar anão.';
+        }
+
+        // build query
+        $query = <<<SQL
+            INSERT INTO anao (name, age, race, height) VALUES
+            (:name, :age, :race, :height)
+            SQL;
+        $params = [
+            'name' => $name,
+            'age' => $age,
+            'race' => $race,
+            'height' => $height,
+        ];
+
+        // run query
+        DB::query($query, $params);
+
+        return redirect('/home');
     }
 
     public static function destroy(string $id): Response|string
