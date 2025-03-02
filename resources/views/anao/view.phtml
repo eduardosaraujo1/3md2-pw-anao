@@ -52,7 +52,13 @@
     <h2 class="text-3xl font-medium">Parceiros</h2>
     <div class="flex flex-col gap-2">
         <?php foreach ($parceiros as $parceiro): ?>
-            <?= $this->fetch('view::partials/parceiro-form', ['parceiro' => $parceiro]) ?>
+            <?= $this->fetch('view::partials/parceiro-form', ['parceiro' => $parceiro, 'id_anao' => $anao->id ?? 0]) ?>
         <?php endforeach; ?>
+        <?= component('secondary-button', ['slot' => '+ Adicionar Parceiro'], [
+            'class' => 'w-fit mx-auto',
+            'hx-get' => "/parceiro/create?id_anao=" . $anao->id ?? 0,
+            'hx-target' => 'this',
+            'hx-swap' => 'beforebegin',
+        ]) ?>
     </div>
 </div>

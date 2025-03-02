@@ -6,7 +6,6 @@ use App\Framework\Facades\DB;
 use App\Http\Middleware\LoggedIn;
 use App\Framework\Http\Request;
 use App\Framework\Http\Response;
-use App\Models\Anao;
 use App\Models\Parceiro;
 use Exception;
 use InvalidArgumentException;
@@ -15,6 +14,17 @@ class ParceiroController
 {
     public function __construct()
     {
+    }
+
+    public static function show(string $id)
+    {
+        $parceiros = Parceiro::fromQuery('SELECT * FROM parceiro WHERE id=:id', ['id' => $id]);
+
+        if (empty($parceiros)) {
+            return '';
+        }
+
+        return view('partials/parceiro-form', ['parceiro' => $parceiros[0]]);
     }
 
     public static function update(Request $request, string $id): Response|string
@@ -74,13 +84,53 @@ class ParceiroController
         return ['query' => $query, 'params' => $params];
     }
 
+    public static function create(Request $request): string
+    {
+        if (array_key_exists('id_anao', $request->getParams)) {
+            $id_anao = $request->getParams['id_anao'];
+            return view('partials/parceiro-form', ['id_anao' => $id_anao]);
+        }
+
+        return '';
+    }
+
     public static function store(Request $request): Response|string
     {
         if ($middleware = LoggedIn::middleware()) {
             return $middleware;
         }
 
-        return '';
+        // collect data
+        $name = $request->postParams['name'] ?? null;
+        $contact = $request->postParams['contact'] ?? null;
+        $is_anao = $request->postParams['is_anao'] ?? null;
+        $id_anao = $request->postParams['id_anao'] ?? null;
+
+        // validate
+        if (!isset($name, $contact, $is_anao, $id_anao)) {
+            return 'Faltando um ou mais parametros para cadastrar parceiro.';
+        }
+
+        // build query
+        $query = <<<SQL
+            INSERT INTO parceiro (name, contact, is_anao, id_anao) VALUES
+            (:name, :contact, :is_anao, :id_anao)
+            SQL;
+        $params = [
+            'name' => $name,
+            'contact' => $contact,
+            'is_anao' => $is_anao,
+            'id_anao' => $id_anao,
+        ];
+
+        // run query
+        DB::query($query, $params);
+
+        // get newly created parceiro
+        $idParceiro = DB::getPDO()->lastInsertId();
+        $parceiros = Parceiro::fromQuery("SELECT * FROM parceiro WHERE id=:id", ['id' => $idParceiro]);
+
+        return view('partials/parceiro-form', ['parceiro' => $parceiros[0]]);
     }
 
     public static function destroy(string $id): Response|string
@@ -93,7 +143,7 @@ class ParceiroController
         DB::query('DELETE FROM parceiro WHERE id=:id', ['id' => $id]);
 
         // If it was deleted successfully, return void to remove the form card, otherwise return the form again
-        $parceiros = DB::fetch('SELECT * FROM parceiro WHERE id=:id', ['id' => $id[0]]);
+        $parceiros = Parceiro::fromQuery('SELECT * FROM parceiro WHERE id=:id', ['id' => $id]);
         if (!empty($parceiros)) {
             return view('partials/parceiro-form', ['parceiro' => $parceiros[0]]);
         }

@@ -138,4 +138,9 @@ class Connection
     {
         $this->pdo = null;
     }
+
+    public function getPDO(): PDO|null
+    {
+        return $this->pdo;
+    }
 }

@@ -1,31 +1,63 @@
-<form action="/parceiro/update/<?= $this->e($parceiro->id) ?>" method="POST"
-    hx-post="/parceiro/update/<?= $this->e($parceiro->id) ?>" hx-target="this" hx-swap="outerHTML"
-    class="flex justify-between p-3 rounded shadow" x-data="{ disabled: <?= $disabled ?? 'true' ?> }">
+<?php
+$editMode = isset($parceiro);
+$endpoint = $editMode ? "/parceiro/update/$parceiro->id" : '/parceiro/store';
+$disabled = $editMode ? 'true' : 'false';
+
+$name = $editMode ? $parceiro->name : '';
+$contact = $editMode ? $parceiro->contact : '';
+$is_anao_yes = ($editMode && $parceiro->is_anao) ? 'checked' : '';
+$is_anao_no = (!$editMode || !$parceiro->is_anao) ? 'checked' : '';
+$name = $editMode ? $parceiro->name : '';
+
+// unique IDs
+$id_name = uniqid('name');
+$id_contact = uniqid('contact');
+$id_anao_yes = uniqid('is_anao_yes');
+$id_anao_no = uniqid('is_anao_no');
+?>
+
+<form action="<?= $endpoint ?>" method="POST" hx-post="<?= $endpoint ?>" hx-target="this" hx-swap="outerHTML"
+    class="flex justify-between p-3 rounded shadow" x-data="{ disabled: <?= $disabled ?> }">
     <div class="flex flex-col gap-2">
         <?= component('compact-input', [
             'id' => 'name',
             'label' => 'Nome: '
-        ], [':disabled' => 'disabled', 'value' => $parceiro->name ?? '']) ?>
+        ], [':disabled' => 'disabled', 'value' => $name, 'required' => 'true', 'id' => $id_name]) ?>
         <?= component('compact-input', [
             'id' => 'contact',
             'label' => 'Contato: '
-        ], [':disabled' => 'disabled', 'value' => $parceiro->contact ?? '']) ?>
+        ], [':disabled' => 'disabled', 'value' => $contact, 'required' => 'true', 'id' => $id_contact]) ?>
         <div>
             <span class="font-medium">É anão:</span>
-            <input type="radio" name="is_anao" id="is_anao_yes" value="1" :disabled="disabled" <?= $parceiro->is_anao ? 'checked' : '' ?>>
-            <label for="is_anao_yes">Sim</label>
-            <input type="radio" name="is_anao" id="is_anao_no" value="0" :disabled="disabled" <?= $parceiro->is_anao ? '' : 'checked' ?>>
-            <label for="is_anao_no">Não</label>
+            <input type="radio" name="is_anao" id="<?= $id_anao_yes ?>" value="1" :disabled="disabled" <?= $is_anao_yes ?>>
+            <label for="<?= $id_anao_yes ?>">Sim</label>
+            <input type="radio" name="is_anao" id="<?= $id_anao_no ?>" value="0" :disabled="disabled" <?= $is_anao_no ?>>
+            <label for="<?= $id_anao_no ?>">Não</label>
         </div>
     </div>
     <div class="flex flex-col gap-1">
-        <?= component('secondary-button', ['slot' => 'Salvar'], ['x-show' => '!disabled']) ?>
-        <?= component('secondary-button', ['slot' => 'Cancelar'], ['type' => 'button', 'x-show' => '!disabled', '@click' => 'disabled = true']) ?>
-        <?= component('primary-button', ['slot' => 'Editar'], ['type' => 'button', 'x-show' => 'disabled', '@click' => 'disabled = false']) ?>
-        <?= component('danger-button', ['slot' => 'Excluir'], [
-            'x-show' => 'disabled',
-            'hx-post' => "/parceiro/destroy/$parceiro->id",
-            'hx-confirm' => 'Tem certeza que deseja remover permanentemente este Parceiro?'
+        <?= component('primary-button', ['slot' => 'Salvar'], ['x-show' => '!disabled']) ?>
+        <?= component('secondary-button', ['slot' => 'Cancelar'], [
+            'type' => 'button',
+            'x-show' => '!disabled',
+            'hx-get' => '/parceiro/' . ($parceiro->id ?? 0)
         ]) ?>
+
+        <?php if ($editMode): ?>
+            <?= component('primary-button', ['slot' => 'Editar'], [
+                'type' => 'button',
+                'x-show' => 'disabled',
+                '@click' => 'disabled = false'
+            ]) ?>
+            <?= component('danger-button', ['slot' => 'Excluir'], [
+                'x-show' => 'disabled',
+                'hx-post' => "/parceiro/destroy/$parceiro->id",
+                'hx-confirm' => 'Tem certeza que deseja remover permanentemente este Parceiro?',
+                'hx-swap' => 'outerHTML'
+            ]) ?>
+        <?php endif; ?>
     </div>
+    <?php if (isset($id_anao)): ?>
+        <input type="hidden" name="id_anao" value="<?= $this->e($id_anao) ?>">
+    <?php endif; ?>
 </form>
