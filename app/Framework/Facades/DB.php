@@ -10,6 +10,7 @@ use App\Framework\Database\Connection;
  * @method static bool transaction(callable $callback)
  * @method static void exec(string $query)
  * @method static void close()
+ * @method static PDO|null getPDO()
  */
 class DB extends Facade
 {

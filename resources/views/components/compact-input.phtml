@@ -1,0 +1,9 @@
+<div>
+    <label for="<?= $id ?>" class="font-medium text-gray-900"><?= $label ?></label>
+    <input <?= $attributes->merge([
+        'type' => 'text',
+        'id' => $id,
+        'name' => $id,
+        'class' => "p-1 text-sm text-gray-900 border border-gray-300 rounded-lg outline-none disabled:bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+    ]) ?> />
+</div>
