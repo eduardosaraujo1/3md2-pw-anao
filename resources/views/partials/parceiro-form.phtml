@@ -1,21 +1,21 @@
-<form class="flex justify-between p-3 rounded shadow" x-data="{ disabled: true }">
+<form action="/parceiro/update/<?= $this->e($parceiro->id) ?>" method="POST"
+    hx-post="/parceiro/update/<?= $this->e($parceiro->id) ?>" hx-target="this" hx-swap="outerHTML"
+    class="flex justify-between p-3 rounded shadow" x-data="{ disabled: <?= $disabled ?? 'true' ?> }">
     <div class="flex flex-col gap-2">
         <?= component('compact-input', [
-            'id' => 'parceiro_name',
+            'id' => 'name',
             'label' => 'Nome: '
         ], [':disabled' => 'disabled', 'value' => $parceiro->name ?? '']) ?>
         <?= component('compact-input', [
-            'id' => 'parceiro_contact',
+            'id' => 'contact',
             'label' => 'Contato: '
         ], [':disabled' => 'disabled', 'value' => $parceiro->contact ?? '']) ?>
-        <div x-data="{ selected='<?= $parceiro->is_anao ?>' }">
-            <label for="parceiro_is_anao" class="font-medium">É anão:</label>
-            <input type="radio" name="parceiro_is_anao" id="parceiro_is_anao_yes" value="1" :disabled="disabled"
-                x-model="selected">
-            <label for="parceiro_is_anao_yes">Sim</label>
-            <input type="radio" name="parceiro_is_anao" id="parceiro_is_anao_no" value="0" :disabled="disabled"
-                x-model="selected">
-            <label for="parceiro_is_anao_no">Não</label>
+        <div>
+            <span class="font-medium">É anão:</span>
+            <input type="radio" name="is_anao" id="is_anao_yes" value="1" :disabled="disabled" <?= $parceiro->is_anao ? 'checked' : '' ?>>
+            <label for="is_anao_yes">Sim</label>
+            <input type="radio" name="is_anao" id="is_anao_no" value="0" :disabled="disabled" <?= $parceiro->is_anao ? '' : 'checked' ?>>
+            <label for="is_anao_no">Não</label>
         </div>
     </div>
     <div class="flex flex-col gap-1">
@@ -28,5 +28,4 @@
             'hx-confirm' => 'Tem certeza que deseja remover permanentemente este Parceiro?'
         ]) ?>
     </div>
-    <input type="hidden" name="id_anao" value="<?= $parceiro->id_anao ?>">
 </form>

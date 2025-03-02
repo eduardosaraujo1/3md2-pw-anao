@@ -11,7 +11,7 @@
             <?php foreach ($anoes as $anao): ?>
                 <a href="/anao/<?= $anao->id ?>"
                     class="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900"><?= $anao->name ?></h5>
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900"><?= $this->e($anao->name) ?></h5>
                     <div class="text-gray-700">
                         <span class="font-bold">Idade:</span>
                         <span><?= $anao->age ?></span>

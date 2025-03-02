@@ -8,6 +8,7 @@ use App\Framework\Http\Request;
 use App\Framework\Http\Response;
 use App\Models\Anao;
 use App\Models\Parceiro;
+use Exception;
 use InvalidArgumentException;
 
 class ParceiroController
@@ -25,20 +26,23 @@ class ParceiroController
 
         try {
             // collect post data and build query
-            ['query' => $query, 'params' => $params] = self::buildUpdateQuery('anao', $request->postParams, $id);
+            ['query' => $query, 'params' => $params] = self::buildUpdateQuery('parceiro', $request->postParams, $id);
             // run update query
             DB::query($query, $params);
+
+            // build form from result of the update
+            $parceiros = Parceiro::fromQuery('SELECT * FROM parceiro WHERE id=:id', ['id' => $id]);
+
+            if (empty($parceiros)) {
+                throw new Exception("Ocorreu um erro no parametro $id");
+            }
+
+            return view('partials/parceiro-form', ['parceiro' => $parceiros[0]]);
         } catch (InvalidArgumentException $e) {
             return 'Ocorreu um erro ao enviar os dados a serem editados.';
         } catch (\Throwable $e) {
             return 'Erro interno ao salvar alterações';
         }
-
-        // Handle HTMX Refreshing
-        return new Response(
-            status: 301,
-            headers: ['HX-Trigger: soft-refresh'],
-        );
     }
 
     /**
@@ -47,7 +51,7 @@ class ParceiroController
     private static function buildUpdateQuery(string $table, array $data, int $id)
     {
         // Filter data to only contain allowed fields
-        $allowedFields = ['name', 'age', 'race', 'height'];
+        $allowedFields = ['name', 'contact', 'is_anao'];
         $filteredData = array_intersect_key($data, array_flip($allowedFields));
 
         if (empty($filteredData)) {
