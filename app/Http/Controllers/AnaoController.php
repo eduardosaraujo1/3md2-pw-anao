@@ -7,6 +7,7 @@ use App\Http\Middleware\LoggedIn;
 use App\Framework\Http\Request;
 use App\Framework\Http\Response;
 use App\Models\Anao;
+use App\Models\Parceiro;
 use InvalidArgumentException;
 
 class AnaoController
@@ -24,7 +25,7 @@ class AnaoController
         $anoes = Anao::fromQuery("SELECT * FROM anao");
 
         return view('anao.index', [
-            'anoes' => $anoes
+            'anoes' => $anoes,
         ]);
     }
 
@@ -43,8 +44,11 @@ class AnaoController
             );
         }
 
+        $parceiros = Parceiro::fromQuery('SELECT * FROM parceiro WHERE id_anao=:id', ['id' => $anao[0]->id]);
+
         return view('anao.view', [
-            'anao' => $anao[0]
+            'anao' => $anao[0],
+            'parceiros' => $parceiros,
         ]);
     }
 

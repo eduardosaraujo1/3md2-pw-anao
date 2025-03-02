@@ -1,0 +1,32 @@
+<form class="flex justify-between p-3 rounded shadow" x-data="{ disabled: true }">
+    <div class="flex flex-col gap-2">
+        <?= component('compact-input', [
+            'id' => 'parceiro_name',
+            'label' => 'Nome: '
+        ], [':disabled' => 'disabled', 'value' => $parceiro->name ?? '']) ?>
+        <?= component('compact-input', [
+            'id' => 'parceiro_contact',
+            'label' => 'Contato: '
+        ], [':disabled' => 'disabled', 'value' => $parceiro->contact ?? '']) ?>
+        <div x-data="{ selected='<?= $parceiro->is_anao ?>' }">
+            <label for="parceiro_is_anao" class="font-medium">É anão:</label>
+            <input type="radio" name="parceiro_is_anao" id="parceiro_is_anao_yes" value="1" :disabled="disabled"
+                x-model="selected">
+            <label for="parceiro_is_anao_yes">Sim</label>
+            <input type="radio" name="parceiro_is_anao" id="parceiro_is_anao_no" value="0" :disabled="disabled"
+                x-model="selected">
+            <label for="parceiro_is_anao_no">Não</label>
+        </div>
+    </div>
+    <div class="flex flex-col gap-1">
+        <?= component('secondary-button', ['slot' => 'Salvar'], ['x-show' => '!disabled']) ?>
+        <?= component('secondary-button', ['slot' => 'Cancelar'], ['type' => 'button', 'x-show' => '!disabled', '@click' => 'disabled = true']) ?>
+        <?= component('primary-button', ['slot' => 'Editar'], ['type' => 'button', 'x-show' => 'disabled', '@click' => 'disabled = false']) ?>
+        <?= component('danger-button', ['slot' => 'Excluir'], [
+            'x-show' => 'disabled',
+            'hx-post' => "/parceiro/destroy/$parceiro->id",
+            'hx-confirm' => 'Tem certeza que deseja remover permanentemente este Parceiro?'
+        ]) ?>
+    </div>
+    <input type="hidden" name="id_anao" value="<?= $parceiro->id_anao ?>">
+</form>
