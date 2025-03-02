@@ -14,7 +14,7 @@ class AuthenticationController
     {
     }
 
-    public static function index(Request $request): string|Response
+    public static function index(): string|Response
     {
         if ($middleware = IsGuest::middleware())
             return $middleware;
@@ -32,9 +32,7 @@ class AuthenticationController
 
         return $auth
             ? redirect('/anoes')
-            : <<<HTML
-                <h3 class="text-sm text-red-700">Usuário não encontrado ou senha incorreta.</h3>
-                HTML;
+            : 'Usuário não encontrado ou senha incorreta.';
     }
 
     public static function logout(): string|Response

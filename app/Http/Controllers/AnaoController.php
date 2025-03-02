@@ -60,10 +60,10 @@ class AnaoController
             ['query' => $query, 'params' => $params] = self::buildUpdateQuery('anao', $request->postParams, $id);
             // run update query
             DB::query($query, $params);
+        } catch (InvalidArgumentException $e) {
+            return 'Ocorreu um erro ao enviar os dados a serem editados.';
         } catch (\Throwable $e) {
-            return <<<HTML
-                <h3 class="text-sm text-red-700">Erro interno ao salvar alterações</h3>
-                HTML;
+            return 'Erro interno ao salvar alterações';
         }
 
         // Handle HTMX Refreshing
