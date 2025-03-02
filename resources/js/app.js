@@ -13,4 +13,11 @@ htmx.config.responseHandling = [
     },
 ];
 
+document.body.addEventListener('soft-refresh', () => {
+    htmx.ajax('GET', window.location.href, {
+        target: 'body',
+        swap: 'outerHTML',
+    });
+});
+
 document.querySelector('body').style.removeProperty('visibility');

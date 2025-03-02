@@ -21,4 +21,5 @@ Route::get('/logout', [AuthenticationController::class, 'logout']);
 Route::get('/anoes', [AnaoController::class, 'index']);
 Route::get('/anao/create', [AnaoController::class, 'create']);
 Route::get('/anao/{id:\d+}', [AnaoController::class, 'show']);
-Route::get('/anao/edit/{id:\d+}', [AnaoController::class, 'edit']);
+
+Route::post('/anao/update/{id:\d+}', [AnaoController::class, 'update']);

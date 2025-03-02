@@ -1,5 +1,51 @@
-<?php $this->layout('view::layout/app', ['title' => "Anão NAN"]); ?>
+<?php $this->layout('view::layout/app', ['title' => "Anão " . $anao->id ?? -1]); ?>
 
 <div class="flex flex-col px-2 py-4 mx-auto max-w-7xl">
-    <h1 class="text-3xl font-bold text-center">I am an Anão view!</h1>
+    <form action="/anao/update/<?= $anao->id ?? 0 ?>" method="POST" x-data="{ disabled: true }"
+        hx-post="/anao/update/<?= $anao->id ?? 0 ?>" hx-target="#error_container" hx-swap="innerHTML">
+        <div class="flex items-end ">
+            <h1 class="flex-1 my-2 text-3xl font-bold">Anão #<?= $anao->id ?? 'Desconhecido' ?></h1>
+            <?= component(
+                name: 'primary-button',
+                props: ['slot' => 'Editar'],
+                attributes: ['type' => 'button', '@click' => 'disabled = false', 'x-show' => 'disabled'],
+            ) ?>
+            <?= component(
+                name: 'primary-button',
+                props: ['slot' => 'Salvar'],
+                attributes: ['x-show' => '!disabled'],
+            ) ?>
+        </div>
+        <div id="error_container"></div>
+        <div class="flex flex-col gap-2">
+            <!-- <x-input id="name" label="Nome" :disabled="disabled"_/> -->
+            <?= component(
+                name: 'input',
+                props: ['id' => 'name', 'label' => "Nome"],
+                attributes: ['max' => '255', ':disabled' => 'disabled', 'value' => $anao->name ?? ''],
+            ) ?>
+            <?= component(
+                name: 'input',
+                props: ['id' => 'age', 'label' => "Idade"],
+                attributes: ['type' => 'number', ':disabled' => 'disabled', 'value' => $anao->age ?? ''],
+            ) ?>
+            <div x-data="{ selected: <?= $anao->race ?? 4 ?> }">
+                <label for="race" class="block font-medium text-gray-900">Etnia</label>
+                <select name="race" id="race" :disabled="disabled" x-model="selected"
+                    class="disabled:bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <option value="4">Outro</option>
+                    <option value="0">Negro</option>
+                    <option value="1">Branco</option>
+                    <option value="2">Pardo</option>
+                    <option value="3">Asiático</option>
+                </select>
+
+            </div>
+            <?= component(
+                name: 'input',
+                props: ['id' => 'height', 'label' => "Altura (metros)"],
+                attributes: ['type' => 'number', 'step' => '0.1', ':disabled' => 'disabled', 'value' => $anao->height ?? ''],
+            ) ?>
+        </div>
+    </form>
 </div>
