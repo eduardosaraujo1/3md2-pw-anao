@@ -32,3 +32,4 @@ Route::post('/anao/store', [AnaoController::class, 'store']);
 
 Route::post('/parceiro/update/{id:\d+}', [ParceiroController::class, 'update']);
 Route::post('/parceiro/store', [ParceiroController::class, 'store']);
+Route::post('/parceiro/destroy/{id:\d+}', [ParceiroController::class, 'destroy']);

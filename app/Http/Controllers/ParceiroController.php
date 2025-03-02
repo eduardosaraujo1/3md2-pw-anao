@@ -89,6 +89,15 @@ class ParceiroController
             return $middleware;
         }
 
+        // Delete element
+        DB::query('DELETE FROM parceiro WHERE id=:id', ['id' => $id]);
+
+        // If it was deleted successfully, return void to remove the form card, otherwise return the form again
+        $parceiros = DB::fetch('SELECT * FROM parceiro WHERE id=:id', ['id' => $id[0]]);
+        if (!empty($parceiros)) {
+            return view('partials/parceiro-form', ['parceiro' => $parceiros[0]]);
+        }
+
         return '';
     }
 }
