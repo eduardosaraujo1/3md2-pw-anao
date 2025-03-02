@@ -59,7 +59,7 @@ class AnaoController
             // collect post data and build query
             ['query' => $query, 'params' => $params] = self::buildUpdateQuery('anao', $request->postParams, $id);
             // run update query
-            $result = DB::query($query, $params);
+            DB::query($query, $params);
         } catch (\Throwable $e) {
             return <<<HTML
                 <h3 class="text-sm text-red-700">Erro interno ao salvar alterações</h3>
