@@ -40,6 +40,7 @@
 
 -   [Docker para NGINX + PHP + MYSQL](https://www.youtube.com/watch?v=S6j4VGMD3Y8&list=PLQH1-k79HB396mS8xRQ5gih5iqkQw-4aV)
 -   [PHP Framework Pattern - The Front Controller](https://www.youtube.com/watch?v=akPcD5e9N4M&list=PLQH1-k79HB3-0SKspp8814ZI1GIqRYLAu)
+-   [Laracast PHP Starter](https://www.youtube.com/playlist?list=PL3VM-unCzF8ipG50KDjnzhugceoSG3RTC)
 
 ### TODO
 
