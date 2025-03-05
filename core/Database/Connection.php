@@ -2,14 +2,15 @@
 
 namespace Core\Database;
 
+use Core\Abstract\Singleton;
 use Core\Exceptions\Database\InvalidConnectionCredentialsException;
 use PDO;
 
-class Connection
+class Connection extends Singleton
 {
     public ?PDO $pdo;
 
-    public function __construct(
+    protected function __construct(
         string $host,
         string $user,
         string $password,

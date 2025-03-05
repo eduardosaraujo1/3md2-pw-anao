@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Core\Facades\DB;
+use Core\Database\Connection;
 use App\Http\Middleware\IsAuth;
 use Core\Http\Request;
 use Core\Http\Response;
@@ -35,7 +35,7 @@ class ParceiroController
             // collect post data and build query
             ['query' => $query, 'params' => $params] = self::buildUpdateQuery('parceiro', $request->postParams, $id);
             // run update query
-            DB::query($query, $params);
+            Connection::instance()->query($query, $params);
 
             // build form from result of the update
             $parceiros = Parceiro::fromQuery('SELECT * FROM parceiro WHERE id=:id', ['id' => $id]);
@@ -50,35 +50,6 @@ class ParceiroController
         } catch (\Throwable $e) {
             return 'Erro interno ao salvar alterações';
         }
-    }
-
-    /**
-     * @param array<string,string> $data
-     */
-    private static function buildUpdateQuery(string $table, array $data, int $id)
-    {
-        // Filter data to only contain allowed fields
-        $allowedFields = ['name', 'contact', 'is_anao'];
-        $filteredData = array_intersect_key($data, array_flip($allowedFields));
-
-        if (empty($filteredData)) {
-            throw new InvalidArgumentException("No valid data provided for update.");
-        }
-
-        $query = "UPDATE {$table} SET ";
-        $params = ['id' => $id];
-
-        $setClauses = [];
-
-        foreach ($filteredData as $key => $value) {
-            $setClauses[] = "{$key} = :{$key}";
-            $params[$key] = $value;
-        }
-
-        $query .= implode(', ', $setClauses);
-        $query .= " WHERE id = :id";
-
-        return ['query' => $query, 'params' => $params];
     }
 
     public static function create(): string
@@ -121,10 +92,10 @@ class ParceiroController
         ];
 
         // run query
-        DB::query($query, $params);
+        Connection::instance()->query($query, $params);
 
         // get newly created parceiro
-        $idParceiro = DB::getPDO()->lastInsertId();
+        $idParceiro = Connection::instance()->getPDO()->lastInsertId();
         $parceiros = Parceiro::fromQuery("SELECT * FROM parceiro WHERE id=:id", ['id' => $idParceiro]);
 
         return view('partials/parceiro-form', ['parceiro' => $parceiros[0]]);
@@ -133,7 +104,7 @@ class ParceiroController
     public static function destroy(string $id): Response|string
     {
         // Delete element
-        DB::query('DELETE FROM parceiro WHERE id=:id', ['id' => $id]);
+        Connection::instance()->query('DELETE FROM parceiro WHERE id=:id', ['id' => $id]);
 
         // If it was deleted successfully, return void to remove the form card, otherwise return the form again
         $parceiros = Parceiro::fromQuery('SELECT * FROM parceiro WHERE id=:id', ['id' => $id]);
@@ -142,5 +113,34 @@ class ParceiroController
         }
 
         return '';
+    }
+
+    /**
+     * @param array<string,string> $data
+     */
+    private static function buildUpdateQuery(string $table, array $data, int $id)
+    {
+        // Filter data to only contain allowed fields
+        $allowedFields = ['name', 'contact', 'is_anao'];
+        $filteredData = array_intersect_key($data, array_flip($allowedFields));
+
+        if (empty($filteredData)) {
+            throw new InvalidArgumentException("No valid data provided for update.");
+        }
+
+        $query = "UPDATE {$table} SET ";
+        $params = ['id' => $id];
+
+        $setClauses = [];
+
+        foreach ($filteredData as $key => $value) {
+            $setClauses[] = "{$key} = :{$key}";
+            $params[$key] = $value;
+        }
+
+        $query .= implode(', ', $setClauses);
+        $query .= " WHERE id = :id";
+
+        return ['query' => $query, 'params' => $params];
     }
 }

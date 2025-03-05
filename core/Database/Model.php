@@ -6,7 +6,6 @@ use Core\Exceptions\Database\InvalidQueryException;
 use Core\Exceptions\Database\InvalidTableException;
 use Core\Exceptions\NotImplementedException;
 use Core\Exceptions\NullPropertyException;
-use Core\Facades\DB;
 
 class Model
 {
@@ -18,7 +17,7 @@ class Model
      */
     public static function fromQuery(string $query, array $params = []): array
     {
-        $result = DB::fetch($query, $params);
+        $result = Connection::instance()->fetch($query, $params);
 
         try {
             return array_map(

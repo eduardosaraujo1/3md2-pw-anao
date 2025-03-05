@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Core\Facades\DB;
+use Core\Database\Connection;
 use App\Http\Middleware\IsAuth;
 use Core\Http\Request;
 use Core\Http\Response;
@@ -53,7 +53,7 @@ class AnaoController
             // collect post data and build query
             ['query' => $query, 'params' => $params] = self::buildUpdateQuery('anao', $request->postParams, $id);
             // run update query
-            DB::query($query, $params);
+            Connection::instance()->query($query, $params);
         } catch (InvalidArgumentException $e) {
             return 'Ocorreu um erro ao enviar os dados a serem editados.';
         } catch (\Throwable $e) {
@@ -65,35 +65,6 @@ class AnaoController
             status: 301,
             headers: ['HX-Trigger: soft-refresh'],
         );
-    }
-
-    /**
-     * @param array<string,string> $data
-     */
-    private static function buildUpdateQuery(string $table, array $data, int $id)
-    {
-        // Filter data to only contain allowed fields
-        $allowedFields = ['name', 'age', 'race', 'height'];
-        $filteredData = array_intersect_key($data, array_flip($allowedFields));
-
-        if (empty($filteredData)) {
-            throw new InvalidArgumentException("No valid data provided for update.");
-        }
-
-        $query = "UPDATE {$table} SET ";
-        $params = ['id' => $id];
-
-        $setClauses = [];
-
-        foreach ($filteredData as $key => $value) {
-            $setClauses[] = "{$key} = :{$key}";
-            $params[$key] = $value;
-        }
-
-        $query .= implode(', ', $setClauses);
-        $query .= " WHERE id = :id";
-
-        return ['query' => $query, 'params' => $params];
     }
 
     public static function create(): Response|string
@@ -129,7 +100,7 @@ class AnaoController
         ];
 
         // run query
-        DB::query($query, $params);
+        Connection::instance()->query($query, $params);
 
         return redirect('/home');
     }
@@ -137,5 +108,34 @@ class AnaoController
     public static function destroy(string $id): Response|string
     {
         return '';
+    }
+
+    /**
+     * @param array<string,string> $data
+     */
+    private static function buildUpdateQuery(string $table, array $data, int $id)
+    {
+        // Filter data to only contain allowed fields
+        $allowedFields = ['name', 'age', 'race', 'height'];
+        $filteredData = array_intersect_key($data, array_flip($allowedFields));
+
+        if (empty($filteredData)) {
+            throw new InvalidArgumentException("No valid data provided for update.");
+        }
+
+        $query = "UPDATE {$table} SET ";
+        $params = ['id' => $id];
+
+        $setClauses = [];
+
+        foreach ($filteredData as $key => $value) {
+            $setClauses[] = "{$key} = :{$key}";
+            $params[$key] = $value;
+        }
+
+        $query .= implode(', ', $setClauses);
+        $query .= " WHERE id = :id";
+
+        return ['query' => $query, 'params' => $params];
     }
 }

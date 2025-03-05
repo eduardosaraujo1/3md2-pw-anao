@@ -7,6 +7,7 @@ use Core\Auth\User;
 use Core\Http\Request;
 use Core\Http\Response;
 use App\Http\Middleware\IsGuest;
+use Core\Session;
 
 class AuthenticationController
 {
@@ -16,22 +17,27 @@ class AuthenticationController
 
     public static function index(): string|Response
     {
-        return view('auth.login');
+        return view('auth.login', [
+            'errors' => Session::get('errors', [])
+        ]);
     }
 
     public static function login(): string|Response
     {
         $request = Request::instance();
 
-        // collect user data
+        // attempt login
         $userName = $request->postParams['user_login'] ?? '';
         $userPassword = $request->postParams['user_password'] ?? '';
-
         $auth = Auth::instance()->attempt($userName, $userPassword);
 
-        return $auth
-            ? redirect('/anoes')
-            : 'Usuário não encontrado ou senha incorreta.';
+        // TODO: flash error message to session, and redirect to /login
+        if (!$auth) {
+            return redirect('/login');
+        }
+
+        return redirect('/anoes');
+        // 'Usuário não encontrado ou senha incorreta.';
     }
 
     public static function logout(): string|Response

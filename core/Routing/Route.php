@@ -38,6 +38,7 @@ class Route
         }
 
         // call middlewares along side handlers (middleware should support two params: $callback, $args)
+        $previousHandler = $this->handler;
         $this->handler = fn(...$args) => call_user_func_array($middleware, [$previousHandler, $args]);
 
         return $this;

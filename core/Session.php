@@ -21,14 +21,19 @@ class Session extends Singleton
         return Session::instance();
     }
 
-    public static function get(string $key, string $default = ''): string
+    public static function get(string $key, mixed $default = ''): mixed
     {
-        return $_SESSION[$key] ?? $default;
+        return $_SESSION['_flash'][$key] ?? $_SESSION[$key] ?? $default;
     }
 
-    public static function set(string $key, string $value): void
+    public static function set(string $key, mixed $value): void
     {
         $_SESSION[$key] = $value;
+    }
+
+    public static function flash($key, $value)
+    {
+        $_SESSION['_flash'][$key] = $value;
     }
 
     public static function destroy()

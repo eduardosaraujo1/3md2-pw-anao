@@ -1,9 +1,8 @@
 <?php
 
-use Core\Facades\ViewEngine;
-use Core\Http\Request;
 use Core\Http\Response;
 use Core\View\AttributeBag;
+use Core\View\Engine;
 use Core\Vite;
 
 function base_path(string $path): string
@@ -20,7 +19,7 @@ if (!function_exists('view')) {
      */
     function view(string $name, array $params = []): string
     {
-        $str = ViewEngine::render($name, $params);
+        $str = Engine::instance()->render($name, $params);
 
         return $str;
     }
@@ -58,7 +57,7 @@ if (!function_exists('redirect')) {
         $header = isset($_SERVER['HTTP_HX_REQUEST']) ? 'HX-Redirect' : 'Location';
 
         return new Response(
-            status: 301,
+            status: 302,
             headers: ["$header: $location"]
         );
     }

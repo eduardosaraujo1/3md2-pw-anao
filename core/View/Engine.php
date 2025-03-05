@@ -2,14 +2,15 @@
 
 namespace Core\View;
 
+use Core\Abstract\Singleton;
 use Core\Exceptions\ViewDirectoryNotFoundException;
 
-class Engine
+class Engine extends Singleton
 {
     public const EXTENSION = "phtml";
     public \League\Plates\Engine $engine;
 
-    public function __construct()
+    protected function __construct()
     {
         // declare params
         $defaultPath = realpath(__DIR__ . '/defaults');
