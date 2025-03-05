@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Framework\Facades\DB;
+use Core\Facades\DB;
 use App\Http\Middleware\LoggedIn;
-use App\Framework\Http\Request;
-use App\Framework\Http\Response;
+use Core\Http\Request;
+use Core\Http\Response;
 use App\Models\Anao;
 use App\Models\Parceiro;
 use InvalidArgumentException;
@@ -16,7 +16,7 @@ class AnaoController
     {
     }
 
-    public static function index(Request $request): Response|string
+    public static function index(): Response|string
     {
         if ($middleware = LoggedIn::middleware()) {
             return $middleware;
@@ -52,8 +52,10 @@ class AnaoController
         ]);
     }
 
-    public static function update(Request $request, string $id): Response|string
+    public static function update(string $id): Response|string
     {
+        $request = Request::instance();
+
         if ($middleware = LoggedIn::middleware()) {
             // ensure only logged in users may update
             return $middleware;
@@ -115,8 +117,10 @@ class AnaoController
         return view('anao.create');
     }
 
-    public static function store(Request $request): Response|string
+    public static function store(): Response|string
     {
+        $request = Request::instance();
+
         if ($middleware = LoggedIn::middleware()) {
             return $middleware;
         }

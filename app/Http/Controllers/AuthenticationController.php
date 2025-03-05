@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Framework\Auth\User;
-use App\Framework\Facades\Auth;
-use App\Framework\Http\Request;
-use App\Framework\Http\Response;
+use Core\Auth\User;
+use Core\Facades\Auth;
+use Core\Http\Request;
+use Core\Http\Response;
 use App\Http\Middleware\IsGuest;
 
 class AuthenticationController
@@ -22,8 +22,10 @@ class AuthenticationController
         return view('auth.login');
     }
 
-    public static function login(Request $request): string|Response
+    public static function login(): string|Response
     {
+        $request = Request::instance();
+
         // collect user data
         $userName = $request->postParams['user_login'] ?? '';
         $userPassword = $request->postParams['user_password'] ?? '';

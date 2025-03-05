@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Framework\Facades\DB;
+use Core\Facades\DB;
 use App\Http\Middleware\LoggedIn;
-use App\Framework\Http\Request;
-use App\Framework\Http\Response;
+use Core\Http\Request;
+use Core\Http\Response;
 use App\Models\Parceiro;
 use Exception;
 use InvalidArgumentException;
@@ -27,8 +27,10 @@ class ParceiroController
         return view('partials/parceiro-form', ['parceiro' => $parceiros[0]]);
     }
 
-    public static function update(Request $request, string $id): Response|string
+    public static function update(string $id): Response|string
     {
+        $request = Request::instance();
+
         if ($middleware = LoggedIn::middleware()) {
             // ensure only logged in users may update
             return $middleware;
@@ -84,8 +86,10 @@ class ParceiroController
         return ['query' => $query, 'params' => $params];
     }
 
-    public static function create(Request $request): string
+    public static function create(): string
     {
+        $request = Request::instance();
+
         if (array_key_exists('id_anao', $request->getParams)) {
             $id_anao = $request->getParams['id_anao'];
             return view('partials/parceiro-form', ['id_anao' => $id_anao]);
@@ -94,8 +98,10 @@ class ParceiroController
         return '';
     }
 
-    public static function store(Request $request): Response|string
+    public static function store(): Response|string
     {
+        $request = Request::instance();
+
         if ($middleware = LoggedIn::middleware()) {
             return $middleware;
         }

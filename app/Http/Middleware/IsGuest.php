@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Framework\Facades\Auth;
-use App\Framework\Http\Response;
+use Core\Facades\Auth;
+use Core\Http\Response;
 
 class IsGuest
 {

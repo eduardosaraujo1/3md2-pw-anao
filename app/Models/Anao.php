@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Enum\Race;
-use App\Framework\Database\Model;
-use App\Framework\Exception\NullPropertyException;
+use Core\Database\Model;
+use Core\Exception\NullPropertyException;
 
 class Anao extends Model
 {
