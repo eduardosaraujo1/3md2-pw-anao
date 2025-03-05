@@ -27,4 +27,9 @@ class Response
         // show content
         echo $this->content;
     }
+
+    public function status(): int
+    {
+        return $this->status;
+    }
 }

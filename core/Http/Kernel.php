@@ -5,6 +5,7 @@ namespace Core\Http;
 use Core\Exceptions\Routing\RouteMethodNotAllowedException;
 use Core\Exceptions\Routing\RouteNotFoundException;
 use Core\Routing\Router;
+use Core\Session;
 use FastRoute\Dispatcher;
 
 class Kernel
@@ -36,6 +37,11 @@ class Kernel
                 return $this->errorResponse(
                     response: "Invalid controller response type: " . (is_object($response) ? get_class($response) : gettype($response))
                 );
+            }
+
+            if ($response->status() !== 301) {
+                // only unflash if we are not redirecting
+                Session::unflash();
             }
 
             return $response;

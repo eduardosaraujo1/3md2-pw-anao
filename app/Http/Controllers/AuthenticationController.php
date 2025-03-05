@@ -33,11 +33,11 @@ class AuthenticationController
 
         // TODO: flash error message to session, and redirect to /login
         if (!$auth) {
+            Session::flash('errors', ['Usuário não encontrado ou senha incorreta.']);
             return redirect('/login');
         }
 
         return redirect('/anoes');
-        // 'Usuário não encontrado ou senha incorreta.';
     }
 
     public static function logout(): string|Response

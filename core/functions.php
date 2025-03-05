@@ -57,7 +57,7 @@ if (!function_exists('redirect')) {
         $header = isset($_SERVER['HTTP_HX_REQUEST']) ? 'HX-Redirect' : 'Location';
 
         return new Response(
-            status: 302,
+            status: 301,
             headers: ["$header: $location"]
         );
     }

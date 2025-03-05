@@ -36,6 +36,11 @@ class Session extends Singleton
         $_SESSION['_flash'][$key] = $value;
     }
 
+    public static function unflash()
+    {
+        unset($_SESSION['_flash']);
+    }
+
     public static function destroy()
     {
         $_SESSION = [];
