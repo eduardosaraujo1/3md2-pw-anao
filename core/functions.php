@@ -1,10 +1,10 @@
 <?php
 
 use Core\Facades\ViewEngine;
-use Core\Facades\Vite;
 use Core\Http\Request;
 use Core\Http\Response;
 use Core\View\AttributeBag;
+use Core\Vite;
 
 function base_path(string $path): string
 {
@@ -71,6 +71,6 @@ if (!function_exists('vite')) {
      */
     function vite(array $params): string
     {
-        return Vite::compile($params);
+        return Vite::instance()->compile($params);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace Core;
 
-class Vite
+use Core\Abstract\Singleton;
+
+class Vite extends Singleton
 {
     private string $buildPath;
     /** @var array<string,mixed> */
@@ -12,13 +14,13 @@ class Vite
     private string $hotfileUrl;
     private bool $hotfileExists;
 
-    public function __construct()
+    protected function __construct()
     {
         $host = 'localhost';
         $port = $_ENV['VITE_PORT'] ?? '5173';
 
-        $build = realpath(PROJECT_ROOT . "/public/build") ?? '';
-        $hotfile = realpath(PROJECT_ROOT . "/public/hot") ?? '';
+        $build = base_path('public/build') ?? '';
+        $hotfile = base_path('public/hot') ?? '';
 
         $this->buildExists = is_dir($build);
         $this->hotfileExists = file_exists($hotfile);
