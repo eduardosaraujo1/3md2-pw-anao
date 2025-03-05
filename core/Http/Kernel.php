@@ -2,6 +2,8 @@
 
 namespace Core\Http;
 
+use Core\Exceptions\Routing\RouteMethodNotAllowedException;
+use Core\Exceptions\Routing\RouteNotFoundException;
 use Core\Routing\Router;
 use FastRoute\Dispatcher;
 
@@ -13,55 +15,39 @@ class Kernel
 
     public function handle(Request $request): Response
     {
-        $router = new Router();
+        $router = Router::instance();
 
         $uri = $request->getPathInfo();
         $method = $request->getMethod();
 
-        $result = $router->dispatch(
-            method: $method,
-            uri: $uri,
-        );
+        try {
+            [$handler, $params] = $router->dispatch(
+                method: $method,
+                uri: $uri,
+            );
 
-        if ($result[0] === Dispatcher::NOT_FOUND) {
+            $response = call_user_func_array($handler, $params);
+
+            if (!($response instanceof Response)) {
+                if (is_string($response)) {
+                    return new Response(status: 200, content: $response);
+                }
+
+                return $this->errorResponse(
+                    response: "Invalid controller response type: " . (is_object($response) ? get_class($response) : gettype($response))
+                );
+            }
+
+            return $response;
+        } catch (RouteNotFoundException) {
             return $this->errorResponse(
                 code: 404,
                 response: "Route '$uri' was not declared in route/web.php",
             );
-        }
-
-        if ($result[0] === Dispatcher::METHOD_NOT_ALLOWED) {
+        } catch (RouteMethodNotAllowedException $err) {
             return $this->errorResponse(
                 code: 403,
-                response: "Route method only allows'" . implode(', ', $result[1]) . "'. Received '$method'",
-            );
-        }
-
-        $handler = $result[1];
-        $params = $result[2];
-
-        return $this->handleCallback($handler, $params);
-
-    }
-
-    protected function handleCallback(callable $callback, array $params): Response
-    {
-        try {
-            $response = call_user_func_array($callback, $params);
-
-            if ($response instanceof Response) {
-                return $response;
-            }
-
-            if (is_string($response)) {
-                return new Response(
-                    status: 200,
-                    content: $response,
-                );
-            }
-
-            return $this->errorResponse(
-                response: "Invalid controller response type: " . is_object($response) ? get_class($response) : gettype($response)
+                response: "Route method only allows '" . $err->getMessage() . "'. Received '$method'",
             );
         } catch (\Throwable $th) {
             return $this->errorResponse(code: 500, response: $th->getMessage() ?? 'Undefined error message.');

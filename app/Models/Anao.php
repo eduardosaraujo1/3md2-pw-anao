@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Enum\Race;
 use Core\Database\Model;
-use Core\Exception\NullPropertyException;
+use Core\Exceptions\NullPropertyException;
 
 class Anao extends Model
 {

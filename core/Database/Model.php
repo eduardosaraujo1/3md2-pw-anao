@@ -2,10 +2,10 @@
 
 namespace Core\Database;
 
-use Core\Exception\Database\InvalidQueryException;
-use Core\Exception\Database\InvalidTableException;
-use Core\Exception\NotImplementedException;
-use Core\Exception\NullPropertyException;
+use Core\Exceptions\Database\InvalidQueryException;
+use Core\Exceptions\Database\InvalidTableException;
+use Core\Exceptions\NotImplementedException;
+use Core\Exceptions\NullPropertyException;
 use Core\Facades\DB;
 
 class Model

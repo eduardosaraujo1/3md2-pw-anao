@@ -2,7 +2,7 @@
 
 namespace Core\Database;
 
-use Core\Exception\Database\InvalidConnectionCredentialsException;
+use Core\Exceptions\Database\InvalidConnectionCredentialsException;
 use PDO;
 
 class Connection
@@ -34,7 +34,7 @@ class Connection
     /**
      * Creates a connection from the environment variables
      * @param bool $useSchema should the connection start with the schema defined in DB_DATABASE?
-     * @throws \Core\Exception\Database\InvalidConnectionCredentialsException
+     * @throws \Core\Exceptions\Database\InvalidConnectionCredentialsException
      * @return Connection
      */
     public static function createFromEnv(bool $useSchema): Connection

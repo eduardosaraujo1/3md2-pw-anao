@@ -3,7 +3,7 @@
 namespace Core\Auth;
 
 use Core\Database\Model;
-use Core\Exception\NullPropertyException;
+use Core\Exceptions\NullPropertyException;
 
 class User extends Model
 {

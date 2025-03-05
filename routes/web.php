@@ -11,7 +11,7 @@ if (!$this instanceof Router) {
     throw new Exception('web.php file was not required within the Router.php context');
 }
 
-$this->get('/', function (Request $request) {
+$this->get('/', function () {
     if (Auth::check()) {
         return redirect('/anoes');
     }

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Core\Database\Model;
-use Core\Exception\NullPropertyException;
+use Core\Exceptions\NullPropertyException;
 
 class Parceiro extends Model
 {
@@ -18,7 +18,7 @@ class Parceiro extends Model
 
     /**
      * @param array<string,mixed> $params
-     * @throws \Core\Exception\NullPropertyException
+     * @throws \Core\Exceptions\NullPropertyException
      */
     public static function make(array $params): Parceiro
     {

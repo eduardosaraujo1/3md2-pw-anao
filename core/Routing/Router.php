@@ -2,19 +2,19 @@
 
 namespace Core\Routing;
 
-use Core\Exception\Routing\RouteMethodNotAllowedException;
-use Core\Exception\Routing\RouteNotFoundException;
-use Core\Http\Response;
+use Core\Abstract\Singleton;
+use Core\Exceptions\Routing\RouteMethodNotAllowedException;
+use Core\Exceptions\Routing\RouteNotFoundException;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
 
-class Router
+class Router extends Singleton
 {
     /** @var Route[] */
     private array $routeList = [];
 
-    public function __construct()
+    protected function __construct()
     {
         require_once base_path('routes/web.php');
     }
@@ -32,7 +32,20 @@ class Router
             }
         });
 
-        return $dispatcher->dispatch($method, $uri);
+        $result = $dispatcher->dispatch($method, $uri);
+
+        if ($result[0] === Dispatcher::METHOD_NOT_ALLOWED) {
+            throw new RouteMethodNotAllowedException(implode(', ', $result[1]));
+        }
+
+        if ($result[0] === Dispatcher::NOT_FOUND) {
+            throw new RouteNotFoundException();
+        }
+
+        $handler = $result[1];
+        $params = $result[2];
+
+        return [$handler, $params];
     }
 
     private function addRoute(string $method, string $path, callable $handler): Route

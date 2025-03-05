@@ -2,7 +2,7 @@
 
 namespace Core\View;
 
-use Core\Exception\ViewDirectoryNotFoundException;
+use Core\Exceptions\ViewDirectoryNotFoundException;
 
 class Engine
 {

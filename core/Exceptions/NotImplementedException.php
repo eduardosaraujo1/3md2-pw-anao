@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Exception;
+namespace Core\Exceptions;
 
 class NotImplementedException extends \Exception
 {
