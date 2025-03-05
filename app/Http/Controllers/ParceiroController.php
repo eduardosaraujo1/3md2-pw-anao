@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Core\Facades\DB;
-use App\Http\Middleware\LoggedIn;
+use App\Http\Middleware\IsAuth;
 use Core\Http\Request;
 use Core\Http\Response;
 use App\Models\Parceiro;
@@ -30,11 +30,6 @@ class ParceiroController
     public static function update(string $id): Response|string
     {
         $request = Request::instance();
-
-        if ($middleware = LoggedIn::middleware()) {
-            // ensure only logged in users may update
-            return $middleware;
-        }
 
         try {
             // collect post data and build query
@@ -102,10 +97,6 @@ class ParceiroController
     {
         $request = Request::instance();
 
-        if ($middleware = LoggedIn::middleware()) {
-            return $middleware;
-        }
-
         // collect data
         $name = $request->postParams['name'] ?? null;
         $contact = $request->postParams['contact'] ?? null;
@@ -141,10 +132,6 @@ class ParceiroController
 
     public static function destroy(string $id): Response|string
     {
-        if ($middleware = LoggedIn::middleware()) {
-            return $middleware;
-        }
-
         // Delete element
         DB::query('DELETE FROM parceiro WHERE id=:id', ['id' => $id]);
 

@@ -4,11 +4,11 @@ use Core\Routing\Router;
 
 class MockMiddleware
 {
-    public function handle(callable $next)
+    public function handle(callable $next, array $args)
     {
         global $middlewareExecuted;
         $middlewareExecuted = true;
-        return $next();
+        return $next(...$args);
     }
 
     public function handleWithoutNext(callable $next)
@@ -29,8 +29,9 @@ test('middleware executes before route callback', function () {
     $callbackSkipped = false;
 
     // route with middleware that allows execution
-    $router->get('TEST_MIDDLEWARE_EXECUTES', function () {
+    $router->get('TEST_MIDDLEWARE_EXECUTES/{id:\d+}', function (string $id) {
         global $callbackExecuted;
+        dump($id);
         $callbackExecuted = true;
     })->middleware(MockMiddleware::class);
 
@@ -41,7 +42,7 @@ test('middleware executes before route callback', function () {
     })->middleware([new MockMiddleware(), 'handleWithoutNext']);
 
     // dispatch first request (middleware calls $next)
-    [$callback, $params] = $router->dispatch('GET', 'TEST_MIDDLEWARE_EXECUTES');
+    [$callback, $params] = $router->dispatch('GET', 'TEST_MIDDLEWARE_EXECUTES/5');
     call_user_func_array($callback, $params);
 
     // dispatch second request (middleware does NOT call $next)

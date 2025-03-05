@@ -2,13 +2,12 @@
 
 namespace Core\Routing;
 
-use function PHPUnit\Framework\throwException;
-
 class Route
 {
     public string $path;
     public string $httpMethod;
     public mixed $handler;
+    public array $middlewares = [];
 
     public function __construct(
         string $path,
@@ -38,9 +37,8 @@ class Route
             throw new \Exception("Invalid middleware: must be a class with a handle() method, a callable, or a closure.");
         }
 
-        // wrap existing handler with middleware
-        $previousHandler = $this->handler;
-        $this->handler = fn() => call_user_func($middleware, $previousHandler);
+        // call middlewares along side handlers (middleware should support two params: $callback, $args)
+        $this->handler = fn(...$args) => call_user_func_array($middleware, [$previousHandler, $args]);
 
         return $this;
     }

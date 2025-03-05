@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Core\Facades\DB;
-use App\Http\Middleware\LoggedIn;
+use App\Http\Middleware\IsAuth;
 use Core\Http\Request;
 use Core\Http\Response;
 use App\Models\Anao;
@@ -18,10 +18,6 @@ class AnaoController
 
     public static function index(): Response|string
     {
-        if ($middleware = LoggedIn::middleware()) {
-            return $middleware;
-        }
-
         $anoes = Anao::fromQuery("SELECT * FROM anao");
 
         return view('anao.index', [
@@ -31,9 +27,6 @@ class AnaoController
 
     public static function show(string $id): Response|string
     {
-        if ($middleware = LoggedIn::middleware()) {
-            return $middleware;
-        }
 
         $anao = Anao::fromQuery("SELECT * FROM anao WHERE id=:id", ['id' => $id]);
 
@@ -55,11 +48,6 @@ class AnaoController
     public static function update(string $id): Response|string
     {
         $request = Request::instance();
-
-        if ($middleware = LoggedIn::middleware()) {
-            // ensure only logged in users may update
-            return $middleware;
-        }
 
         try {
             // collect post data and build query
@@ -110,20 +98,12 @@ class AnaoController
 
     public static function create(): Response|string
     {
-        if ($middleware = LoggedIn::middleware()) {
-            return $middleware;
-        }
-
         return view('anao.create');
     }
 
     public static function store(): Response|string
     {
         $request = Request::instance();
-
-        if ($middleware = LoggedIn::middleware()) {
-            return $middleware;
-        }
 
         // collect data
         $name = $request->postParams['name'] ?? null;
@@ -156,10 +136,6 @@ class AnaoController
 
     public static function destroy(string $id): Response|string
     {
-        if ($middleware = LoggedIn::middleware()) {
-            return $middleware;
-        }
-
         return '';
     }
 }
