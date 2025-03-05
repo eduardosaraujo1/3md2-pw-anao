@@ -37,11 +37,17 @@ class Kernel
             );
         }
 
-        try {
-            $handler = $result[1];
-            $params = $result[2];
+        $handler = $result[1];
+        $params = $result[2];
 
-            $response = call_user_func_array($handler, $params);
+        return $this->handleCallback($handler, $params);
+
+    }
+
+    protected function handleCallback(callable $callback, array $params): Response
+    {
+        try {
+            $response = call_user_func_array($callback, $params);
 
             if ($response instanceof Response) {
                 return $response;
