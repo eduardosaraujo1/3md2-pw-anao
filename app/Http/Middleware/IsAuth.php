@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Core\Auth\Auth;
+use Core\Http\Request;
 use Core\Http\Response;
 
 class IsAuth

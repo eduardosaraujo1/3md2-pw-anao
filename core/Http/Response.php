@@ -28,6 +28,13 @@ class Response
         echo $this->content;
     }
 
+    public function header(string $header)
+    {
+        $this->headers[] = $header;
+
+        return $this;
+    }
+
     public function status(): int
     {
         return $this->status;

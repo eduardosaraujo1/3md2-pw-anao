@@ -65,12 +65,15 @@ class AnaoController
             ]);
         }
 
-        return redirect("/anao/$id");
+        return new Response(
+            status: 301,
+            headers: ["Location: /anao/$id"]
+        );
     }
 
     public static function create(): Response|string
     {
-        return view('anao.create');
+        return view('anao.create', ['errors' => Session::get('errors', [])]);
     }
 
     public static function store(): Response|string
@@ -120,7 +123,9 @@ class AnaoController
             return redirect("/anao/$id");
         }
 
-        return '';
+        Session::flash('success', 'Anão apagado com sucesso');
+
+        return redirect('/home');
     }
 
     /**

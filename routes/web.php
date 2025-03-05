@@ -34,6 +34,7 @@ $this->get('/anao/{id:\d+}', [AnaoController::class, 'show'])->middleware(IsAuth
 
 $this->post('/anao/update/{id:\d+}', [AnaoController::class, 'update'])->middleware(IsAuth::class);
 $this->post('/anao/store', [AnaoController::class, 'store'])->middleware(IsAuth::class);
+$this->post('/anao/destroy/{id:\d+}', [AnaoController::class, 'destroy'])->middleware(IsAuth::class);
 
 $this->get('/parceiro/{id:\d+}', [ParceiroController::class, 'show'])->middleware(IsAuth::class);
 $this->get('/parceiro/create', [ParceiroController::class, 'create'])->middleware(IsAuth::class);

@@ -11,5 +11,3 @@ htmx.config.responseHandling = [
         swap: true,
     },
 ];
-
-document.querySelector('body').style.removeProperty('visibility');

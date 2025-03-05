@@ -47,7 +47,10 @@ class ParceiroController
             return 'Ocorreu um erro ao editar este parceiro';
         }
 
-        return redirect("/parceiro/$id");
+        return new Response(
+            status: 301,
+            headers: ["Location: /parceiro/$id"]
+        );
     }
 
     public static function create(): string
@@ -95,7 +98,10 @@ class ParceiroController
         // get newly created parceiro
         $idParceiro = Connection::instance()->getPDO()->lastInsertId();
 
-        return redirect("/parceiro/$idParceiro");
+        return new Response(
+            status: 301,
+            headers: ["Location: /parceiro/$idParceiro"]
+        );
     }
 
     public static function destroy(string $id): Response|string
