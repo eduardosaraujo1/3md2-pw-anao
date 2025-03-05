@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Core\Database\Connection;
-use App\Http\Middleware\IsAuth;
 use Core\Http\Request;
 use Core\Http\Response;
 use App\Models\Parceiro;
+use Core\Session;
 use Exception;
 use InvalidArgumentException;
 
@@ -24,7 +24,7 @@ class ParceiroController
             return '';
         }
 
-        return view('partials/parceiro-form', ['parceiro' => $parceiros[0]]);
+        return view('parceiro/view', ['parceiro' => $parceiros[0]]);
     }
 
     public static function update(string $id): Response|string
@@ -43,13 +43,11 @@ class ParceiroController
             if (empty($parceiros)) {
                 throw new Exception("Ocorreu um erro no parametro $id");
             }
-
-            return view('partials/parceiro-form', ['parceiro' => $parceiros[0]]);
-        } catch (InvalidArgumentException $e) {
-            return 'Ocorreu um erro ao enviar os dados a serem editados.';
         } catch (\Throwable $e) {
-            return 'Erro interno ao salvar alterações';
+            return 'Ocorreu um erro ao editar este parceiro';
         }
+
+        return redirect("/parceiro/$id");
     }
 
     public static function create(): string
@@ -58,7 +56,7 @@ class ParceiroController
 
         if (array_key_exists('id_anao', $request->getParams)) {
             $id_anao = $request->getParams['id_anao'];
-            return view('partials/parceiro-form', ['id_anao' => $id_anao]);
+            return view('parceiro/create', ['id_anao' => $id_anao]);
         }
 
         return '';
@@ -96,9 +94,8 @@ class ParceiroController
 
         // get newly created parceiro
         $idParceiro = Connection::instance()->getPDO()->lastInsertId();
-        $parceiros = Parceiro::fromQuery("SELECT * FROM parceiro WHERE id=:id", ['id' => $idParceiro]);
 
-        return view('partials/parceiro-form', ['parceiro' => $parceiros[0]]);
+        return redirect("/parceiro/$idParceiro");
     }
 
     public static function destroy(string $id): Response|string

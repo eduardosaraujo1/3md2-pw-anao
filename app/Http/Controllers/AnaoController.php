@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Core\Database\Connection;
-use App\Http\Middleware\IsAuth;
 use Core\Http\Request;
 use Core\Http\Response;
 use App\Models\Anao;
 use App\Models\Parceiro;
+use Core\Session;
 use InvalidArgumentException;
 
 class AnaoController
@@ -21,7 +21,7 @@ class AnaoController
         $anoes = Anao::fromQuery("SELECT * FROM anao");
 
         return view('anao.index', [
-            'anoes' => $anoes,
+            'anoes' => $anoes
         ]);
     }
 
@@ -42,6 +42,7 @@ class AnaoController
         return view('anao.view', [
             'anao' => $anao[0],
             'parceiros' => $parceiros,
+            'errors' => [],
         ]);
     }
 
@@ -55,16 +56,16 @@ class AnaoController
             // run update query
             Connection::instance()->query($query, $params);
         } catch (InvalidArgumentException $e) {
-            return 'Ocorreu um erro ao enviar os dados a serem editados.';
+            Session::flash('errors', [
+                'Ocorreu um erro ao enviar os dados a serem editados.'
+            ]);
         } catch (\Throwable $e) {
-            return 'Erro interno ao salvar alterações';
+            Session::flash('errors', [
+                'Erro interno ao salvar alterações'
+            ]);
         }
 
-        // Handle HTMX Refreshing
-        return new Response(
-            status: 301,
-            headers: ['HX-Trigger: soft-refresh'],
-        );
+        return redirect("/anao/$id");
     }
 
     public static function create(): Response|string
@@ -84,7 +85,10 @@ class AnaoController
 
         // validate
         if (!isset($name, $age, $race, $height)) {
-            return 'Faltando um ou mais parametros para cadastrar anão.';
+            Session::flash('errors', [
+                'Faltando um ou mais parametros para cadastrar anão.'
+            ]);
+            return redirect("/anao/create");
         }
 
         // build query
@@ -107,6 +111,15 @@ class AnaoController
 
     public static function destroy(string $id): Response|string
     {
+        // Delete element
+        Connection::instance()->query('DELETE FROM anao WHERE id=:id', ['id' => $id]);
+
+        // If it was deleted successfully, return void to remove the form card, otherwise return the form again
+        $parceiros = Parceiro::fromQuery('SELECT * FROM anao WHERE id=:id', ['id' => $id]);
+        if (!empty($parceiros)) {
+            return redirect("/anao/$id");
+        }
+
         return '';
     }
 
