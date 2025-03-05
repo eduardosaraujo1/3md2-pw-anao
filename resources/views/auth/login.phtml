@@ -8,7 +8,11 @@
         <h1 class="text-3xl font-bold text-center">Login</h1>
 
         <!-- <x-error /> -->
-        <div id="error_container" class="text-sm text-red-700"></div>
+        <div id="error_container" class="text-sm text-red-700">
+            <?php foreach ($errors as $error): ?>
+                <p><?= $this->e($error) ?></p>
+            <?php endforeach; ?>
+        </div>
 
         <!-- <x-input id="user_login" label="Usuáruio" placeholder="username"> -->
         <?= component('input', ['id' => 'user_login', 'label' => 'Usuário']) ?>

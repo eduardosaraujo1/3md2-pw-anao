@@ -2,6 +2,6 @@
 
 namespace App\Models;
 
-class User extends \App\Framework\Auth\User
+class User extends \Core\Auth\User
 {
 }

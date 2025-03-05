@@ -1,6 +1,6 @@
 <?php
 
-use App\Framework\Database\Connection;
+use Core\Database\Connection;
 
 require __DIR__ . '/../../bootstrap/app.php';
 

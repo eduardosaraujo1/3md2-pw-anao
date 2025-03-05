@@ -1,9 +1,9 @@
 <?php $this->layout('view::layout/app', ['title' => "Anão " . $anao->id ?? -1]); ?>
 
 <div class="flex flex-col px-2 py-4 mx-auto max-w-7xl">
-    <form action="/anao/update/<?= $anao->id ?? 0 ?>" method="POST" x-data="{ disabled: true }"
-        hx-post="/anao/update/<?= $anao->id ?? 0 ?>" hx-target="#error_container" hx-swap="innerHTML">
-        <div class="flex items-center">
+    <form id="anao_form" action="/anao/update/<?= $anao->id ?? 0 ?>" method="POST" x-data="{ disabled: true }"
+        hx-post="/anao/update/<?= $anao->id ?? 0 ?>" hx-target="this" hx-swap="innerHTML" hx-select="#anao_form">
+        <div class=" flex gap-1 items-center">
             <h1 class="flex-1 my-2 text-4xl font-bold">Anão #<?= $anao->id ?? 'Desconhecido' ?></h1>
             <?= component(
                 name: 'primary-button',
@@ -11,13 +11,37 @@
                 attributes: ['type' => 'button', '@click' => 'disabled = false', 'x-show' => 'disabled'],
             ) ?>
             <?= component(
-                name: 'secondary-button',
+                name: 'danger-button',
+                props: ['slot' => 'Excluir'],
+                attributes: [
+                    'type' => 'button',
+                    'x-show' => 'disabled',
+                    'hx-post' => "/anao/destroy/$anao->id"
+                ],
+            ) ?>
+            <?= component(
+                name: 'primary-button',
                 props: ['slot' => 'Salvar'],
                 attributes: ['x-show' => '!disabled'],
             ) ?>
+            <?= component(
+                name: 'secondary-button',
+                props: ['slot' => 'Cancelar'],
+                attributes: [
+                    'type' => 'button',
+                    'x-show' => '!disabled',
+                    'hx-get' => "/anao/$anao->id",
+                    "hx-target" => 'closest form',
+                    "hx-select" => '#anao_form'
+                ],
+            ) ?>
         </div>
         <h2 class="mt-2 text-3xl font-medium">Dados</h2>
-        <div id="error_container" class="text-sm text-red-700"></div>
+        <div id="error_container" class="text-sm text-red-700">
+            <?php foreach ($errors as $error): ?>
+                <p><?= $this->e($error) ?></p>
+            <?php endforeach; ?>
+        </div>
         <div class="flex flex-col gap-2">
             <!-- <x-input id="name" label="Nome" :disabled="disabled"_/> -->
             <?= component(

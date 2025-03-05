@@ -3,16 +3,17 @@
 namespace App\Http\Middleware;
 
 use Core\Auth\Auth;
+use Core\Http\Request;
 use Core\Http\Response;
 
-class IsGuest
+class IsAuth
 {
     public static function handle(callable $next, array $params): Response|string
     {
         if (Auth::instance()->check()) {
-            return redirect('/anoes');
+            return $next(...$params);
         }
 
-        return $next(...$params);
+        return redirect('/login');
     }
 }

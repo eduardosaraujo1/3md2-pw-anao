@@ -5,5 +5,5 @@ CREATE TABLE
         `contact` VARCHAR(255) not null,
         `is_anao` tinyint (1) not null,
         `id_anao` bigint not null,
-        foreign key (`id_anao`) references anao(`id`) 
+        foreign key (`id_anao`) references anao(`id`) on delete cascade
     );

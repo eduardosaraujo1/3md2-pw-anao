@@ -8,13 +8,13 @@
     <?= vite(['resources/css/app.css', 'resources/js/app.js']) ?>
 </head>
 
-<body style="visibility: hidden;">
+<body">
     <div class="flex h-screen overflow-hidden">
         <div class="flex-1 overflow-y-auto">
             <?= $this->section('content') ?>
         </div>
         <?= component('navbar') ?>
     </div>
-</body>
+    </body>
 
 </html>

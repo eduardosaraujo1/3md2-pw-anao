@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Framework\Auth\User;
-use App\Framework\Facades\Auth;
-use App\Framework\Http\Request;
-use App\Framework\Http\Response;
+use Core\Auth\Auth;
+use Core\Auth\User;
+use Core\Http\Request;
+use Core\Http\Response;
 use App\Http\Middleware\IsGuest;
+use Core\Session;
 
 class AuthenticationController
 {
@@ -16,28 +17,32 @@ class AuthenticationController
 
     public static function index(): string|Response
     {
-        if ($middleware = IsGuest::middleware())
-            return $middleware;
-
-        return view('auth.login');
+        return view('auth.login', [
+            'errors' => Session::get('errors', [])
+        ]);
     }
 
-    public static function login(Request $request): string|Response
+    public static function login(): string|Response
     {
-        // collect user data
+        $request = Request::instance();
+
+        // attempt login
         $userName = $request->postParams['user_login'] ?? '';
         $userPassword = $request->postParams['user_password'] ?? '';
+        $auth = Auth::instance()->attempt($userName, $userPassword);
 
-        $auth = Auth::attempt($userName, $userPassword);
+        // TODO: flash error message to session, and redirect to /login
+        if (!$auth) {
+            Session::flash('errors', ['Usuário não encontrado ou senha incorreta.']);
+            return redirect('/login');
+        }
 
-        return $auth
-            ? redirect('/anoes')
-            : 'Usuário não encontrado ou senha incorreta.';
+        return redirect('/anoes');
     }
 
     public static function logout(): string|Response
     {
-        Auth::logout();
+        Auth::instance()->logout();
 
         return redirect('/login');
     }

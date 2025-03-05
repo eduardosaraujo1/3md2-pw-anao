@@ -1,38 +1,44 @@
 <?php
 
-use App\Framework\Facades\Auth;
-use App\Framework\Facades\Route;
-use App\Framework\Http\Request;
 use App\Http\Controllers\AnaoController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ParceiroController;
+use App\Http\Middleware\IsAuth;
+use App\Http\Middleware\IsGuest;
+use Core\Auth\Auth;
+use Core\Routing\Router;
 
-Route::get('/', function (Request $request) {
-    if (Auth::check()) {
+if (!$this instanceof Router) {
+    throw new Exception('web.php file was not required within the Router.php context');
+}
+
+$this->get('/', function () {
+    if (Auth::instance()->check()) {
         return redirect('/anoes');
     }
     return redirect('/login');
 });
 
-Route::get('/login', [AuthenticationController::class, 'index']);
+$this->get('/login', [AuthenticationController::class, 'index'])->middleware(IsGuest::class);
 
-Route::post('/login', [AuthenticationController::class, 'login']);
-Route::get('/logout', [AuthenticationController::class, 'logout']);
+$this->post('/login', [AuthenticationController::class, 'login'])->middleware(IsGuest::class);
+$this->get('/logout', [AuthenticationController::class, 'logout']);
 
-Route::get('/home', function () {
+$this->get('/home', function () {
     return redirect('/anoes');
 });
 
-Route::get('/anoes', [AnaoController::class, 'index']);
-Route::get('/anao/create', [AnaoController::class, 'create']);
-Route::get('/anao/{id:\d+}', [AnaoController::class, 'show']);
+$this->get('/anoes', [AnaoController::class, 'index'])->middleware(IsAuth::class);
+$this->get('/anao/create', [AnaoController::class, 'create'])->middleware(IsAuth::class);
+$this->get('/anao/{id:\d+}', [AnaoController::class, 'show'])->middleware(IsAuth::class);
 
-Route::post('/anao/update/{id:\d+}', [AnaoController::class, 'update']);
-Route::post('/anao/store', [AnaoController::class, 'store']);
+$this->post('/anao/update/{id:\d+}', [AnaoController::class, 'update'])->middleware(IsAuth::class);
+$this->post('/anao/store', [AnaoController::class, 'store'])->middleware(IsAuth::class);
+$this->post('/anao/destroy/{id:\d+}', [AnaoController::class, 'destroy'])->middleware(IsAuth::class);
 
-Route::get('/parceiro/{id:\d+}', [ParceiroController::class, 'show']);
-Route::get('/parceiro/create', [ParceiroController::class, 'create']);
+$this->get('/parceiro/{id:\d+}', [ParceiroController::class, 'show'])->middleware(IsAuth::class);
+$this->get('/parceiro/create', [ParceiroController::class, 'create'])->middleware(IsAuth::class);
 
-Route::post('/parceiro/update/{id:\d+}', [ParceiroController::class, 'update']);
-Route::post('/parceiro/store', [ParceiroController::class, 'store']);
-Route::post('/parceiro/destroy/{id:\d+}', [ParceiroController::class, 'destroy']);
+$this->post('/parceiro/update/{id:\d+}', [ParceiroController::class, 'update'])->middleware(IsAuth::class);
+$this->post('/parceiro/store', [ParceiroController::class, 'store'])->middleware(IsAuth::class);
+$this->post('/parceiro/destroy/{id:\d+}', [ParceiroController::class, 'destroy'])->middleware(IsAuth::class);
