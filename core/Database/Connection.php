@@ -32,6 +32,11 @@ class Connection extends Singleton
         $this->pdo = $pdo;
     }
 
+    protected static function createInstance(): static
+    {
+        return static::createFromEnv(true);
+    }
+
     /**
      * Creates a connection from the environment variables
      * @param bool $useSchema should the connection start with the schema defined in DB_DATABASE?

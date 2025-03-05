@@ -3,7 +3,6 @@
 namespace Core\Database;
 
 use Core\Exceptions\Database\InvalidQueryException;
-use Core\Exceptions\Database\InvalidTableException;
 use Core\Exceptions\NotImplementedException;
 use Core\Exceptions\NullPropertyException;
 
