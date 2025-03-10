@@ -16,7 +16,8 @@
                 attributes: [
                     'type' => 'button',
                     'x-show' => 'disabled',
-                    'hx-post' => "/anao/destroy/$anao->id"
+                    'hx-post' => "/anao/destroy/$anao->id",
+                    'hx-confirm' => 'Tem certeza que deseja remover permanentemente este Anão?'
                 ],
             ) ?>
             <?= component(
